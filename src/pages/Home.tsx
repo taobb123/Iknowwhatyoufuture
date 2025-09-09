@@ -3,6 +3,9 @@ import { games } from '../data/gamesData';
 import { 
   X
 } from 'lucide-react';
+import AdBanner from '../components/AdBanner';
+import GameRating from '../components/GameRating';
+import SEOHead from '../components/SEOHead';
 
 
 
@@ -94,11 +97,21 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
+      <SEOHead />
 
       <div className="container mx-auto px-4 py-8 pt-24">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-yellow-400 mb-4"></h1>
+          <h1 className="text-4xl font-bold text-yellow-400 mb-4">🎮 免费在线游戏</h1>
           <p className="text-gray-300 text-lg">发现最热门的在线游戏，立即开始你的游戏之旅！</p>
+        </div>
+
+        {/* 顶部横幅广告 */}
+        <div className="mb-8">
+          <AdBanner 
+            adSlot="1234567890" 
+            adFormat="horizontal"
+            className="w-full h-32 bg-gray-800 rounded-lg flex items-center justify-center text-gray-400"
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -138,6 +151,14 @@ function Home() {
                 <h3 className="text-lg font-semibold mb-2 text-white">{game.title}</h3>
                 <p className="text-gray-300 text-sm mb-3 line-clamp-2">{game.description}</p>
 
+                {/* 游戏评分 */}
+                <div className="mb-3">
+                  <GameRating 
+                    gameId={game.id} 
+                    onRatingChange={(rating) => console.log(`Game ${game.id} rated ${rating} stars`)}
+                  />
+                </div>
+
                 <div className="flex flex-wrap gap-1 mb-3">
                   {game.features.map((feature, index) => (
                     <span
@@ -153,6 +174,7 @@ function Home() {
                   <span>{game.likes} 点赞</span>
                   <span>{game.duration}</span>
                 </div>
+
 
                 <div className="text-xs text-gray-500">
                   <div className="flex flex-wrap gap-2">
@@ -210,6 +232,17 @@ function Home() {
             className="flex-1 relative"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* 游戏加载时的广告位 */}
+            {isGameLoading && (
+              <div className="absolute top-4 right-4 z-30">
+                <AdBanner 
+                  adSlot="0987654321" 
+                  adFormat="rectangle"
+                  className="w-48 h-32 bg-gray-800 rounded-lg"
+                />
+              </div>
+            )}
+            
             <div className="w-full h-full bg-black relative overflow-hidden">
               {/* 加载指示器 */}
               {isGameLoading && (

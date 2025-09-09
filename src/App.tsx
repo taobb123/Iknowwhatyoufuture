@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -13,9 +13,15 @@ import BlogPost from './pages/BlogPost';
 import GameChecker from './pages/GameChecker';
 import GameHub from './pages/GameHub';
 import NotFound from './pages/NotFound';
+import { initGA } from './utils/analytics';
 
 function App() {
   const [showCategoryTable, setShowCategoryTable] = useState(false);
+
+  // 初始化Google Analytics
+  useEffect(() => {
+    initGA();
+  }, []);
 
   const handleCategoryMouseEnter = () => {
     setShowCategoryTable(true);
