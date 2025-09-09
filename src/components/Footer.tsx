@@ -9,7 +9,7 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Street Racer</h3>
+            <h3 className="text-lg font-bold mb-4">Iknowwhatyoufuture</h3>
             <p className="text-gray-400">
               Experience the thrill of racing with our collection of high-quality browser games.
             </p>
@@ -57,7 +57,7 @@ function Footer() {
 
         {/* Copyright */}
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Street Racer. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Iknowwhatyoufuture. All rights reserved.</p>
         </div>
       </div>
     </footer>

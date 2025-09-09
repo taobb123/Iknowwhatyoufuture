@@ -9,7 +9,7 @@ function Privacy() {
         <div className="space-y-8 text-gray-400">
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">1. No Data Collection</h2>
-            <p className="mb-4">At Street Racer, we are committed to your privacy. We do not:</p>
+            <p className="mb-4">At Iknowwhatyoufuture, we are committed to your privacy. We do not:</p>
             <ul className="list-disc list-inside ml-4 space-y-2">
               <li>Collect personal information</li>
               <li>Track user behavior</li>

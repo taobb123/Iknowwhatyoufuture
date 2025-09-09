@@ -1,0 +1,91 @@
+{
+  "type": "homepage_games",
+  "total_count": 12,
+  "collected_at": "2025-09-09T14:58:35.317190",
+  "games": [
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:24.424039",
+      "image": "https://imgs.crazygames.com/truck-hit-hero-isekai-arena_16x9/20250828051212/truck-hit-hero-isekai-arena_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Truck Hit Hero: Isekai Arena",
+      "url": "https://www.crazygames.com/game/truck-hit-hero-isekai-arena"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:25.501142",
+      "image": "https://imgs.crazygames.com/simply-prop-hunt_16x9/20250826074007/simply-prop-hunt_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Simply Prop Hunt",
+      "url": "https://www.crazygames.com/game/simply-prop-hunt"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:26.886261",
+      "image": "https://imgs.crazygames.com/mad-guns---battle-royale-ndd_16x9/20250901024035/mad-guns---battle-royale-ndd_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Mad GunS - Battle Royale",
+      "url": "https://www.crazygames.com/game/mad-guns---battle-royale-ndd"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:27.455863",
+      "image": "https://imgs.crazygames.com/456-guys_16x9/20250820070334/456-guys_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "456 Guys",
+      "url": "https://www.crazygames.com/game/456-guys"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:28.487423",
+      "image": "https://imgs.crazygames.com/fragen_16x9/20250620035208/fragen_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Fragen",
+      "url": "https://www.crazygames.com/game/fragen"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:29.249759",
+      "image": "https://imgs.crazygames.com/noob-digger-pro-drill-miner-cal_16x9/20250902025621/noob-digger-pro-drill-miner-cal_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Noob Digger: Pro Drill Miner",
+      "url": "https://www.crazygames.com/game/noob-digger-pro-drill-miner-cal"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:30.272305",
+      "image": "https://imgs.crazygames.com/games/cell-to-singularity-mesozoic-valley/cover_16x9-1719334258708.png?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Cell to Singularity: Mesozoic Valley",
+      "url": "https://www.crazygames.com/game/cell-to-singularity-mesozoic-valley"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:31.098356",
+      "image": "https://imgs.crazygames.com/simply-prop-hunt_2x3/20250826074007/simply-prop-hunt_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Simply Prop Hunt",
+      "url": "https://www.crazygames.com/game/simply-prop-hunt"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:31.657513",
+      "image": "https://imgs.crazygames.com/space-waves_2x3/20241203031650/space-waves_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Space Waves",
+      "url": "https://www.crazygames.com/game/space-waves"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:32.976444",
+      "image": "https://imgs.crazygames.com/bit-gun-io_2x3/20250818143525/bit-gun-io_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Bit Gun.io",
+      "url": "https://www.crazygames.com/game/bit-gun-io"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:33.542465",
+      "image": "https://imgs.crazygames.com/games/evowarsio/cover_2x3-1736776369475.png?metadata=none&quality=85&width=273&fit=crop",
+      "title": "EvoWars.io",
+      "url": "https://www.crazygames.com/game/evowarsio"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-09T14:58:34.094058",
+      "image": "https://imgs.crazygames.com/escape-from-prison-multiplayer_2x3/20250120074825/escape-from-prison-multiplayer_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Escape From Prison Multiplayer",
+      "url": "https://www.crazygames.com/game/escape-from-prison-multiplayer"
+    }
+  ]
+}

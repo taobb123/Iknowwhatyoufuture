@@ -1,8 +1,8 @@
-# Street Racer - Browser Racing Game Portal
+# Iknowwhatyoufuture - Browser Racing Game Portal
 
 ## 🌟 Introduction
 
-Street Racer is a modern, responsive web template for creating a gaming portal with iframe game embedding, blog system, and SEO optimization. Built with React, TypeScript, and Tailwind CSS.
+Iknowwhatyoufuture is a modern, responsive web template for creating a gaming portal with iframe game embedding, blog system, and SEO optimization. Built with React, TypeScript, and Tailwind CSS.
 
 ### Online Demo: https://streetracer.online
 

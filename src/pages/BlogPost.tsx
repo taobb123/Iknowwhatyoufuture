@@ -98,7 +98,7 @@ function BlogPostPage() {
   return (
     <>
       <Helmet>
-        <title>{post.title} - Street Racer Blog</title>
+        <title>{post.title} - Iknowwhatyoufuture Blog</title>
         <meta name="description" content={post.excerpt} />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />

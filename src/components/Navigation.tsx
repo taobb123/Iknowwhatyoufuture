@@ -12,7 +12,7 @@ function Navigation() {
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <Car className="w-8 h-8 text-red-500" />
-              <span className="ml-2 text-xl font-bold text-white">Street Racer</span>
+              <span className="ml-2 text-xl font-bold text-white">Iknowwhatyoufuture</span>
             </Link>
           </div>
 

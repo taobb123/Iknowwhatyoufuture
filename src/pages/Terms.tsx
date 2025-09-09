@@ -1,4 +1,3 @@
-import React from 'react';
 
 function Terms() {
   return (
@@ -9,12 +8,12 @@ function Terms() {
         <div className="space-y-8 text-gray-400">
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">1. Acceptance of Terms</h2>
-            <p>By accessing and using Street Racer, you agree to be bound by these Terms of Service. If you disagree with any part of these terms, please do not use our service.</p>
+            <p>By accessing and using Iknowwhatyoufuture, you agree to be bound by these Terms of Service. If you disagree with any part of these terms, please do not use our service.</p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">2. Service Description</h2>
-            <p className="mb-4">Street Racer provides:</p>
+            <p className="mb-4">Iknowwhatyoufuture provides:</p>
             <ul className="list-disc list-inside ml-4 space-y-2">
               <li>Browser-based racing games</li>
               <li>Free-to-play gaming experience</li>
@@ -37,12 +36,12 @@ function Terms() {
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">4. Intellectual Property</h2>
-            <p>All content on Street Racer is protected by intellectual property rights and may not be copied, modified, or distributed without permission.</p>
+            <p>All content on Iknowwhatyoufuture is protected by intellectual property rights and may not be copied, modified, or distributed without permission.</p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">5. Disclaimer of Warranties</h2>
-            <p className="mb-4">Street Racer is provided "as is" without any warranties:</p>
+            <p className="mb-4">Iknowwhatyoufuture is provided "as is" without any warranties:</p>
             <ul className="list-disc list-inside ml-4 space-y-2">
               <li>We don't guarantee uninterrupted service</li>
               <li>Games may not work on all devices or browsers</li>
