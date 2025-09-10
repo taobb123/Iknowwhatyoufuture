@@ -20,6 +20,10 @@ const SEOHead: React.FC<SEOHeadProps> = ({
 }) => {
   return (
     <Helmet>
+      {/* AdSense 代码 */}
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9581059198364443"
+           crossorigin="anonymous"></script>
+      
       {/* 基础SEO标签 */}
       <title>{title}</title>
       <meta name="description" content={description} />

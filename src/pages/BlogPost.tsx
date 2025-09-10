@@ -98,6 +98,10 @@ function BlogPostPage() {
   return (
     <>
       <Helmet>
+        {/* AdSense 代码 */}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9581059198364443"
+             crossorigin="anonymous"></script>
+        
         <title>{post.title} - Iknowwhatyoufuture Blog</title>
         <meta name="description" content={post.excerpt} />
         <meta property="og:title" content={post.title} />
