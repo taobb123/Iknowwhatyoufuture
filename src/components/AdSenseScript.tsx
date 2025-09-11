@@ -14,3 +14,6 @@ const AdSenseScript: React.FC = () => {
 };
 
 export default AdSenseScript;
+
+
+

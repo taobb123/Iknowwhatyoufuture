@@ -23,13 +23,6 @@ function App() {
     initGA();
   }, []);
 
-  const handleCategoryMouseEnter = () => {
-    setShowCategoryTable(true);
-  };
-
-  const handleCategoryMouseLeave = () => {
-    // 不立即隐藏，让用户有时间移动到表格
-  };
 
   const handleTableMouseEnter = () => {
     setShowCategoryTable(true);
@@ -42,7 +35,7 @@ function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
-        <Navbar onCategoryMouseEnter={handleCategoryMouseEnter} onCategoryMouseLeave={handleCategoryMouseLeave} />
+        <Navbar />
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home showCategoryTable={showCategoryTable} onTableMouseEnter={handleTableMouseEnter} onTableMouseLeave={handleTableMouseLeave} />} />
