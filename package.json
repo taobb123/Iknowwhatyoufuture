@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.5",
     "@types/markdown-it": "^14.1.2",
     "@types/react-helmet": "^6.1.11",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.344.0",
     "markdown-it": "^14.1.0",
+    "playwright": "^1.55.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet": "^6.1.0",

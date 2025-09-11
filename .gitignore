@@ -150,3 +150,12 @@ server/
 *.zip
 *.rar
 *.7z
+.cursor/mcp.json
+*.js
+*.json
+*.md
+*.png
+*.html
+*.tsx
+src/components/SEOHead.tsx
+*.json
