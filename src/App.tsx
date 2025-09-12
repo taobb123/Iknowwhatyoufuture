@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ErrorBoundary from './components/ErrorBoundary';
+// import ErrorBoundary from './components/ErrorBoundary.tsx';
 import { GameProvider } from './contexts/GameContext';
 import { initGA } from './utils/analytics';
 
@@ -50,36 +50,34 @@ function App() {
   );
 
   return (
-    <ErrorBoundary>
-      <GameProvider>
-        <Router>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-grow">
-              <Suspense fallback={<LoadingSpinner />}>
-                <Routes>
-                  <Route path="/" element={<Home showCategoryTable={showCategoryTable} onTableMouseEnter={handleTableMouseEnter} onTableMouseLeave={handleTableMouseLeave} />} />
-                  <Route path="/guides" element={<Guides />} />
-                  <Route path="/leaderboard" element={<Leaderboard />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/faq" element={<FAQ />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/blog/:slug" element={<BlogPost />} />
-                  <Route path="/game-checker" element={<GameChecker />} />
-                  <Route path="/game-hub" element={<GameHub />} />
-                  <Route path="/games" element={<GamesList />} />
-                  <Route path="/games/:id" element={<GameDetail />} />
-                  <Route path="/games/category/:category" element={<GameCategory />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-            </main>
-            <Footer />
-          </div>
-        </Router>
-      </GameProvider>
-    </ErrorBoundary>
+    <GameProvider>
+      <Router>
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-grow">
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                <Route path="/" element={<Home showCategoryTable={showCategoryTable} onTableMouseEnter={handleTableMouseEnter} onTableMouseLeave={handleTableMouseLeave} />} />
+                <Route path="/guides" element={<Guides />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/game-checker" element={<GameChecker />} />
+                <Route path="/game-hub" element={<GameHub />} />
+                <Route path="/games" element={<GamesList />} />
+                <Route path="/games/:id" element={<GameDetail />} />
+                <Route path="/games/category/:category" element={<GameCategory />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </GameProvider>
   );
 }
 
