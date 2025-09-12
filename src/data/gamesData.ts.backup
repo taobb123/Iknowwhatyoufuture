@@ -1,0 +1,110 @@
+export interface Game {
+  id: number;
+  title: string;
+  image: string;
+  description: string;
+  features: string[];
+  isNew: boolean;
+  iframe: string;
+  controls: { key: string; action: string }[];
+  category?: string;
+  playCount?: number;
+  likes?: number;
+  favorites?: number;
+  duration?: string;
+}
+
+export const games: Game[] = [
+  {
+    id: 1,
+    title: "Truck Hit Hero: Isekai Arena",
+    image: "https://imgs.crazygames.com/truck-hit-hero-isekai-arena_16x9/20250828051212/truck-hit-hero-isekai-arena_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Truck-Hit Hero: Isekai Arena is a 2D RPG platformer inspired by classic isekai tales, where an...",
+    features: ["Move = arrow left-right keys or AD", "Jump = spacebar", "Attack = Left mouse button", "Skills = 1, 2, 3, 4", "Interact = E"],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/truck-hit-hero-isekai-arena/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    category: "adventure",
+    playCount: 0,
+    likes: 958,
+    favorites: 958,
+    duration: "5-10 分钟"
+  },
+  {
+    id: 2,
+    title: "Simply Prop Hunt",
+    image: "https://imgs.crazygames.com/simply-prop-hunt_16x9/20250826074007/simply-prop-hunt_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Simply Prop Hunt is a fast-paced multiplayer hide-and-seek game with a clever twist. Players take...",
+    features: ["WASD / arrow keys = move", "Left-click = attack", "Move mouse = look around", "Mouse scroll = zoom in / out", "Space = jump / fly with jet (when playing as Hunter)", "3, 4, 5 = select power-up", "E = activate selected power-up", "P = pause menu"],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/simply-prop-hunt/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    category: "io",
+    playCount: 0,
+    likes: 4511,
+    favorites: 4511,
+    duration: "5-10 分钟"
+  },
+  {
+    id: 3,
+    title: "Mad GunS - Battle Royale",
+    image: "https://imgs.crazygames.com/mad-guns---battle-royale-ndd_16x9/20250901024035/mad-guns---battle-royale-ndd_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Crazy Pixel Shooter is a wacky royal battle where chaos rules and anything can be a weapon. Arm...",
+    features: ["WASD = move", "R = reload", "Left click = shoot", "Tab = menu"],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/mad-guns---battle-royale-ndd/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "AIM"}, {"key": "Left Click", "action": "SHOOT"}, {"key": "WASD", "action": "MOVE"}],
+    category: "shooting",
+    playCount: 0,
+    likes: 5426,
+    favorites: 5426,
+    duration: "5-10 分钟"
+  },
+  {
+    id: 4,
+    title: "456 Guys",
+    image: "https://imgs.crazygames.com/456-guys_16x9/20250820070334/456-guys_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "456 Guys is a massive multiplayer survival game where up to 456 players compete through...",
+    features: ["Move = WASD", "Walk = hold left shift", "Jump = space", "Push = E", "Emotes = [1][2][3][4]", "Quick Chat = Tab", "Exit Mouse Look &amp; return mouse pointer to screen = ESC"],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/456-guys/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    category: "casual",
+    playCount: 0,
+    likes: 5050,
+    favorites: 5050,
+    duration: "5-10 分钟"
+  },
+  {
+    id: 5,
+    title: "Fragen",
+    image: "https://imgs.crazygames.com/fragen_16x9/20250620035208/fragen_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Fragen is an intense shooting FPS game where you face adrenaline-filled battles on your own or in a...",
+    features: ["WASD = move", "Left mouse = shooting", "Right mouse = aim", "G =grenade", "H = use first aid kit", "C = squat", "Space =jump", "Tab = menu"],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/fragen/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    category: "shooting",
+    playCount: 0,
+    likes: 76546,
+    favorites: 76546,
+    duration: "5-10 分钟"
+  },
+  {
+    id: 6,
+    title: "Noob Digger: Pro Drill Miner",
+    image: "https://imgs.crazygames.com/noob-digger-pro-drill-miner-cal_16x9/20250902025621/noob-digger-pro-drill-miner-cal_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Noob Digger: Pro Drill Miner is a thrilling mining adventure where you pilot a powerful drill deep...",
+    features: ["WASD or arrow keys = move", "E or left click = interact", "F = nitro ( in mine )"],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/noob-digger-pro-drill-miner-cal/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    category: "adventure",
+    playCount: 0,
+    likes: 9650,
+    favorites: 9650,
+    duration: "5-10 分钟"
+  }
+];
+
+

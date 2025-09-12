@@ -1,0 +1,94 @@
+{
+  "webSources": [
+    {
+      "name": "GitHub Trending",
+      "url": "https://github.com/trending",
+      "type": "repository",
+      "priority": "high",
+      "description": "GitHub热门仓库，反映技术流行度"
+    },
+    {
+      "name": "Stack Overflow Developer Survey",
+      "url": "https://insights.stackoverflow.com/survey",
+      "type": "survey",
+      "priority": "high",
+      "description": "开发者调查，了解技术使用情况"
+    },
+    {
+      "name": "State of JS",
+      "url": "https://stateofjs.com",
+      "type": "survey",
+      "priority": "high",
+      "description": "JavaScript生态系统年度调查"
+    },
+    {
+      "name": "Hacker News",
+      "url": "https://news.ycombinator.com",
+      "type": "news",
+      "priority": "medium",
+      "description": "技术新闻和讨论"
+    },
+    {
+      "name": "Dev.to",
+      "url": "https://dev.to",
+      "type": "blog",
+      "priority": "medium",
+      "description": "开发者社区博客"
+    },
+    {
+      "name": "MDN Web Docs",
+      "url": "https://developer.mozilla.org",
+      "type": "documentation",
+      "priority": "high",
+      "description": "Web技术官方文档"
+    }
+  ],
+  "dailyReportSources": [
+    {
+      "path": "../daily-reports/",
+      "pattern": "final-daily-report-*.json",
+      "description": "每日报告数据"
+    },
+    {
+      "path": "../scraper/",
+      "pattern": "*.json",
+      "description": "爬虫数据"
+    }
+  ],
+  "techCategories": {
+    "frontend": {
+      "keywords": ["react", "vue", "angular", "typescript", "javascript", "css", "html", "sass", "webpack", "vite"],
+      "priority": "high"
+    },
+    "backend": {
+      "keywords": ["nodejs", "python", "java", "go", "rust", "php", "express", "fastapi", "spring"],
+      "priority": "high"
+    },
+    "database": {
+      "keywords": ["mysql", "postgresql", "mongodb", "redis", "sqlite", "elasticsearch"],
+      "priority": "medium"
+    },
+    "devops": {
+      "keywords": ["docker", "kubernetes", "aws", "azure", "gcp", "ci/cd", "jenkins", "github actions"],
+      "priority": "medium"
+    },
+    "mobile": {
+      "keywords": ["react native", "flutter", "swift", "kotlin", "ionic", "cordova"],
+      "priority": "medium"
+    },
+    "ai-ml": {
+      "keywords": ["tensorflow", "pytorch", "openai", "machine learning", "ai", "chatgpt", "llm"],
+      "priority": "high"
+    },
+    "web3": {
+      "keywords": ["blockchain", "ethereum", "solidity", "web3", "nft", "defi", "crypto"],
+      "priority": "medium"
+    }
+  },
+  "updateSchedule": {
+    "frequency": "7 days",
+    "time": "02:00",
+    "timezone": "Asia/Shanghai",
+    "enabled": true
+  }
+}

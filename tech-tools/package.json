@@ -1,0 +1,42 @@
+{
+  "name": "tech-tools",
+  "version": "1.0.0",
+  "description": "智能技术知识库，通过MCP自动收集技术趋势并生成效果文档",
+  "main": "scripts/tech-scanner.js",
+  "scripts": {
+    "tech-scan": "node scripts/tech-scanner.js",
+    "tech-effects": "node scripts/tech-effect-generator.js",
+    "tech-update": "node scripts/scheduler.js run",
+    "tech-force": "node scripts/scheduler.js force",
+    "tech-status": "node scripts/scheduler.js status",
+    "install-deps": "npm install && npm install -g cursor-tools",
+    "setup": "npm run install-deps && node scripts/setup.js"
+  },
+  "keywords": [
+    "technology",
+    "trends",
+    "automation",
+    "mcp",
+    "browser",
+    "documentation"
+  ],
+  "author": "Tech Tools Team",
+  "license": "MIT",
+  "dependencies": {
+    "cursor-tools": "^0.5.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.40.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "bugs": {
+    "url": "."
+  },
+  "homepage": "."
+}
