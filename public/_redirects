@@ -1,6 +1,0 @@
-# SPA路由支持 - 所有非文件请求都重定向到index.html
-/*    /index.html   200
-
-# 静态资源直接服务
-/sitemap.xml   /sitemap.xml   200
-/robots.txt    /robots.txt    200 
