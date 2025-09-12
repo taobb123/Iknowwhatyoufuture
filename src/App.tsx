@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ErrorBoundary from './components/ErrorBoundary';
+// import ErrorBoundary from './components/ErrorBoundary';
 import { GameProvider, useGameContext } from './contexts/GameContext.simple';
 import { initGA } from './utils/analytics';
 import { games } from './data/gamesData';
@@ -86,13 +86,11 @@ function App() {
   }, []);
 
   return (
-    <ErrorBoundary>
-      <GameProvider>
-        <Router>
-          <AppContent />
-        </Router>
-      </GameProvider>
-    </ErrorBoundary>
+    <GameProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </GameProvider>
   );
 }
 
