@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 // import ErrorBoundary from './components/ErrorBoundary.tsx';
-import { GameProvider } from './contexts/GameContext';
+import { GameProvider, useGameContext } from './contexts/GameContext.tsx';
 import { initGA } from './utils/analytics';
 
 // 懒加载页面组件
