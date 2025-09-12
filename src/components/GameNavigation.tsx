@@ -85,24 +85,16 @@ function GameNavigation({ onClose }: GameNavigationProps) {
   };
 
   const handleGameClick = (gameId: number) => {
-    // 导航到游戏中心页面，并传递游戏ID
-    navigate('/game-hub', { 
-      state: { 
-        selectedGameId: gameId 
-      } 
-    });
+    // 导航到游戏详情页
+    navigate(`/games/${gameId}`);
     setIsOpen(false);
     onClose?.();
   };
 
   // 处理分类点击
   const handleCategoryNavigation = (categoryName: string) => {
-    // 导航到游戏中心页面，并传递分类筛选
-    navigate('/game-hub', { 
-      state: { 
-        selectedCategory: categoryName 
-      } 
-    });
+    // 导航到游戏分类页
+    navigate(`/games/category/${categoryName}`);
     setIsOpen(false);
     onClose?.();
   };

@@ -116,13 +116,8 @@ function SearchBox({ onQueryChange }: SearchBoxProps) {
 
     // 根据结果类型导航
     if (result.type === 'game') {
-      // 导航到游戏中心页面，并传递游戏ID
-      navigate('/game-hub', { 
-        state: { 
-          selectedGameId: result.id,
-          searchQuery: query 
-        } 
-      });
+      // 导航到游戏详情页
+      navigate(`/games/${result.id}`);
     } else if (result.type === 'blog') {
       // 导航到博客页面
       navigate('/blog', { 

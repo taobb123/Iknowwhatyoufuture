@@ -63,6 +63,12 @@ function Navbar({}: NavbarProps) {
               首页
             </Link>
             <Link
+              to="/games"
+              className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+            >
+              所有游戏
+            </Link>
+            <Link
               to="/game-hub"
               className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >

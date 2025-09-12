@@ -1,18 +1,29 @@
 import { useState, useEffect } from 'react';
-import { games } from '../data/gamesData';
-import { 
-  X
-} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X } from 'lucide-react';
 import AdBanner from '../components/AdBanner';
-import GameRating from '../components/GameRating';
+import GameCard from '../components/GameCard';
 import SEOHead from '../components/SEOHead';
+import ErrorBoundary, { GameErrorBoundary } from '../components/ErrorBoundary';
+import { useGameData, useGameActions } from '../hooks/useGameData';
 
 
 
-function Home() {
+interface HomeProps {
+  showCategoryTable?: boolean;
+  onTableMouseEnter?: () => void;
+  onTableMouseLeave?: () => void;
+}
+
+function Home({ showCategoryTable, onTableMouseEnter, onTableMouseLeave }: HomeProps) {
+  const navigate = useNavigate();
   const [selectedGame, setSelectedGame] = useState<number | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isGameLoading, setIsGameLoading] = useState(true);
+  
+  // 使用新的Hooks
+  const { filteredGames, isLoading, error } = useGameData();
+  const { toggleFavorite } = useGameActions();
 
   // 监听全屏状态变化
   useEffect(() => {
@@ -80,19 +91,15 @@ function Home() {
     }
   };
 
-  // 根据游戏类别获取对应的颜色
-  const getCategoryColor = (category?: string) => {
-    const colors: { [key: string]: string } = {
-      racing: 'bg-red-500',
-      action: 'bg-orange-500',
-      adventure: 'bg-green-500',
-      puzzle: 'bg-blue-500',
-      shooting: 'bg-purple-500',
-      rpg: 'bg-pink-500',
-      arcade: 'bg-yellow-500',
-      other: 'bg-gray-500'
-    };
-    return colors[category || 'other'] || 'bg-gray-500';
+  // 处理游戏播放
+  const handlePlayGame = (gameId: number) => {
+    // 直接跳转到游戏详情页
+    navigate(`/games/${gameId}`);
+  };
+
+  // 处理收藏切换
+  const handleToggleFavorite = (gameId: number) => {
+    toggleFavorite(gameId);
   };
 
   return (
@@ -114,81 +121,37 @@ function Home() {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {games.map((game) => (
-            <div
-              key={game.id}
-              className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
-              onClick={() => openGame(game.id)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  openGame(game.id);
-                }
-              }}
-              aria-label={`打开游戏: ${game.title}`}
-            >
-              <div className="relative">
-                <img
-                  src={game.image}
-                  alt={game.title}
-                  className="w-full h-48 object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = '/racing-horizon.jpg';
-                  }}
-                />
+        {/* 错误状态 */}
+        {error && (
+          <div className="mb-8 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+            <p className="text-red-400">加载游戏时出现错误: {error}</p>
+          </div>
+        )}
 
-                <div className={`absolute top-2 left-2 px-2 py-1 rounded text-xs font-semibold ${getCategoryColor(game.category)}`}>
-                  {game.category || '其他'}
-                </div>
-              </div>
-
-              <div className="p-4">
-                <h3 className="text-lg font-semibold mb-2 text-white">{game.title}</h3>
-                <p className="text-gray-300 text-sm mb-3 line-clamp-2">{game.description}</p>
-
-                {/* 游戏评分 */}
-                <div className="mb-3">
-                  <GameRating 
-                    gameId={game.id} 
-                    onRatingChange={(rating) => console.log(`Game ${game.id} rated ${rating} stars`)}
-                  />
-                </div>
-
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {game.features.map((feature, index) => (
-                    <span
-                      key={index}
-                      className="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs"
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex justify-between text-sm text-gray-400 mb-3">
-                  <span>{game.likes} 点赞</span>
-                  <span>{game.duration}</span>
-                </div>
-
-
-                <div className="text-xs text-gray-500">
-                  <div className="flex flex-wrap gap-2">
-                    {game.controls.slice(0, 2).map((control, index) => (
-                      <span key={index}>
-                        <span className="font-semibold">{control.key}</span>: {control.action}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
+        {/* 加载状态 */}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
+              <p className="text-white/80 text-sm">正在加载游戏...</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredGames.map((game) => (
+              <GameErrorBoundary key={game.id}>
+                <GameCard
+                  game={game}
+                  variant="homepage"
+                  onPlay={handlePlayGame}
+                  onToggleFavorite={handleToggleFavorite}
+                  showRating={true}
+                  showControls={true}
+                />
+              </GameErrorBoundary>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* 沉浸式游戏弹窗 */}
@@ -205,7 +168,7 @@ function Home() {
             <div className="bg-gradient-to-b from-black/90 to-transparent p-4">
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold text-white drop-shadow-lg">
-                  {games.find(g => g.id === selectedGame)?.title}
+                  {filteredGames.find(g => g.id === selectedGame)?.title}
                 </h2>
                 <div className="flex gap-2">
                   <button
@@ -302,7 +265,7 @@ function Home() {
                 <div
                   className="w-full h-full relative"
                   dangerouslySetInnerHTML={{
-                    __html: games.find(g => g.id === selectedGame)?.iframe || ''
+                    __html: filteredGames.find(g => g.id === selectedGame)?.iframe || ''
                   }}
                 />
               </div>
