@@ -7,12 +7,12 @@ export interface Game {
   isNew: boolean;
   iframe: string;
   controls: { key: string; action: string }[];
-  category?: string;
-  playCount?: number;
-  likes?: number;
-  favorites?: number;
-  duration?: string;
-  addedAt?: string; // 添加时间戳字段
+  category: string;
+  playCount: number;
+  likes: number;
+  favorites: number;
+  duration: string;
+  addedAt?: string;
 }
 
 export const games: Game[] = [
@@ -29,8 +29,7 @@ export const games: Game[] = [
     playCount: 0,
     likes: 2075,
     favorites: 2075,
-    duration: "5-10 分钟",
-    addedAt: "2025-01-08T10:00:00Z"
+    duration: "5-10 分钟"
   },
   {
     id: 2,
@@ -43,10 +42,9 @@ export const games: Game[] = [
     controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
     category: "casual",
     playCount: 0,
-    likes: 3407,
-    favorites: 3407,
-    duration: "5-10 分钟",
-    addedAt: "2025-01-07T14:30:00Z"
+    likes: 3467,
+    favorites: 3467,
+    duration: "5-10 分钟"
   },
   {
     id: 3,
@@ -59,10 +57,9 @@ export const games: Game[] = [
     controls: [{"key": "Mouse", "action": "SELECT"}, {"key": "Click", "action": "PLACE"}, {"key": "Drag", "action": "MOVE"}],
     category: "puzzle",
     playCount: 0,
-    likes: 4851,
-    favorites: 4851,
-    duration: "5-10 分钟",
-    addedAt: "2025-01-06T09:15:00Z"
+    likes: 4862,
+    favorites: 4862,
+    duration: "5-10 分钟"
   },
   {
     id: 4,
@@ -75,10 +72,9 @@ export const games: Game[] = [
     controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
     category: "puzzle",
     playCount: 0,
-    likes: 26100,
-    favorites: 26100,
-    duration: "5-10 分钟",
-    addedAt: "2025-01-05T16:45:00Z"
+    likes: 26115,
+    favorites: 26115,
+    duration: "5-10 分钟"
   },
   {
     id: 5,
@@ -136,8 +132,8 @@ export const games: Game[] = [
     controls: [{"key": "Mouse", "action": "AIM"}, {"key": "Left Click", "action": "SHOOT"}, {"key": "WASD", "action": "MOVE"}],
     category: "shooting",
     playCount: 0,
-    likes: 77417,
-    favorites: 77417,
+    likes: 77475,
+    favorites: 77475,
     duration: "5-10 分钟"
   },
   {
@@ -166,8 +162,8 @@ export const games: Game[] = [
     controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
     category: "action",
     playCount: 0,
-    likes: 140873,
-    favorites: 140873,
+    likes: 140924,
+    favorites: 140924,
     duration: "5-10 分钟"
   },
   {
@@ -181,23 +177,23 @@ export const games: Game[] = [
     controls: [{"key": "Mouse", "action": "AIM"}, {"key": "Left Click", "action": "SHOOT"}, {"key": "WASD", "action": "MOVE"}],
     category: "io",
     playCount: 0,
-    likes: 691218,
-    favorites: 691218,
+    likes: 691371,
+    favorites: 691371,
     duration: "5-10 分钟"
   },
   {
     id: 12,
     title: "Escape From Pizzeria",
     image: "https://imgs.crazygames.com/escape-from-pizzeria_2x3/20250709080344/escape-from-pizzeria_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
-    description: "Escape From Pizzeria is a adventure game where you’re trapped inside a dark, eerie restaurant with...",
+    description: "Escape From Pizzeria is a adventure game where you're trapped inside a dark, eerie restaurant with...",
     features: ["WASD or Arrow Keys = move", "E = pick up / drop items", "Mouse = look around"],
     isNew: true,
     iframe: `<iframe src=\"https://games.crazygames.com/en_US/escape-from-pizzeria/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
     controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
     category: "io",
     playCount: 0,
-    likes: 51089,
-    favorites: 51089,
+    likes: 51124,
+    favorites: 51124,
     duration: "5-10 分钟"
   },
   {
@@ -220,14 +216,14 @@ export const games: Game[] = [
     title: "Crazy Dummy Swing Multiplayer",
     image: "https://imgs.crazygames.com/crazy-dummy-swing-multiplayer_2x3/20250506035621/crazy-dummy-swing-multiplayer_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
     description: "Crazy Dummy Swing Multiplayer is a fast-paced multiplayer game where you swing, launch, and fling...",
-    features: ["Just tap anywhere on the screen or press any key on your keyboard to play. It’s that easy!"],
+    features: ["Just tap anywhere on the screen or press any key on your keyboard to play. It's that easy!"],
     isNew: true,
     iframe: `<iframe src=\"https://games.crazygames.com/en_US/crazy-dummy-swing-multiplayer/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
     controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
     category: "casual",
     playCount: 0,
-    likes: 33153,
-    favorites: 33153,
+    likes: 33166,
+    favorites: 33166,
     duration: "5-10 分钟"
   },
   {
@@ -256,15 +252,15 @@ export const games: Game[] = [
     controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
     category: "casual",
     playCount: 0,
-    likes: 393,
-    favorites: 393,
+    likes: 467,
+    favorites: 467,
     duration: "5-10 分钟"
   },
   {
     id: 17,
     title: "She is Mad",
     image: "https://imgs.crazygames.com/she-is-mad-eie_16x9/20250911101534/she-is-mad-eie_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-    description: "She is Mad is a dark fantasy adventure where black magic twists a family’s fate into chaos. Your...",
+    description: "She is Mad is a dark fantasy adventure where black magic twists a family's fate into chaos. Your...",
     features: ["WASD = move", "Space = jump", "Shift = run", "Alt = drop", "Ctrl = crouch", "F = fart", "1-4 = swap", "Tab = open task"],
     isNew: true,
     iframe: `<iframe src=\"https://games.crazygames.com/en_US/she-is-mad-eie/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
@@ -279,22 +275,22 @@ export const games: Game[] = [
     id: 18,
     title: "Demon Smasher",
     image: "https://imgs.crazygames.com/demon-smasher_16x9/20250911080357/demon-smasher_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-    description: "Demon Smasher is a retro-inspired roguelike that’s easy to pick up yet tough to master. Fight waves...",
+    description: "Demon Smasher is a retro-inspired roguelike that's easy to pick up yet tough to master. Fight waves...",
     features: ["在线游戏", "免费游戏"],
     isNew: true,
     iframe: `<iframe src=\"https://games.crazygames.com/en_US/demon-smasher/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
     controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
     category: "casual",
     playCount: 0,
-    likes: 219,
-    favorites: 219,
+    likes: 239,
+    favorites: 239,
     duration: "5-10 分钟"
   },
   {
     id: 19,
     title: "The Farmers",
     image: "https://imgs.crazygames.com/the-farmers_16x9/20250910090049/the-farmers_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-    description: "The Farmers is a charming farming adventure where you create and grow your own paradise. You’ll...",
+    description: "The Farmers is a charming farming adventure where you create and grow your own paradise. You'll...",
     features: ["Use the left mouse button to interact with the in-game UI."],
     isNew: true,
     iframe: `<iframe src=\"https://games.crazygames.com/en_US/the-farmers/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
@@ -307,21 +303,6 @@ export const games: Game[] = [
   },
   {
     id: 20,
-    title: "Millionaire Life",
-    image: "https://imgs.crazygames.com/millionaire-life_16x9/20250911033402/millionaire-life_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-    description: "Millionaire Life is a casual game where your luck finally turns around and it’s time to live large....",
-    features: ["在线游戏", "免费游戏"],
-    isNew: true,
-    iframe: `<iframe src=\"https://games.crazygames.com/en_US/millionaire-life/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
-    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
-    category: "casual",
-    playCount: 0,
-    likes: 1149,
-    favorites: 1149,
-    duration: "5-10 分钟"
-  },
-  {
-    id: 21,
     title: "Twerk Race 3d - Fun Run Game!",
     image: "https://imgs.crazygames.com/twerk-race-3d----fun-run-game_16x9/20250903090237/twerk-race-3d----fun-run-game_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
     description: "Twerk Race 3d - Fun Run Game! is a quirky blend of racing and dancing where your eating choices...",
@@ -336,7 +317,7 @@ export const games: Game[] = [
     duration: "5-10 分钟"
   },
   {
-    id: 22,
+    id: 21,
     title: "Field Master",
     image: "https://imgs.crazygames.com/field-master_16x9/20250910100136/field-master_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
     description: "Field Master is a casual farming simulator that puts you behind the wheel of powerful agricultural...",
@@ -351,18 +332,33 @@ export const games: Game[] = [
     duration: "5-10 分钟"
   },
   {
-    id: 23,
-    title: "KiKi World",
-    image: "https://imgs.crazygames.com/kiki-world_16x9/20250910052843/kiki-world_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-    description: "Kiki World is a home design game where you transform cluttered rooms into stylish living spaces. By...",
-    features: ["在线游戏", "免费游戏"],
+    id: 22,
+    title: "Idle Transport Tycoon",
+    image: "https://imgs.crazygames.com/idle-transport-tycoon-eqf_16x9/20250829043556/idle-transport-tycoon-eqf_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Idle Transport Tycoon is a strategic idle game that puts you in charge of building a thriving...",
+    features: ["Left mouse button = interact with the in-game UI", "Up and down keys = zoom in and zoom out"],
     isNew: true,
-    iframe: `<iframe src=\"https://games.crazygames.com/en_US/kiki-world/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
-    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/idle-transport-tycoon-eqf/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "MANAGE"}, {"key": "Click", "action": "UPGRADE"}, {"key": "Scroll", "action": "NAVIGATE"}],
     category: "casual",
     playCount: 0,
-    likes: 1150,
-    favorites: 1150,
+    likes: 2028,
+    favorites: 2028,
+    duration: "5-10 分钟"
+  },
+  {
+    id: 23,
+    title: "Take Actions",
+    image: "https://imgs.crazygames.com/take-actions_16x9/20250828082657/take-actions_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Take Actions is a third-person shooter packed with cinematic slow-motion combat and a gripping...",
+    features: ["H = hint", "WASD / Arrows = move", "Right Mouse Button / V = aim", "Left Mouse Button = shoot", "F = use / pickup gun", "E = bullet time", "Tab = menu", "Left Shift = sprint"],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/take-actions/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    category: "action",
+    playCount: 0,
+    likes: 11290,
+    favorites: 11290,
     duration: "5-10 分钟"
   },
   {
@@ -409,7 +405,65 @@ export const games: Game[] = [
     likes: 78,
     favorites: 78,
     duration: "5-10 分钟"
+  },
+  {
+    id: 27,
+    title: "Shell Shockers",
+    image: "https://imgs.crazygames.com/shellshockersio_2x3/20241203031650/shellshockersio_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Shell Shockers (Shellshock.io) is a multiplayer .io FPS game featuring eggs armed with guns. You...",
+    features: ["在线游戏", "免费游戏"],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/shellshockersio/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    category: "io",
+    playCount: 0,
+    likes: 3026196,
+    favorites: 3026196,
+    duration: "5-10 分钟"
+  },
+  {
+    id: 28,
+    title: "Agar io",
+    image: "https://imgs.crazygames.com/agario_2x3/20241203031650/agario_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Agar.io is the original .io grow game. Play as a simple agar cell fighting to become the largest...",
+    features: ["Move mouse = move", "W = eject mass", "Space = split"],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/agario/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    category: "io",
+    playCount: 0,
+    likes: 144874,
+    favorites: 144874,
+    duration: "5-10 分钟"
+  },
+  {
+    id: 29,
+    title: "Uno Online",
+    image: "https://imgs.crazygames.com/uno-online_2x3/20241203031650/uno-online_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Four Colors lets you play the popular card game for free in your web browser. The aim of the game...",
+    features: ["Use the left mouse button to play the cards."],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/uno-online/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    category: "puzzle",
+    playCount: 0,
+    likes: 977147,
+    favorites: 977147,
+    duration: "5-10 分钟"
+  },
+  {
+    id: 30,
+    title: "Geometry Dash",
+    image: "https://imgs.crazygames.com/geometry-dash-online_2x3/20241203031650/geometry-dash-online_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
+    description: "Geometry Dash Online is a free side-scrolling platformer played in sync with musical rhythms....",
+    features: ["SPACE/UP Arrow = Jump", "HOLD DOWN SPACE/UP Arrow = Multi-jump", "UP Arrow = Steer vehicle up", "DOWN Arrow = Steer vehicle down"],
+    isNew: true,
+    iframe: `<iframe src=\"https://games.crazygames.com/en_US/geometry-dash-online/index.html\" style=\"width: 100%; height: 100%;\" frameborder=\"0\" allow=\"gamepad *;\"></iframe>`,
+    controls: [{"key": "Mouse", "action": "INTERACT"}, {"key": "Click", "action": "PLAY"}, {"key": "Arrow Keys", "action": "MOVE"}],
+    category: "casual",
+    playCount: 0,
+    likes: 965381,
+    favorites: 965381,
+    duration: "5-10 分钟"
   }
 ];
-
-

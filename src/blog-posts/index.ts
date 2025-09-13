@@ -1,117 +1,99 @@
+// 博客文章类型定义
 export interface BlogPost {
   slug: string;
   title: string;
-  date: string;
-  category: string;
-  image: string;
   content: string;
   excerpt: string;
+  date: string;
+  tags: string[];
+  author: string;
+  readingTime: number;
 }
 
-// 修改 glob 路径，使用正确的相对路径
-const posts = import.meta.glob('./[!index]*.md', { as: 'raw', eager: true }) as Record<string, string>;
-
-function extractFrontmatter(content: string) {
-  console.log('Trying to extract frontmatter from:', content);
-  // 添加调试日志
-  console.log('Raw content:', content);
-
-  // 使用更严格的正则表达式来匹配 frontmatter
-  const match = content.match(/^---[\r\n]+([\s\S]*?)[\r\n]+---/);
-  
-  if (!match) {
-    console.error('No frontmatter found in content');
-    return null;
+// 博客文章数据
+const blogPosts: BlogPost[] = [
+  {
+    slug: 'evolution-of-browser-racing-games',
+    title: '浏览器赛车游戏的进化历程',
+    content: '# 浏览器赛车游戏的进化历程\n\n从简单的2D游戏到现在的3D体验...',
+    excerpt: '探索浏览器赛车游戏从简单2D到复杂3D的发展历程',
+    date: '2024-01-15',
+    tags: ['游戏历史', '赛车游戏', '浏览器游戏'],
+    author: '游戏开发者',
+    readingTime: 5
+  },
+  {
+    slug: 'street-racing-cultural-impact',
+    title: '街头赛车文化的影响',
+    content: '# 街头赛车文化的影响\n\n街头赛车文化如何影响游戏设计...',
+    excerpt: '分析街头赛车文化对游戏设计和玩家体验的影响',
+    date: '2024-01-20',
+    tags: ['文化', '街头赛车', '游戏设计'],
+    author: '文化分析师',
+    readingTime: 7
+  },
+  {
+    slug: 'technical-revolution-racing-games',
+    title: '赛车游戏的技术革命',
+    content: '# 赛车游戏的技术革命\n\n从像素艺术到物理引擎的技术发展...',
+    excerpt: '回顾赛车游戏技术从像素艺术到现代物理引擎的发展',
+    date: '2024-01-25',
+    tags: ['技术', '游戏引擎', '物理模拟'],
+    author: '技术专家',
+    readingTime: 6
+  },
+  {
+    slug: 'game-design-evolution',
+    title: '游戏设计的演变',
+    content: '# 游戏设计的演变\n\n从简单操作到复杂策略的设计变化...',
+    excerpt: '探讨游戏设计从简单操作到复杂策略的演变过程',
+    date: '2024-01-30',
+    tags: ['游戏设计', '用户体验', '交互设计'],
+    author: '游戏设计师',
+    readingTime: 8
+  },
+  {
+    slug: 'future-of-racing-games',
+    title: '赛车游戏的未来',
+    content: '# 赛车游戏的未来\n\nVR、AR和AI技术将如何改变赛车游戏...',
+    excerpt: '展望VR、AR和AI技术对赛车游戏未来的影响',
+    date: '2024-02-05',
+    tags: ['未来技术', 'VR', 'AR', 'AI'],
+    author: '未来学家',
+    readingTime: 9
+  },
+  {
+    slug: 'best-racing-browser-games',
+    title: '最佳浏览器赛车游戏推荐',
+    content: '# 最佳浏览器赛车游戏推荐\n\n精选最优秀的浏览器赛车游戏...',
+    excerpt: '推荐最优秀的浏览器赛车游戏，包含详细评测',
+    date: '2024-02-10',
+    tags: ['游戏推荐', '评测', '最佳游戏'],
+    author: '游戏评测师',
+    readingTime: 10
   }
+];
 
-  try {
-    const frontmatterStr = match[1];
-    console.log('Frontmatter string:', frontmatterStr);
-
-    const frontmatter = frontmatterStr.split('\n').reduce((acc, line) => {
-      const [key, ...valueParts] = line.split(':');
-      if (key && valueParts.length) {
-        // 移除引号和多余的空格
-        const value = valueParts.join(':').trim().replace(/^["']|["']$/g, '');
-        if (value) {
-          acc[key.trim()] = value;
-        }
-      }
-      return acc;
-    }, {} as Record<string, string>);
-
-    // 验证必需的字段
-    const requiredFields = ['title', 'date', 'category', 'image'];
-    const missingFields = requiredFields.filter(field => !frontmatter[field]);
-    
-    if (missingFields.length > 0) {
-      console.error('Missing required fields:', missingFields);
-      return null;
-    }
-
-    // 获取文章内容（移除 frontmatter）
-    const contentWithoutFrontmatter = content.replace(/^---[\r\n]+([\s\S]*?)[\r\n]+---/, '').trim();
-    
-    return {
-      frontmatter,
-      content: contentWithoutFrontmatter
-    };
-  } catch (error) {
-    console.error('Error parsing frontmatter:', error);
-    return null;
-  }
-}
-
-export function getAllPosts(): BlogPost[] {
-  console.log('Available posts:', Object.keys(posts));
-  
-  const blogPosts = Object.entries(posts).map(([path, content]) => {
-    console.log('Processing path:', path);
-    console.log('Content:', content);
-    
-    const slug = path.replace(/^\.\/(.*)\.md$/, '$1');
-    const parsed = extractFrontmatter(content);
-    
-    if (!parsed) {
-      console.error(`Failed to parse frontmatter in ${path}`);
-      return null;
-    }
-
-    const { frontmatter, content: postContent } = parsed;
-    
-    return {
-      slug,
-      title: frontmatter.title,
-      date: frontmatter.date,
-      category: frontmatter.category,
-      image: frontmatter.image,
-      content: postContent,
-      excerpt: frontmatter.excerpt || postContent.slice(0, 200) + '...'
-    };
-  }).filter(Boolean) as BlogPost[];
-
-  return blogPosts.sort((a, b) => 
-    new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
-}
-
+// 根据slug获取博客文章
 export function getPostBySlug(slug: string): BlogPost | null {
-  const path = `./${slug}.md`;
-  const content = posts[path];
-  if (!content) return null;
+  return blogPosts.find(post => post.slug === slug) || null;
+}
 
-  const parsed = extractFrontmatter(content);
-  if (!parsed) return null;
+// 获取所有博客文章
+export function getAllPosts(): BlogPost[] {
+  return blogPosts;
+}
 
-  const { frontmatter, content: postContent } = parsed;
+// 获取相关文章
+export function getRelatedPosts(currentSlug: string, limit: number = 3): BlogPost[] {
+  const currentPost = getPostBySlug(currentSlug);
+  if (!currentPost) return [];
   
-  return {
-    slug,
-    title: frontmatter.title,
-    date: frontmatter.date,
-    category: frontmatter.category,
-    image: frontmatter.image,
-    content: postContent,
-    excerpt: frontmatter.excerpt || postContent.slice(0, 200) + '...'
-  };
-} 
+  return blogPosts
+    .filter(post => post.slug !== currentSlug)
+    .filter(post => post.tags.some(tag => currentPost.tags.includes(tag)))
+    .slice(0, limit);
+}
+
+export default blogPosts;
+

@@ -23,41 +23,28 @@ const GameCategory = lazy(() => import('./pages/GameCategory'));
 const GamesList = lazy(() => import('./pages/GamesList'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
-// 加载中组件
-const LoadingSpinner = () => (
-  <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-    <div className="flex flex-col items-center space-y-4">
-      <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
-      <p className="text-white/80 text-sm">正在加载...</p>
-    </div>
-  </div>
-);
+import LoadingSpinner from './components/common/LoadingSpinner';
 
 // 内部组件用于初始化游戏数据
 const AppContent: React.FC = () => {
   const { loadGames } = useGameContext();
-  const [showCategoryTable, setShowCategoryTable] = useState(false);
 
   useEffect(() => {
     // 初始化游戏数据
     loadGames(games);
-  }, [loadGames]);
-
-  const handleTableMouseEnter = () => {
-    setShowCategoryTable(true);
-  };
-
-  const handleTableMouseLeave = () => {
-    setShowCategoryTable(false);
-  };
+  }, []); // 移除loadGames依赖，避免无限循环
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-grow">
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense fallback={
+          <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+            <LoadingSpinner text="正在加载..." />
+          </div>
+        }>
           <Routes>
-            <Route path="/" element={<Home showCategoryTable={showCategoryTable} onTableMouseEnter={handleTableMouseEnter} onTableMouseLeave={handleTableMouseLeave} />} />
+            <Route path="/" element={<Home />} />
             <Route path="/guides" element={<Guides />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/blog" element={<Blog />} />

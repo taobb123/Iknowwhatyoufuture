@@ -41,7 +41,10 @@ class ErrorBoundary extends Component<Props, State> {
       this.props.onError(error, errorInfo);
     }
 
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    // ErrorBoundary caught an error - 在生产环境中静默处理
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ErrorBoundary caught an error:', error, errorInfo);
+    }
   }
 
   handleRetry = () => {
@@ -125,7 +128,10 @@ export const GameErrorBoundary: React.FC<{ children: ReactNode }> = ({ children 
   return (
     <ErrorBoundary
       onError={(error, errorInfo) => {
-        console.error('Game Error:', error, errorInfo);
+        // Game Error - 在生产环境中静默处理
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Game Error:', error, errorInfo);
+        }
       }}
       fallback={
         <div className="bg-gray-800 rounded-lg p-6 text-center">

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Filter, SortAsc, Grid, List, Search } from 'lucide-react';
+import { Filter, SortAsc, Grid, List, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import GameCard from '../components/GameCard';
 import Breadcrumb from '../components/Breadcrumb';
 import ErrorBoundary, { GameErrorBoundary } from '../components/ErrorBoundary';
@@ -10,6 +10,12 @@ import { useGameData, useGameFilter, useGameSort, useGameActions } from '../hook
 const GamesList: React.FC = () => {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid');
+  
+  // 分页状态
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage] = useState<number>(16); // 16个游戏一页
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [paginatedGames, setPaginatedGames] = useState<any[]>([]);
 
   const { filteredGames, isLoading, error } = useGameData();
   const { searchQuery, setSearchQuery, clearFilters, hasActiveFilters } = useGameFilter();
@@ -24,6 +30,63 @@ const GamesList: React.FC = () => {
   // 处理收藏切换
   const handleToggleFavorite = (gameId: number) => {
     toggleFavorite(gameId);
+  };
+
+  // 分页逻辑
+  useEffect(() => {
+    const totalPagesCount = Math.ceil(filteredGames.length / itemsPerPage);
+    setTotalPages(totalPagesCount);
+    
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginated = filteredGames.slice(startIndex, endIndex);
+    
+    setPaginatedGames(paginated);
+  }, [filteredGames, currentPage, itemsPerPage]);
+
+  // 当筛选条件改变时，重置到第一页
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, currentSort]);
+
+  // 分页控制函数
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // 滚动到顶部
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      handlePageChange(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      handlePageChange(currentPage + 1);
+    }
+  };
+
+  // 生成页码数组
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      const start = Math.max(1, currentPage - 2);
+      const end = Math.min(totalPages, start + maxVisiblePages - 1);
+      
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+    }
+    
+    return pages;
   };
 
   return (
@@ -53,7 +116,7 @@ const GamesList: React.FC = () => {
           <p className="text-gray-400 text-lg">发现最热门的免费在线游戏</p>
           
           <div className="flex items-center justify-between text-sm text-gray-400 mt-4">
-            <span>找到 {filteredGames.length} 个游戏</span>
+            <span>找到 {filteredGames.length} 个游戏，当前显示第 {currentPage} 页，共 {totalPages} 页</span>
             <div className="flex items-center gap-4">
               <span>排序方式：</span>
               <select
@@ -136,7 +199,7 @@ const GamesList: React.FC = () => {
               <p className="text-white/80 text-sm">正在加载游戏...</p>
             </div>
           </div>
-        ) : filteredGames.length === 0 ? (
+        ) : paginatedGames.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🎮</div>
             <h3 className="text-xl font-semibold text-white mb-2">暂无游戏</h3>
@@ -158,7 +221,7 @@ const GamesList: React.FC = () => {
               ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
               : "space-y-4"
           }>
-            {filteredGames.map((game) => (
+            {paginatedGames.map((game) => (
               <GameErrorBoundary key={game.id}>
                 <GameCard
                   game={game}
@@ -170,6 +233,80 @@ const GamesList: React.FC = () => {
                 />
               </GameErrorBoundary>
             ))}
+          </div>
+        )}
+
+        {/* 分页组件 */}
+        {totalPages > 1 && (
+          <div className="mt-8 bg-gray-800 rounded-lg p-6">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-gray-400">
+                显示第 {((currentPage - 1) * itemsPerPage) + 1} - {Math.min(currentPage * itemsPerPage, filteredGames.length)} 个游戏，共 {filteredGames.length} 个游戏
+              </div>
+              
+              <div className="flex items-center gap-2">
+                {/* 上一页按钮 */}
+                <button
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 1}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+                    currentPage === 1
+                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                      : 'bg-gray-700 text-white hover:bg-gray-600'
+                  }`}
+                >
+                  <ChevronLeft size={16} />
+                  上一页
+                </button>
+
+                {/* 页码按钮 */}
+                <div className="flex items-center gap-1">
+                  {getPageNumbers().map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      onClick={() => handlePageChange(pageNum)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        currentPage === pageNum
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-700 text-white hover:bg-gray-600'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+                </div>
+
+                {/* 下一页按钮 */}
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+                    currentPage === totalPages
+                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                      : 'bg-gray-700 text-white hover:bg-gray-600'
+                  }`}
+                >
+                  下一页
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            </div>
+
+            {/* 快速跳转 */}
+            <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-gray-700">
+              <span className="text-sm text-gray-400">快速跳转：</span>
+              <select
+                value={currentPage}
+                onChange={(e) => handlePageChange(Number(e.target.value))}
+                className="px-3 py-1 bg-gray-700 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <option key={page} value={page}>
+                    第 {page} 页
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         )}
       </div>

@@ -4,17 +4,17 @@ import { useGameContext } from '../contexts/GameContext.simple';
 // 游戏数据Hook
 export const useGameData = () => {
   try {
-    const { state, filteredGames, favoriteGames } = useGameContext();
+    const { games, filteredGames, favoriteGames, isLoading, error, searchQuery, selectedCategory, sortBy } = useGameContext();
     
     return {
-      games: state?.games || [],
+      games: games || [],
       filteredGames: filteredGames || [],
       favoriteGames: favoriteGames || [],
-      isLoading: state?.isLoading || false,
-      error: state?.error || null,
-      searchQuery: state?.searchQuery || '',
-      selectedCategory: state?.selectedCategory || 'all',
-      sortBy: state?.sortBy || 'newest',
+      isLoading: isLoading || false,
+      error: error || null,
+      searchQuery: searchQuery || '',
+      selectedCategory: selectedCategory || 'all',
+      sortBy: sortBy || 'newest',
     };
   } catch (error) {
     // 如果GameContext不可用，返回默认值
@@ -64,7 +64,7 @@ export const useGameActions = () => {
 // 游戏筛选Hook
 export const useGameFilter = () => {
   try {
-    const { state, setSearchQuery, setCategory, setSortBy } = useGameContext();
+    const { searchQuery, selectedCategory, sortBy, setSearchQuery, setCategory, setSortBy } = useGameContext();
     
     const clearFilters = useCallback(() => {
       setSearchQuery('');
@@ -72,14 +72,14 @@ export const useGameFilter = () => {
       setSortBy('newest');
     }, [setSearchQuery, setCategory, setSortBy]);
 
-    const hasActiveFilters = (state?.searchQuery || '') !== '' || 
-                            (state?.selectedCategory || 'all') !== 'all' || 
-                            (state?.sortBy || 'newest') !== 'newest';
+    const hasActiveFilters = (searchQuery || '') !== '' || 
+                            (selectedCategory || 'all') !== 'all' || 
+                            (sortBy || 'newest') !== 'newest';
 
     return {
-      searchQuery: state?.searchQuery || '',
-      selectedCategory: state?.selectedCategory || 'all',
-      sortBy: state?.sortBy || 'newest',
+      searchQuery: searchQuery || '',
+      selectedCategory: selectedCategory || 'all',
+      sortBy: sortBy || 'newest',
       setSearchQuery,
       setCategory,
       setSortBy,
@@ -103,11 +103,11 @@ export const useGameFilter = () => {
 // 游戏收藏Hook
 export const useGameFavorites = () => {
   try {
-    const { state, toggleFavorite, favoriteGames } = useGameContext();
+    const { favorites, toggleFavorite, favoriteGames } = useGameContext();
     
     const isFavorite = useCallback((gameId: number) => {
-      return (state?.favorites || []).includes(gameId);
-    }, [state?.favorites]);
+      return (favorites || []).includes(gameId);
+    }, [favorites]);
 
     const addToFavorites = useCallback((gameId: number) => {
       if (!isFavorite(gameId)) {
@@ -122,13 +122,13 @@ export const useGameFavorites = () => {
     }, [toggleFavorite, isFavorite]);
 
     return {
-      favorites: state?.favorites || [],
+      favorites: favorites || [],
       favoriteGames: favoriteGames || [],
       isFavorite,
       toggleFavorite,
       addToFavorites,
       removeFromFavorites,
-      favoriteCount: (state?.favorites || []).length,
+      favoriteCount: (favorites || []).length,
     };
   } catch (error) {
     return {
@@ -146,7 +146,7 @@ export const useGameFavorites = () => {
 // 游戏搜索Hook
 export const useGameSearch = () => {
   try {
-    const { state, setSearchQuery, filteredGames } = useGameContext();
+    const { searchQuery, setSearchQuery, filteredGames } = useGameContext();
     
     const searchGames = useCallback((query: string) => {
       setSearchQuery(query);
@@ -157,11 +157,11 @@ export const useGameSearch = () => {
     }, [setSearchQuery]);
 
     return {
-      searchQuery: state?.searchQuery || '',
+      searchQuery: searchQuery || '',
       searchGames,
       clearSearch,
       searchResults: filteredGames || [],
-      hasSearchQuery: (state?.searchQuery || '').trim() !== '',
+      hasSearchQuery: (searchQuery || '').trim() !== '',
     };
   } catch (error) {
     return {
@@ -177,14 +177,14 @@ export const useGameSearch = () => {
 // 游戏分类Hook
 export const useGameCategories = () => {
   try {
-    const { state, setCategory } = useGameContext();
+    const { games, selectedCategory, setCategory } = useGameContext();
     
     // 获取所有分类
     const categories = ['all', 'racing', 'action', 'adventure', 'puzzle', 'shooting', 'rpg', 'arcade', 'io'];
     
     // 获取分类统计
     const categoryStats = categories.map(category => {
-      const count = (state?.games || []).filter(game => 
+      const count = (games || []).filter((game: any) => 
         category === 'all' || game.category?.toLowerCase() === category.toLowerCase()
       ).length;
       return { category, count };
@@ -193,7 +193,7 @@ export const useGameCategories = () => {
     return {
       categories,
       categoryStats,
-      selectedCategory: state?.selectedCategory || 'all',
+      selectedCategory: selectedCategory || 'all',
       setCategory,
     };
   } catch (error) {
@@ -209,7 +209,7 @@ export const useGameCategories = () => {
 // 游戏排序Hook
 export const useGameSort = () => {
   try {
-    const { state, setSortBy } = useGameContext();
+    const { sortBy, setSortBy } = useGameContext();
     
     const sortOptions = [
       { value: 'newest', label: '最新' },
@@ -220,7 +220,7 @@ export const useGameSort = () => {
 
     return {
       sortOptions,
-      currentSort: state?.sortBy || 'newest',
+      currentSort: sortBy || 'newest',
       setSortBy,
     };
   } catch (error) {

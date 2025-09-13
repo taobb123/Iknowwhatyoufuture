@@ -5,7 +5,6 @@ import { getAllPosts } from '../blog-posts';
 
 function Blog() {
   const posts = getAllPosts();
-  console.log('Blog posts:', posts);
 
   return (
     <div className="min-h-screen bg-gray-900">

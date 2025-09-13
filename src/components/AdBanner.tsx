@@ -29,7 +29,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
     try {
       ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
     } catch (error) {
-      console.log('AdSense not ready yet');
+      // AdSense not ready yet - 静默处理错误
     }
   }, []);
 

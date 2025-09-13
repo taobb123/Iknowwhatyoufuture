@@ -42,7 +42,26 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     error: null,
   });
 
-  const filteredGames = state.games;
+  // 根据搜索和分类过滤游戏
+  const filteredGames = React.useMemo(() => {
+    let filtered = state.games;
+    
+    // 根据搜索查询过滤
+    if (state.searchQuery) {
+      filtered = filtered.filter(game => 
+        game.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+        game.description.toLowerCase().includes(state.searchQuery.toLowerCase())
+      );
+    }
+    
+    // 根据分类过滤
+    if (state.selectedCategory !== 'all') {
+      filtered = filtered.filter(game => (game.category || 'other') === state.selectedCategory);
+    }
+    
+    return filtered;
+  }, [state.games, state.searchQuery, state.selectedCategory]);
+  
   const favoriteGames: Game[] = [];
 
   const isFavorite = (gameId: number) => {
@@ -105,6 +124,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setLoading,
     setError,
   };
+
 
   return (
     <GameContext.Provider value={value}>

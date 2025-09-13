@@ -1,189 +1,217 @@
 {
   "type": "homepage_games",
-  "total_count": 26,
-  "collected_at": "2025-09-13T11:14:10.181709",
+  "total_count": 30,
+  "collected_at": "2025-09-13T12:58:21.244480",
   "games": [
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:44.387653",
+      "collected_at": "2025-09-13T12:57:49.765524",
       "image": "https://imgs.crazygames.com/rumblets-go-exm_16x9/20250903142656/rumblets-go-exm_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Rumblets GO",
       "url": "https://www.crazygames.com/game/rumblets-go-exm"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:45.703810",
+      "collected_at": "2025-09-13T12:57:50.413307",
       "image": "https://imgs.crazygames.com/prisoners-io_16x9/20250908044707/prisoners-io_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Prison Escape.io",
       "url": "https://www.crazygames.com/game/prisoners-io"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:46.608446",
+      "collected_at": "2025-09-13T12:57:51.028308",
       "image": "https://imgs.crazygames.com/matchventures_16x9/20250904074220/matchventures_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "MatchVentures",
       "url": "https://www.crazygames.com/game/matchventures"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:47.375425",
+      "collected_at": "2025-09-13T12:57:51.911360",
       "image": "https://imgs.crazygames.com/hexa-sort_16x9/20250219102231/hexa-sort_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Hexa Sort",
       "url": "https://www.crazygames.com/game/hexa-sort"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:48.457620",
+      "collected_at": "2025-09-13T12:57:53.383791",
       "image": "https://imgs.crazygames.com/games/cell-to-singularity-mesozoic-valley/cover_16x9-1719334258708.png?metadata=none&quality=85&width=273&fit=crop",
       "title": "Cell to Singularity: Mesozoic Valley",
       "url": "https://www.crazygames.com/game/cell-to-singularity-mesozoic-valley"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:49.762035",
+      "collected_at": "2025-09-13T12:57:54.476477",
       "image": "https://imgs.crazygames.com/simply-prop-hunt_2x3/20250826074007/simply-prop-hunt_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Simply Prop Hunt",
       "url": "https://www.crazygames.com/game/simply-prop-hunt"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:51.160511",
+      "collected_at": "2025-09-13T12:57:55.605768",
       "image": "https://imgs.crazygames.com/space-waves_2x3/20241203031650/space-waves_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Space Waves",
       "url": "https://www.crazygames.com/game/space-waves"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:52.289417",
+      "collected_at": "2025-09-13T12:57:56.533125",
       "image": "https://imgs.crazygames.com/bit-gun-io_2x3/20250818143525/bit-gun-io_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Bit Gun.io",
       "url": "https://www.crazygames.com/game/bit-gun-io"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:53.592329",
+      "collected_at": "2025-09-13T12:57:57.699351",
       "image": "https://imgs.crazygames.com/games/evowarsio/cover_2x3-1736776369475.png?metadata=none&quality=85&width=273&fit=crop",
       "title": "EvoWars.io",
       "url": "https://www.crazygames.com/game/evowarsio"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:54.464987",
+      "collected_at": "2025-09-13T12:57:59.135723",
       "image": "https://imgs.crazygames.com/escape-from-prison-multiplayer_2x3/20250120074825/escape-from-prison-multiplayer_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Escape From Prison Multiplayer",
       "url": "https://www.crazygames.com/game/escape-from-prison-multiplayer"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:55.255474",
+      "collected_at": "2025-09-13T12:58:00.516242",
       "image": "https://imgs.crazygames.com/games/holey-io-battle-royale/cover_2x3-1698054343535.png?metadata=none&quality=85&width=273&fit=crop",
       "title": "Holey.io Battle Royale",
       "url": "https://www.crazygames.com/game/holey-io-battle-royale"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:55.921948",
+      "collected_at": "2025-09-13T12:58:01.719853",
       "image": "https://imgs.crazygames.com/escape-from-pizzeria_2x3/20250709080344/escape-from-pizzeria_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Escape From Pizzeria",
       "url": "https://www.crazygames.com/game/escape-from-pizzeria"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:56.963380",
+      "collected_at": "2025-09-13T12:58:03.028683",
       "image": "https://imgs.crazygames.com/games/cubes-2048-io/cover_2x3-1693298929612.png?metadata=none&quality=85&width=273&fit=crop",
       "title": "Cubes 2048.io",
       "url": "https://www.crazygames.com/game/cubes-2048-io"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:57.629315",
+      "collected_at": "2025-09-13T12:58:04.061721",
       "image": "https://imgs.crazygames.com/crazy-dummy-swing-multiplayer_2x3/20250506035621/crazy-dummy-swing-multiplayer_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Crazy Dummy Swing Multiplayer",
       "url": "https://www.crazygames.com/game/crazy-dummy-swing-multiplayer"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:59.041726",
+      "collected_at": "2025-09-13T12:58:05.078625",
       "image": "https://imgs.crazygames.com/games/crazy-miners-multiplayer/cover_2x3-1747314410963.png?metadata=none&quality=85&width=273&fit=crop",
       "title": "Crazy Miners",
       "url": "https://www.crazygames.com/game/crazy-miners-multiplayer"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:13:59.547027",
+      "collected_at": "2025-09-13T12:58:06.361182",
       "image": "https://imgs.crazygames.com/make-up-hole_16x9/20250912030239/make-up-hole_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Make Up Hole",
       "url": "https://www.crazygames.com/game/make-up-hole"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:14:00.926985",
+      "collected_at": "2025-09-13T12:58:07.851284",
       "image": "https://imgs.crazygames.com/she-is-mad-eie_16x9/20250911101534/she-is-mad-eie_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "She is Mad",
       "url": "https://www.crazygames.com/game/she-is-mad-eie"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:14:02.277908",
+      "collected_at": "2025-09-13T12:58:08.657137",
       "image": "https://imgs.crazygames.com/demon-smasher_16x9/20250911080357/demon-smasher_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Demon Smasher",
       "url": "https://www.crazygames.com/game/demon-smasher"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:14:02.842799",
+      "collected_at": "2025-09-13T12:58:09.640953",
       "image": "https://imgs.crazygames.com/the-farmers_16x9/20250910090049/the-farmers_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "The Farmers",
       "url": "https://www.crazygames.com/game/the-farmers"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:14:03.498416",
-      "image": "https://imgs.crazygames.com/millionaire-life_16x9/20250911033402/millionaire-life_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-      "title": "Millionaire Life",
-      "url": "https://www.crazygames.com/game/millionaire-life"
-    },
-    {
-      "category": "Other",
-      "collected_at": "2025-09-13T11:14:04.040297",
+      "collected_at": "2025-09-13T12:58:11.121858",
       "image": "https://imgs.crazygames.com/twerk-race-3d----fun-run-game_16x9/20250903090237/twerk-race-3d----fun-run-game_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Twerk Race 3d - Fun Run Game!",
       "url": "https://www.crazygames.com/game/twerk-race-3d----fun-run-game"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:14:05.162881",
+      "collected_at": "2025-09-13T12:58:12.209238",
       "image": "https://imgs.crazygames.com/field-master_16x9/20250910100136/field-master_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Field Master",
       "url": "https://www.crazygames.com/game/field-master"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:14:05.944274",
-      "image": "https://imgs.crazygames.com/kiki-world_16x9/20250910052843/kiki-world_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-      "title": "KiKi World",
-      "url": "https://www.crazygames.com/game/kiki-world"
+      "collected_at": "2025-09-13T12:58:12.803706",
+      "image": "https://imgs.crazygames.com/idle-transport-tycoon-eqf_16x9/20250829043556/idle-transport-tycoon-eqf_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Idle Transport Tycoon",
+      "url": "https://www.crazygames.com/game/idle-transport-tycoon-eqf"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:14:06.937435",
+      "collected_at": "2025-09-13T12:58:14.107550",
+      "image": "https://imgs.crazygames.com/take-actions_16x9/20250828082657/take-actions_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "title": "Take Actions",
+      "url": "https://www.crazygames.com/game/take-actions"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-13T12:58:15.281928",
       "image": "https://imgs.crazygames.com/mysterious-elevator_16x9/20250912065402/mysterious-elevator_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Mysterious Elevator",
       "url": "https://www.crazygames.com/game/mysterious-elevator"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:14:08.064022",
+      "collected_at": "2025-09-13T12:58:16.058895",
       "image": "https://imgs.crazygames.com/noob-space-escape-hni_16x9/20250912061420/noob-space-escape-hni_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Noob: Space Escape!",
       "url": "https://www.crazygames.com/game/noob-space-escape-hni"
     },
     {
       "category": "Other",
-      "collected_at": "2025-09-13T11:14:08.832692",
+      "collected_at": "2025-09-13T12:58:16.977417",
       "image": "https://imgs.crazygames.com/jetbouncer_16x9/20250912044655/jetbouncer_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
       "title": "Jet Bouncer",
       "url": "https://www.crazygames.com/game/jetbouncer"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-13T12:58:17.583997",
+      "image": "https://imgs.crazygames.com/icon/Home.svg",
+      "title": "Shell Shockers",
+      "url": "https://www.crazygames.com/game/shellshockersio"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-13T12:58:18.333842",
+      "image": "https://imgs.crazygames.com/icon/Home.svg",
+      "title": "Agar io",
+      "url": "https://www.crazygames.com/game/agario"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-13T12:58:19.066539",
+      "image": "https://imgs.crazygames.com/icon/Home.svg",
+      "title": "Uno Online",
+      "url": "https://www.crazygames.com/game/uno-online"
+    },
+    {
+      "category": "Other",
+      "collected_at": "2025-09-13T12:58:20.268911",
+      "image": "https://imgs.crazygames.com/icon/Home.svg",
+      "title": "Geometry Dash",
+      "url": "https://www.crazygames.com/game/geometry-dash-online"
     }
   ]
 }
