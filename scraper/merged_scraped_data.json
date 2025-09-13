@@ -1,7 +1,7 @@
 {
   "type": "merged_scraped_games",
-  "total_count": 33,
-  "scraped_at": "2025-09-13T10:59:56.227373",
+  "total_count": 26,
+  "scraped_at": "2025-09-13T11:14:10.181709",
   "scraper_version": "2.0",
   "games": [
     {
@@ -27,7 +27,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:22.633212"
+      "collected_at": "2025-09-13T11:13:44.387653"
     },
     {
       "title": "Prison Escape.io",
@@ -59,7 +59,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:23.649794"
+      "collected_at": "2025-09-13T11:13:45.703810"
     },
     {
       "title": "MatchVentures",
@@ -87,7 +87,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:25.020318"
+      "collected_at": "2025-09-13T11:13:46.608446"
     },
     {
       "title": "Hexa Sort",
@@ -113,7 +113,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:26.380199"
+      "collected_at": "2025-09-13T11:13:47.375425"
     },
     {
       "title": "Cell to Singularity: Mesozoic Valley",
@@ -140,7 +140,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:27.840098"
+      "collected_at": "2025-09-13T11:13:48.457620"
     },
     {
       "title": "Simply Prop Hunt",
@@ -171,7 +171,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:28.906593"
+      "collected_at": "2025-09-13T11:13:49.762035"
     },
     {
       "title": "Space Waves",
@@ -199,7 +199,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:29.796984"
+      "collected_at": "2025-09-13T11:13:51.160511"
     },
     {
       "title": "Bit Gun.io",
@@ -233,7 +233,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:30.351424"
+      "collected_at": "2025-09-13T11:13:52.289417"
     },
     {
       "title": "EvoWars.io",
@@ -264,7 +264,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:31.196627"
+      "collected_at": "2025-09-13T11:13:53.592329"
     },
     {
       "title": "Escape From Prison Multiplayer",
@@ -296,7 +296,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:31.981747"
+      "collected_at": "2025-09-13T11:13:54.464987"
     },
     {
       "title": "Holey.io Battle Royale",
@@ -324,7 +324,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:32.768909"
+      "collected_at": "2025-09-13T11:13:55.255474"
     },
     {
       "title": "Escape From Pizzeria",
@@ -356,7 +356,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:34.236770"
+      "collected_at": "2025-09-13T11:13:55.921948"
     },
     {
       "title": "Cubes 2048.io",
@@ -389,7 +389,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:35.583637"
+      "collected_at": "2025-09-13T11:13:56.963380"
     },
     {
       "title": "Crazy Dummy Swing Multiplayer",
@@ -416,7 +416,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:36.337247"
+      "collected_at": "2025-09-13T11:13:57.629315"
     },
     {
       "title": "Crazy Miners",
@@ -443,7 +443,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:37.121545"
+      "collected_at": "2025-09-13T11:13:59.041726"
     },
     {
       "title": "Make Up Hole",
@@ -468,7 +468,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:38.019142"
+      "collected_at": "2025-09-13T11:13:59.547027"
     },
     {
       "title": "She is Mad",
@@ -500,7 +500,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:38.891655"
+      "collected_at": "2025-09-13T11:14:00.926985"
     },
     {
       "title": "Demon Smasher",
@@ -525,7 +525,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:40.160185"
+      "collected_at": "2025-09-13T11:14:02.277908"
     },
     {
       "title": "The Farmers",
@@ -534,8 +534,8 @@
       "iframe_url": "https://games.crazygames.com/en_US/the-farmers/index.html",
       "description": "The Farmers is a charming farming adventure where you create and grow your own paradise. You’ll cultivate crops, craft delicious recipes, and expand your land into thriving new territories. Along the way, you’ll uncover secrets hidden across the islands, meet interesting characters, and enjoy heartfelt stories that bring your farm world to life.Features FIT OUT and develop your farm. HARVEST crops and create new recipes. EXPLORE new lands and islands, and learn what these places have to tell. ME",
       "category": "Casual",
-      "likes": 146,
-      "favorites": 146,
+      "likes": 157,
+      "favorites": 157,
       "duration": "5-10 分钟",
       "tags": [
         "Grow",
@@ -553,7 +553,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:41.035504"
+      "collected_at": "2025-09-13T11:14:02.842799"
     },
     {
       "title": "Millionaire Life",
@@ -576,7 +576,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:42.403448"
+      "collected_at": "2025-09-13T11:14:03.498416"
     },
     {
       "title": "Twerk Race 3d - Fun Run Game!",
@@ -604,7 +604,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:43.464303"
+      "collected_at": "2025-09-13T11:14:04.040297"
     },
     {
       "title": "Field Master",
@@ -633,7 +633,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:44.177495"
+      "collected_at": "2025-09-13T11:14:05.162881"
     },
     {
       "title": "KiKi World",
@@ -658,7 +658,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:44.895072"
+      "collected_at": "2025-09-13T11:14:05.944274"
     },
     {
       "title": "Mysterious Elevator",
@@ -682,7 +682,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:46.137819"
+      "collected_at": "2025-09-13T11:14:06.937435"
     },
     {
       "title": "Noob: Space Escape!",
@@ -714,7 +714,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:47.545262"
+      "collected_at": "2025-09-13T11:14:08.064022"
     },
     {
       "title": "Jet Bouncer",
@@ -740,200 +740,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-13T10:59:48.260112"
-    },
-    {
-      "title": "Shell Shockers",
-      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
-      "game_url": "https://www.crazygames.com/game/shellshockersio",
-      "iframe_url": "https://games.crazygames.com/en_US/shellshockersio/index.html",
-      "description": "Shell Shockers (Shellshock.io) is a multiplayer .io FPS game featuring eggs armed with guns. You control one of these weapon-wielding eggs in one of four online game modes where the aim is to shatter your opponents with bullets and bombs. It&#39;s the ultimate online egg shooting game!Kids love games where they shoot other players. Whatever you think about guns this seems to always be the case. We let our children play Shell Shockers before the older rating games with guns because it&#39;s a les",
-      "category": ".io",
-      "likes": 3026055,
-      "favorites": 3026055,
-      "duration": "5-10 分钟",
-      "tags": [
-        "3D",
-        "Controller",
-        "With Friends",
-        "Gun",
-        "Party",
-        "Multiplayer",
-        "FPS"
-      ],
-      "features": [],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-13T10:59:49.203732"
-    },
-    {
-      "title": "Agar io",
-      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
-      "game_url": "https://www.crazygames.com/game/agario",
-      "iframe_url": "https://games.crazygames.com/en_US/agario/index.html",
-      "description": "Agar.io is the original .io grow game. Play as a simple agar cell fighting to become the largest cell in a multiplayer game arena. Avoid the bigger cells and consume the smaller ones to grow larger. This is a simple game about growing your single-cell organism bigger than other players. We love it in our family because there is a surprising amount of strategy and collaboration. You need to pay attention to other players to decide if you are bigger or smaller than them. Taking your time and hidin",
-      "category": ".io",
-      "likes": 144864,
-      "favorites": 144864,
-      "duration": "5-10 分钟",
-      "tags": [
-        "Grow",
-        "2D",
-        "Multiplayer",
-        "Collect"
-      ],
-      "features": [
-        "Move mouse = move",
-        "W = eject mass",
-        "Space = split"
-      ],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-13T10:59:50.282543"
-    },
-    {
-      "title": "Uno Online",
-      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
-      "game_url": "https://www.crazygames.com/game/uno-online",
-      "iframe_url": "https://games.crazygames.com/en_US/uno-online/index.html",
-      "description": "Four Colors lets you play the popular card game for free in your web browser. The aim of the game is to be the first player with no cards, similar to other Crazy Eights style card games. Play a game like UNO in multiplayer with 2, 3, or 4 players. How to Play Four Colors There are various strategies you can use to maximize your chances of winning at this multiplayer UNO-inspired game. The main principle is to get rid of all your cards before everyone else. You can do that by matching the color o",
-      "category": "Puzzle",
-      "likes": 977147,
-      "favorites": 977147,
-      "duration": "5-10 分钟",
-      "tags": [
-        "Solitaire",
-        "3 Player",
-        "With Friends",
-        "Color",
-        "Card",
-        "Logic",
-        "Multiplayer"
-      ],
-      "features": [
-        "Use the left mouse button to play the cards."
-      ],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-13T10:59:51.095841"
-    },
-    {
-      "title": "Geometry Dash",
-      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
-      "game_url": "https://www.crazygames.com/game/geometry-dash-online",
-      "iframe_url": "https://games.crazygames.com/en_US/geometry-dash-online/index.html",
-      "description": "Geometry Dash Online is a free side-scrolling platformer played in sync with musical rhythms. Groove your way over and under obstacles to keep the musical momentum alive. If you slip up, it’s back to the beginning!This game became our family obsession during lockdown but we have recently returned to play it. Combining simple controls and a high level of challenge makes for a fun experience we can all enjoy. Because the play is in time with the music, it’s also a good way to develop children’s se",
-      "category": "Casual",
-      "likes": 965381,
-      "favorites": 965381,
-      "duration": "5-10 分钟",
-      "tags": [
-        "One Button",
-        "Scratch",
-        "Jumping",
-        "Obstacle",
-        "Survival"
-      ],
-      "features": [
-        "SPACE/UP Arrow = Jump",
-        "HOLD DOWN SPACE/UP Arrow = Multi-jump",
-        "UP Arrow = Steer vehicle up",
-        "DOWN Arrow = Steer vehicle down"
-      ],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-13T10:59:51.783503"
-    },
-    {
-      "title": "Moto X3M",
-      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
-      "game_url": "https://www.crazygames.com/game/moto-x3m",
-      "iframe_url": "https://games.crazygames.com/en_US/moto-x3m/index.html",
-      "description": "Moto X3M is a driving bike game that takes dirt bike racing to the next level. It combines high-speed thrills with a test of precision and timing across 22 adrenaline-filled levels. Each course introduces fresh, intense obstacles—from gravity-defying loops to dangerous ramps and explosive traps—keeping you on the edge of your seat. Gear up, strap on your helmet, and prepare to perform stunts of a lifetime as you race against the clock. How to Play Moto X3M Sit back, hold on tight, and get ready ",
-      "category": "Driving",
-      "likes": 1173870,
-      "favorites": 1173870,
-      "duration": "5-10 分钟",
-      "tags": [
-        "Stunt",
-        "1 Player",
-        "Side Scrolling",
-        "Bike",
-        "Crash",
-        "Dirt Bike"
-      ],
-      "features": [],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-13T10:59:52.461719"
-    },
-    {
-      "title": "Smash Karts",
-      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
-      "game_url": "https://www.crazygames.com/game/smash-karts",
-      "iframe_url": "https://games.crazygames.com/en_US/smash-karts/index.html",
-      "description": "Smash Karts is a 3D multiplayer IO kart battle game. Drive your go-kart, pick up weapons, and blow up other karts to win! Keep playing to level up and unlock new characters and prizes.How to Play Smash KartsBattle and earn XPFace off with other players in the arena for 3 minutes of kart-smashing mayhem. The game features several maps to explore, and it is continually updated with new ones. Each public match you play will give you XP, which you can then use to level up. Leveling up will reward yo",
-      "category": ".io",
-      "likes": 2020257,
-      "favorites": 2020257,
-      "duration": "5-10 分钟",
-      "tags": [
-        "Mobile",
-        "3D",
-        "Top-Down",
-        "Battle",
-        "Arena",
-        "Destroy",
-        "Car",
-        "Physics",
-        "Controller",
-        "With Friends",
-        "Drifting",
-        "Crash",
-        "Party",
-        "Skill",
-        "Editors' Choice",
-        "Battle Royale",
-        "Multiplayer",
-        "Speed",
-        "Arcade"
-      ],
-      "features": [],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-13T10:59:53.775107"
-    },
-    {
-      "title": "GeoGuessr",
-      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
-      "game_url": "https://www.crazygames.com/game/worldguessr",
-      "iframe_url": "https://games.crazygames.com/en_US/worldguessr/index.html",
-      "description": "Worldguessr is a casual quiz game, a free alternative to Geoguessr, perfect for testing and expanding your geography skills through immersive Street View exploration. Each round, you will find yourself dropped into random locations around the globe, with only environmental clues to guide you in pinpointing your exact whereabouts. From cityscapes to rural roads, your surroundings become the puzzle pieces you need to analyze, turning each game into a thrilling geographical investigation. How to Pl",
-      "category": "Casual",
-      "likes": 276915,
-      "favorites": 276915,
-      "duration": "5-10 分钟",
-      "tags": [
-        "Mobile",
-        "3D",
-        "Quiz",
-        "With Friends",
-        "Trivia",
-        "Multiplayer"
-      ],
-      "features": [
-        "Use the mouse to play the game."
-      ],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-13T10:59:55.267151"
+      "collected_at": "2025-09-13T11:14:08.832692"
     }
   ]
 }
