@@ -1,200 +1,119 @@
 {
   "type": "merged_scraped_games",
-  "total_count": 12,
-  "scraped_at": "2025-09-09T14:58:35.317190",
+  "total_count": 33,
+  "scraped_at": "2025-09-13T10:59:56.227373",
   "scraper_version": "2.0",
   "games": [
     {
-      "title": "Truck Hit Hero: Isekai Arena",
-      "cover_image": "https://imgs.crazygames.com/truck-hit-hero-isekai-arena_16x9/20250828051212/truck-hit-hero-isekai-arena_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-      "game_url": "https://www.crazygames.com/game/truck-hit-hero-isekai-arena",
-      "iframe_url": "https://games.crazygames.com/en_US/truck-hit-hero-isekai-arena/index.html",
-      "description": "Truck-Hit Hero: Isekai Arena is a 2D RPG platformer inspired by classic isekai tales, where an ordinary guy wakes up in a new world as a hero. Battle through 12+ unique arenas filled with traps and enemies, mastering 30+ active abilities with swords, spears, crossbows, and magic. Collect loot, upgrade gear, and craft powerful builds to survive challenging waves of monsters and become the ultimate arena champion.GameplayBattle through arenas against waves of enemiesCollect and upgrade gearMerge i",
+      "title": "Rumblets GO",
+      "cover_image": "https://imgs.crazygames.com/rumblets-go-exm_16x9/20250903142656/rumblets-go-exm_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/rumblets-go-exm",
+      "iframe_url": "https://games.crazygames.com/en_US/rumblets-go-exm/index.html",
+      "description": "Rumblets GO is a cute and chill roguelike adventure filled with elemental pets. Step into a cozy world where you hatch eggs to discover playful creatures with Fire, Nature, and Water powers. Relax with auto-battles, test your luck in mystery events, and evolve your companions to take on powerful bosses.FeaturesCollect whimsical critters with unique personalities and animationsElemental matchups with simple yet strategic gameplayRelaxing auto-battles for easy, casual funBuild your squad and mix s",
       "category": "Adventure",
-      "play_count": 0,
-      "likes": 1094,
-      "favorites": 1094,
+      "likes": 2075,
+      "favorites": 2075,
       "duration": "5-10 分钟",
       "tags": [
         "Battle",
-        "Arena",
-        "Side Scrolling",
-        "RPG",
+        "Roguelike",
         "2D",
-        "Skill"
-      ],
-      "features": [
-        "Move = arrow left-right keys or AD",
-        "Jump = spacebar",
-        "Attack = Left mouse button",
-        "Skills = 1, 2, 3, 4",
-        "Interact = E"
-      ],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-09T14:58:24.424039"
-    },
-    {
-      "title": "Simply Prop Hunt",
-      "cover_image": "https://imgs.crazygames.com/simply-prop-hunt_16x9/20250826074007/simply-prop-hunt_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-      "game_url": "https://www.crazygames.com/game/simply-prop-hunt",
-      "iframe_url": "https://games.crazygames.com/en_US/simply-prop-hunt/index.html",
-      "description": "Simply Prop Hunt is a fast-paced multiplayer hide-and-seek game with a clever twist. Players take turns disguising themselves as everyday objects or hunting down hidden props. As a prop, your goal is to blend seamlessly into the environment and avoid detection. As a hunter, you’ll need sharp eyes and quick reflexes to uncover the sneakiest disguises before time runs out. With fast and unpredictable rounds, every match is a new challenge. Outsmart your opponents, stay hidden until the final whist",
-      "category": ".io",
-      "play_count": 0,
-      "likes": 5032,
-      "favorites": 5032,
-      "duration": "5-10 分钟",
-      "tags": [
-        "3D",
-        "Battle",
-        "Arena",
-        "Multiplayer"
-      ],
-      "features": [
-        "WASD / arrow keys = move",
-        "Left-click = attack",
-        "Move mouse = look around",
-        "Mouse scroll = zoom in / out",
-        "Space = jump / fly with jet (when playing as Hunter)",
-        "3, 4, 5 = select power-up",
-        "E = activate selected power-up",
-        "P = pause menu"
-      ],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-09T14:58:25.501142"
-    },
-    {
-      "title": "Mad GunS - Battle Royale",
-      "cover_image": "https://imgs.crazygames.com/mad-guns---battle-royale-ndd_16x9/20250901024035/mad-guns---battle-royale-ndd_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-      "game_url": "https://www.crazygames.com/game/mad-guns---battle-royale-ndd",
-      "iframe_url": "https://games.crazygames.com/en_US/mad-guns---battle-royale-ndd/index.html",
-      "description": "Crazy Pixel Shooter is a wacky royal battle where chaos rules and anything can be a weapon. Arm yourself with bananas, handbags, or even hamster guns as you take on zombies, giant turkeys, and wild octopuses in outrageous online modes. Explore unique maps, craft your own levels, and fight to save Mr. Cat in this explosive pixel showdown.The goal of the game is to win battles using the craziest weapons and tactics. In the battle royale mode, you have to be the last survivor on a huge map. In othe",
-      "category": "Shooting",
-      "play_count": 0,
-      "likes": 6262,
-      "favorites": 6262,
-      "duration": "5-10 分钟",
-      "tags": [
-        "Pixel",
-        "3D",
-        "Battle",
-        "With Friends",
-        "Gun",
-        "Battle Royale",
-        "FPS"
-      ],
-      "features": [
-        "WASD = move",
-        "R = reload",
-        "Left click = shoot",
-        "Tab = menu"
-      ],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-09T14:58:26.886261"
-    },
-    {
-      "title": "456 Guys",
-      "cover_image": "https://imgs.crazygames.com/456-guys_16x9/20250820070334/456-guys_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-      "game_url": "https://www.crazygames.com/game/456-guys",
-      "iframe_url": "https://games.crazygames.com/en_US/456-guys/index.html",
-      "description": "456 Guys is a massive multiplayer survival game where up to 456 players compete through unpredictable challenges until only one remains. You’ll race through dangerous obstacle courses, outsmart tricky puzzles, and clash in intense arenas like the Glass Bridges, Honeycomb Maze, and Sumo Ring. With rotating levels and weekly tournaments, every match delivers fresh excitement and global competition.",
-      "category": "Casual",
-      "play_count": 0,
-      "likes": 5796,
-      "favorites": 5796,
-      "duration": "5-10 分钟",
-      "tags": [
-        "Mobile",
-        "Avoid",
-        "Difficult",
-        "Controller",
-        "With Friends",
         "Survival",
-        "Multiplayer"
+        "Animal",
+        "Mouse",
+        "Idle"
       ],
-      "features": [
-        "Move = WASD",
-        "Walk = hold left shift",
-        "Jump = space",
-        "Push = E",
-        "Emotes = [1][2][3][4]",
-        "Quick Chat = Tab",
-        "Exit Mouse Look &amp; return mouse pointer to screen = ESC"
-      ],
+      "features": [],
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-09T14:58:27.455863"
+      "collected_at": "2025-09-13T10:59:22.633212"
     },
     {
-      "title": "Fragen",
-      "cover_image": "https://imgs.crazygames.com/fragen_16x9/20250620035208/fragen_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-      "game_url": "https://www.crazygames.com/game/fragen",
-      "iframe_url": "https://games.crazygames.com/en_US/fragen/index.html",
-      "description": "Fragen is an intense shooting FPS game where you face adrenaline-filled battles on your own or in a team. Whether you choose free-for-all or team deathmatch, your goal is to survive and dominate. You will need to customize your arsenal, up your game plan, and outpace your rivals in every fight. It&#39;s non-stop action for the start.How to Play FragenIn Fragen, you take on the role of a soldier in full combat gear, ready to fight your way through an abandoned complex filled with enemies. As you ",
-      "category": "Shooting",
-      "play_count": 0,
-      "likes": 77803,
-      "favorites": 77803,
+      "title": "Prison Escape.io",
+      "cover_image": "https://imgs.crazygames.com/prisoners-io_16x9/20250908044707/prisoners-io_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/prisoners-io",
+      "iframe_url": "https://games.crazygames.com/en_US/prisoners-io/index.html",
+      "description": "Prison Escape.io is a multiplayer escape game where you race against time to outsmart guards, dodge tricky traps, and break free from confinement. Team up with friends or compete in wild multiplayer challenges. Every second counts as you run, jump, and strategize your way through daring escapes packed with surprises and nonstop excitement.Collect shiny coins, unlock fun outfits, and use awesome power-ups to boost your escape. Every level is packed with surprises—are you fast, smart, and brave en",
+      "category": "Casual",
+      "likes": 3407,
+      "favorites": 3407,
       "duration": "5-10 分钟",
       "tags": [
-        "Mobile",
-        "3D",
-        "Gun",
+        "Jumping",
+        "Escape",
+        "With Friends",
+        "Platform",
+        "Obstacle",
+        "Survival",
         "Multiplayer",
-        "FPS",
-        "Killing"
-      ],
-      "features": [
-        "WASD = move",
-        "Left mouse = shooting",
-        "Right mouse = aim",
-        "G =grenade",
-        "H = use first aid kit",
-        "C = squat",
-        "Space =jump",
-        "Tab = menu"
-      ],
-      "is_new": true,
-      "is_hot": false,
-      "is_featured": true,
-      "collected_at": "2025-09-09T14:58:28.487423"
-    },
-    {
-      "title": "Noob Digger: Pro Drill Miner",
-      "cover_image": "https://imgs.crazygames.com/noob-digger-pro-drill-miner-cal_16x9/20250902025621/noob-digger-pro-drill-miner-cal_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
-      "game_url": "https://www.crazygames.com/game/noob-digger-pro-drill-miner-cal",
-      "iframe_url": "https://games.crazygames.com/en_US/noob-digger-pro-drill-miner-cal/index.html",
-      "description": "Noob Digger: Pro Drill Miner is a thrilling mining adventure where you pilot a powerful drill deep into the earth in search of treasures and secrets. Unearth valuable resources, trade for upgrades, and uncover mysterious bunkers to assemble the legendary Super Drill. Dig not just for riches—but to rebuild your dream home and win back your lost love.",
-      "category": "Adventure",
-      "play_count": 0,
-      "likes": 10158,
-      "favorites": 10158,
-      "duration": "5-10 分钟",
-      "tags": [
-        "Mobile",
-        "Pixel",
-        "Minecraft",
-        "Mining",
-        "Building",
-        "2D",
         "Collect"
       ],
       "features": [
-        "WASD or arrow keys = move",
-        "E or left click = interact",
-        "F = nitro ( in mine )"
+        "WASD or arrow keys = move around",
+        "Space = jump and fly if you have a jetpack",
+        "E = interact with items",
+        "P = pause",
+        "Enter = chat with other players"
       ],
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-09T14:58:29.249759"
+      "collected_at": "2025-09-13T10:59:23.649794"
+    },
+    {
+      "title": "MatchVentures",
+      "cover_image": "https://imgs.crazygames.com/matchventures_16x9/20250904074220/matchventures_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/matchventures",
+      "iframe_url": "https://games.crazygames.com/en_US/matchventures/index.html",
+      "description": "MatchVentures is a captivating match-3 adventure game where you explore the dark dungeons of Cliffmont Castle. As you journey through vast levels, collect gems and jewels while overcoming various obstacles in a quest to rebuild the castle destroyed by the evil dragon master, Dragor. With the help of Finlea the Leprechaun and her band of dwarves, you’ll battle enemies, explore hidden caves, and solve intricate puzzles. Perfect for fans of match-3 and fantasy adventure games, MatchVentures invites",
+      "category": "Puzzle",
+      "likes": 4851,
+      "favorites": 4851,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Mobile",
+        "Premium Perks",
+        "Building",
+        "Strategy",
+        "Match 3",
+        "Logic",
+        "Mouse",
+        "Collect"
+      ],
+      "features": [
+        "Use the left mouse button to select and swap items."
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:25.020318"
+    },
+    {
+      "title": "Hexa Sort",
+      "cover_image": "https://imgs.crazygames.com/hexa-sort_16x9/20250219102231/hexa-sort_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/hexa-sort",
+      "iframe_url": "https://games.crazygames.com/en_US/hexa-sort/index.html",
+      "description": "Hexa Sort is an addictive puzzle-sorting game that combines strategic matching and merging challenges. In this brain teaser, you will get to shuffle, stack, and strategize to create satisfying color matches. Featuring sleek 3D graphics, a dazzling array of vibrant hues, and soothing gameplay, this addictive challenge strikes the perfect balance between excitement and relaxation. Whether you’re seeking a mental workout or a calming escape, Hexa Sort delivers an experience that’s as rewarding as i",
+      "category": "Puzzle",
+      "likes": 26100,
+      "favorites": 26100,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Sorting",
+        "Mobile",
+        "Color",
+        "Strategy",
+        "Editors' Choice",
+        "Brain"
+      ],
+      "features": [
+        "Use the left mouse button to move the hexagon."
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:26.380199"
     },
     {
       "title": "Cell to Singularity: Mesozoic Valley",
@@ -203,9 +122,8 @@
       "iframe_url": "https://games.crazygames.com/en_US/cell-to-singularity-mesozoic-valley/index.html",
       "description": "Cell to Singularity: Mesozoic Valley is a clicker science-based idle game where you get to delve into the prehistoric world of dinosaurs. Uncover hidden fossils and construct your own Jurassic simulation as you complete missions to earn fossil points, unlocking a diverse array of unique dinosaur species. Collect Trait Cards to automate fossil production, allowing for effortless point accumulation and triggering extinction events to expand your simulation even further. With each click, you’ll wat",
       "category": "Clicker",
-      "play_count": 0,
-      "likes": 26256,
-      "favorites": 26256,
+      "likes": 26889,
+      "favorites": 26889,
       "duration": "5-10 分钟",
       "tags": [
         "3D",
@@ -222,7 +140,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-09T14:58:30.272305"
+      "collected_at": "2025-09-13T10:59:27.840098"
     },
     {
       "title": "Simply Prop Hunt",
@@ -231,9 +149,8 @@
       "iframe_url": "https://games.crazygames.com/en_US/simply-prop-hunt/index.html",
       "description": "Simply Prop Hunt is a fast-paced multiplayer hide-and-seek game with a clever twist. Players take turns disguising themselves as everyday objects or hunting down hidden props. As a prop, your goal is to blend seamlessly into the environment and avoid detection. As a hunter, you’ll need sharp eyes and quick reflexes to uncover the sneakiest disguises before time runs out. With fast and unpredictable rounds, every match is a new challenge. Outsmart your opponents, stay hidden until the final whist",
       "category": ".io",
-      "play_count": 0,
-      "likes": 5032,
-      "favorites": 5032,
+      "likes": 6908,
+      "favorites": 6908,
       "duration": "5-10 分钟",
       "tags": [
         "3D",
@@ -254,7 +171,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-09T14:58:31.098356"
+      "collected_at": "2025-09-13T10:59:28.906593"
     },
     {
       "title": "Space Waves",
@@ -263,9 +180,8 @@
       "iframe_url": "https://games.crazygames.com/en_US/space-waves/index.html",
       "description": "Space Waves is an arcade game where you need to control an arrow to avoid obstacles until you get to the end. There are 33 levels to the game, and you can choose any level you want to play at any time. All levels vary in difficulty and are labeled accordingly with faces; this way you get to decide how courageous you want to be. How to Play Space Waves All 33 levels of Space Waves more or less have the same scope – get to the end of the level without crashing your arrow into a wall, a rotating co",
       "category": "Casual",
-      "play_count": 0,
-      "likes": 3128884,
-      "favorites": 3128884,
+      "likes": 3150994,
+      "favorites": 3150994,
       "duration": "5-10 分钟",
       "tags": [
         "One Button",
@@ -283,7 +199,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-09T14:58:31.657513"
+      "collected_at": "2025-09-13T10:59:29.796984"
     },
     {
       "title": "Bit Gun.io",
@@ -292,9 +208,8 @@
       "iframe_url": "https://games.crazygames.com/en_US/bit-gun-io/index.html",
       "description": "Bit Gun.io is a fast-paced multiplayer FPS where you test your tactical skills in intense 5v5 battles. Customize your arsenal, master unique weapons, and rise through the ranks in thrilling PvP combat. Join forces with friends, strategize, and dominate the arena in this action-packed shooting experience that rewards teamwork and precision.",
       "category": "Shooting",
-      "play_count": 0,
-      "likes": 75931,
-      "favorites": 75931,
+      "likes": 77417,
+      "favorites": 77417,
       "duration": "5-10 分钟",
       "tags": [
         "3D",
@@ -318,7 +233,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-09T14:58:32.976444"
+      "collected_at": "2025-09-13T10:59:30.351424"
     },
     {
       "title": "EvoWars.io",
@@ -327,9 +242,8 @@
       "iframe_url": "https://games.crazygames.com/en_US/evowarsio/index.html",
       "description": "EvoWars.io is an IO battle game set in a top-down online battle arena. Collect orbs and battle other players to evolve your warrior. Each evolution improves your weapon range but slows your movement. How many will you slay before you fall?How to Play EvoWars.ioEmbark on an epic quest across the digital battlefield, where you’ll collect powerful orbs to evolve your warrior into unstoppable forms. As you slash through enemies with swords, axes, and a brutal arsenal of weapons, each battle pushes y",
       "category": ".io",
-      "play_count": 0,
-      "likes": 2134932,
-      "favorites": 2134932,
+      "likes": 2140384,
+      "favorites": 2140384,
       "duration": "5-10 分钟",
       "tags": [
         "Grow",
@@ -350,7 +264,7 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-09T14:58:33.542465"
+      "collected_at": "2025-09-13T10:59:31.196627"
     },
     {
       "title": "Escape From Prison Multiplayer",
@@ -359,9 +273,8 @@
       "iframe_url": "https://games.crazygames.com/en_US/escape-from-prison-multiplayer/index.html",
       "description": "Escape From Prison Multiplayer is a thrilling multiplayer platformer game where your mission is to make a daring escape from prison! Customize your brave little mouse and race against time to break out. Each room you conquer brings you closer to freedom, but watch out for the dangerous traps and obstacles in your way! Can you outsmart the prison&#39;s challenges and make a successful escape? Test your skills and find out if you have what it takes to flee from prison! Release Date July 2024 Platf",
       "category": "Action",
-      "play_count": 0,
-      "likes": 139576,
-      "favorites": 139576,
+      "likes": 140873,
+      "favorites": 140873,
       "duration": "5-10 分钟",
       "tags": [
         "Mobile",
@@ -383,7 +296,644 @@
       "is_new": true,
       "is_hot": false,
       "is_featured": true,
-      "collected_at": "2025-09-09T14:58:34.094058"
+      "collected_at": "2025-09-13T10:59:31.981747"
+    },
+    {
+      "title": "Holey.io Battle Royale",
+      "cover_image": "https://imgs.crazygames.com/games/holey-io-battle-royale/cover_2x3-1698054343535.png?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/holey-io-battle-royale",
+      "iframe_url": "https://games.crazygames.com/en_US/holey-io-battle-royale/index.html",
+      "description": "Holey.io is a battle royale game where you consume various items and opponents with smaller holes. You will grow bigger as you swallow! The map will continuously shrink, forcing players into a narrower environment until there is only one person left standing. Consume, grow, and become the last hole standing in the arena!Once you&#39;ve become the ultimate hole, check out some more popular .io games like Cubes 2048 and Agar.io!FeaturesEarn and equip unique skinsUse strong power-ups to boost your ",
+      "category": ".io",
+      "likes": 691218,
+      "favorites": 691218,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Grow",
+        "Top-Down",
+        "Arena",
+        "Battle Royale",
+        "Mouse"
+      ],
+      "features": [
+        "Move mouse = change direction",
+        "Hold left-click / space bar = speed up",
+        "Drag = move",
+        "Click the on-screen button = speed up"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:32.768909"
+    },
+    {
+      "title": "Escape From Pizzeria",
+      "cover_image": "https://imgs.crazygames.com/escape-from-pizzeria_2x3/20250709080344/escape-from-pizzeria_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/escape-from-pizzeria",
+      "iframe_url": "https://games.crazygames.com/en_US/escape-from-pizzeria/index.html",
+      "description": "Escape From Pizzeria is a adventure game where you’re trapped inside a dark, eerie restaurant with secrets lurking in every corner. You’ll navigate creepy hallways, dodge traps, and uncover clues to escape. Stay alert, think fast, and whatever you do, don’t let the chef catch you snooping around his haunted kitchen.",
+      "category": ".io",
+      "likes": 51089,
+      "favorites": 51089,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Roblox",
+        "Mobile",
+        "Parkour",
+        "Avoid",
+        "Escape",
+        "Obstacle",
+        "Logic",
+        "Multiplayer",
+        "Collect",
+        "Brain"
+      ],
+      "features": [
+        "WASD or Arrow Keys = move",
+        "E = pick up / drop items",
+        "Mouse = look around"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:34.236770"
+    },
+    {
+      "title": "Cubes 2048.io",
+      "cover_image": "https://imgs.crazygames.com/games/cubes-2048-io/cover_2x3-1693298929612.png?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/cubes-2048-io",
+      "iframe_url": "https://games.crazygames.com/en_US/cubes-2048-io/index.html",
+      "description": "Cubes 2048.io is an addictive online game that fuses Snake and 2048. Get a bigger number by collecting free cubes and eating other players with a smaller number than you. Your cubes with the same value that bump into one another will merge. How to PlayMerge blocks to growCubes 2048 turns 2048 into a 3D .io game! Slide around the arena picking up blocks to get bigger. Picking up two of the same number will merge them into a single block as the total sum of both.Consume the competitionIn Cubes 204",
+      "category": ".io",
+      "likes": 1427944,
+      "favorites": 1427944,
+      "duration": "5-10 分钟",
+      "tags": [
+        "One Button",
+        "3D",
+        "Top-Down",
+        "Arena",
+        "Snake",
+        "Survival",
+        "2048",
+        "Mouse",
+        "Collect",
+        "Merge"
+      ],
+      "features": [
+        "Move mouse = change direction",
+        "Hold left-click or space bar = speed up",
+        "Drag = move",
+        "Click the on-screen button = speed up"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:35.583637"
+    },
+    {
+      "title": "Crazy Dummy Swing Multiplayer",
+      "cover_image": "https://imgs.crazygames.com/crazy-dummy-swing-multiplayer_2x3/20250506035621/crazy-dummy-swing-multiplayer_2x3-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/crazy-dummy-swing-multiplayer",
+      "iframe_url": "https://games.crazygames.com/en_US/crazy-dummy-swing-multiplayer/index.html",
+      "description": "Crazy Dummy Swing Multiplayer is a fast-paced multiplayer game where you swing, launch, and fling your custom-built dummy across wild obstacle maps. You’ll race to escape the factory, grab onto anchor points, and chase the top of the daily leaderboard. With new maps each day, your timing and creativity decide how far you’ll go.",
+      "category": "Casual",
+      "likes": 33153,
+      "favorites": 33153,
+      "duration": "5-10 分钟",
+      "tags": [
+        "One Button",
+        "Mobile",
+        "Avoid",
+        "Physics",
+        "With Friends",
+        "Multiplayer",
+        "Speed"
+      ],
+      "features": [
+        "Just tap anywhere on the screen or press any key on your keyboard to play. It’s that easy!"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:36.337247"
+    },
+    {
+      "title": "Crazy Miners",
+      "cover_image": "https://imgs.crazygames.com/games/crazy-miners-multiplayer/cover_2x3-1747314410963.png?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/crazy-miners-multiplayer",
+      "iframe_url": "https://games.crazygames.com/en_US/crazy-miners-multiplayer/index.html",
+      "description": "Crazy Miners is a fast-paced digging battle where you race to find the diamond hidden deep in the map! Dig through the terrain, avoid traps, collect diamond fragments to unlock new skins and power-ups, throw TNT to clear your path (or sabotage others), and be the first to claim victory!",
+      "category": "Action",
+      "likes": 41249,
+      "favorites": 41249,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Mobile",
+        "Avoid",
+        "Destroy",
+        "Mining",
+        "Platform",
+        "2D",
+        "Survival",
+        "Editors' Choice",
+        "Collect"
+      ],
+      "features": [],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:37.121545"
+    },
+    {
+      "title": "Make Up Hole",
+      "cover_image": "https://imgs.crazygames.com/make-up-hole_16x9/20250912030239/make-up-hole_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/make-up-hole",
+      "iframe_url": "https://games.crazygames.com/en_US/make-up-hole/index.html",
+      "description": "Makeup Hole is the ultimate beauty game where you control a magical hole that collects makeup items to create stunning makeovers. Dive into addictive gameplay as you gather cosmetics, unleash your creativity, and transform the girl into a true style icon. Explore vibrant levels filled with makeup treasures, from bold eyeshadows and radiant blushes to luscious lipsticks. Strategically guide the makeup hole to collect the perfect combination of items and craft dazzling looks. With every level, you",
+      "category": "Casual",
+      "likes": 393,
+      "favorites": 393,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Grow",
+        "Mobile",
+        "3D",
+        "Top-Down",
+        "Makeup",
+        "Incremental",
+        "Collect"
+      ],
+      "features": [],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:38.019142"
+    },
+    {
+      "title": "She is Mad",
+      "cover_image": "https://imgs.crazygames.com/she-is-mad-eie_16x9/20250911101534/she-is-mad-eie_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/she-is-mad-eie",
+      "iframe_url": "https://games.crazygames.com/en_US/she-is-mad-eie/index.html",
+      "description": "She is Mad is a dark fantasy adventure where black magic twists a family’s fate into chaos. Your daughter vanishes, your wife transforms into a terrifying demon, and the world fills with angels, demons, and mysterious pagans. As you struggle through uncertainty and danger, every choice tests your courage and forces you to question who you can truly trust.",
+      "category": "Adventure",
+      "likes": 250,
+      "favorites": 250,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Horror",
+        "Avoid",
+        "3D",
+        "Escape",
+        "Monster"
+      ],
+      "features": [
+        "WASD = move",
+        "Space = jump",
+        "Shift = run",
+        "Alt = drop",
+        "Ctrl = crouch",
+        "F = fart",
+        "1-4 = swap",
+        "Tab = open task"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:38.891655"
+    },
+    {
+      "title": "Demon Smasher",
+      "cover_image": "https://imgs.crazygames.com/demon-smasher_16x9/20250911080357/demon-smasher_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/demon-smasher",
+      "iframe_url": "https://games.crazygames.com/en_US/demon-smasher/index.html",
+      "description": "Demon Smasher is a retro-inspired roguelike that’s easy to pick up yet tough to master. Fight waves of diverse enemies across shifting maps, collect gems, and upgrade your skills to grow stronger with every level. Daily rewards and a cosmetic shop with unlockable character skins add extra incentives, making each run fresh and rewarding.",
+      "category": "Casual",
+      "likes": 219,
+      "favorites": 219,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Pixel",
+        "Battle",
+        "Arena",
+        "RPG",
+        "2D",
+        "Sword",
+        "Retro"
+      ],
+      "features": [],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:40.160185"
+    },
+    {
+      "title": "The Farmers",
+      "cover_image": "https://imgs.crazygames.com/the-farmers_16x9/20250910090049/the-farmers_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/the-farmers",
+      "iframe_url": "https://games.crazygames.com/en_US/the-farmers/index.html",
+      "description": "The Farmers is a charming farming adventure where you create and grow your own paradise. You’ll cultivate crops, craft delicious recipes, and expand your land into thriving new territories. Along the way, you’ll uncover secrets hidden across the islands, meet interesting characters, and enjoy heartfelt stories that bring your farm world to life.Features FIT OUT and develop your farm. HARVEST crops and create new recipes. EXPLORE new lands and islands, and learn what these places have to tell. ME",
+      "category": "Casual",
+      "likes": 146,
+      "favorites": 146,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Grow",
+        "Simulation",
+        "Farming",
+        "Building",
+        "Animal",
+        "Mouse",
+        "Management",
+        "Collect"
+      ],
+      "features": [
+        "Use the left mouse button to interact with the in-game UI."
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:41.035504"
+    },
+    {
+      "title": "Millionaire Life",
+      "cover_image": "https://imgs.crazygames.com/millionaire-life_16x9/20250911033402/millionaire-life_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/millionaire-life",
+      "iframe_url": "https://games.crazygames.com/en_US/millionaire-life/index.html",
+      "description": "Millionaire Life is a casual game where your luck finally turns around and it’s time to live large. After a rough start, you&#39;ve hit the jackpot—now go wild! Indulge in lavish spending, fulfill your biggest dreams, and embrace a life of over-the-top luxury with no regrets.",
+      "category": "Casual",
+      "likes": 1149,
+      "favorites": 1149,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Grow",
+        "Mobile",
+        "Classic",
+        "Simulation",
+        "Business"
+      ],
+      "features": [],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:42.403448"
+    },
+    {
+      "title": "Twerk Race 3d - Fun Run Game!",
+      "cover_image": "https://imgs.crazygames.com/twerk-race-3d----fun-run-game_16x9/20250903090237/twerk-race-3d----fun-run-game_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/twerk-race-3d----fun-run-game",
+      "iframe_url": "https://games.crazygames.com/en_US/twerk-race-3d----fun-run-game/index.html",
+      "description": "Twerk Race 3d - Fun Run Game! is a quirky blend of racing and dancing where your eating choices shape your performance. Sprint across colorful tracks, dodge obstacles, and collect food to transform your physique—light snacks keep you slim and speedy, while heavier bites bulk you up for the final showdown. Finish the run with an epic twerk battle to claim victory in this hilarious race-meets-dance adventure.FeaturesFast &amp; Fun Gameplay – Run, dodge obstacles, and collect food to change your sh",
+      "category": "Casual",
+      "likes": 1613,
+      "favorites": 1613,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Mobile",
+        "3D",
+        "Running",
+        "Platform",
+        "Obstacle",
+        "Collect",
+        "Arcade"
+      ],
+      "features": [
+        "Space bar or left mouse button = start/set jump power (after completing a level)",
+        "WASD/arrow keys = move"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:43.464303"
+    },
+    {
+      "title": "Field Master",
+      "cover_image": "https://imgs.crazygames.com/field-master_16x9/20250910100136/field-master_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/field-master",
+      "iframe_url": "https://games.crazygames.com/en_US/field-master/index.html",
+      "description": "Field Master is a casual farming simulator that puts you behind the wheel of powerful agricultural machines. Experience the full farming cycle as you plow vast fields with your tractor, sow seeds with precision seeders, and carefully nurture your crops as they grow. When harvest season arrives, take control of massive combines to reap the rewards of your hard work. From soil preparation to harvest, every step is in your hands, making Field Master the perfect blend of relaxation and realism for f",
+      "category": "Casual",
+      "likes": 875,
+      "favorites": 875,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Mobile",
+        "3D",
+        "Simulation",
+        "Relaxing",
+        "Car",
+        "Farming"
+      ],
+      "features": [
+        "WASD / arrow keys = move",
+        "Q = switch vehicles",
+        "R = attach / detach equipment",
+        "E = load / unload"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:44.177495"
+    },
+    {
+      "title": "KiKi World",
+      "cover_image": "https://imgs.crazygames.com/kiki-world_16x9/20250910052843/kiki-world_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/kiki-world",
+      "iframe_url": "https://games.crazygames.com/en_US/kiki-world/index.html",
+      "description": "Kiki World is a home design game where you transform cluttered rooms into stylish living spaces. By cleaning, removing old items, and arranging chic furniture, you’ll bring empty areas to life with your personal touch. Perfect for design enthusiasts, it challenges your creativity as you decorate, makeover, and create the dream home you’ve always imagined!",
+      "category": "Casual",
+      "likes": 1150,
+      "favorites": 1150,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Mobile",
+        "Simulation",
+        "Cute",
+        "2D",
+        "Mouse",
+        "Management",
+        "Easy"
+      ],
+      "features": [],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:44.895072"
+    },
+    {
+      "title": "Mysterious Elevator",
+      "cover_image": "https://imgs.crazygames.com/mysterious-elevator_16x9/20250912065402/mysterious-elevator_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/mysterious-elevator",
+      "iframe_url": "https://games.crazygames.com/en_US/mysterious-elevator/index.html",
+      "description": "Mysterious Elevator is a thrilling math and logic game that challenges your mind as you try to escape a mysterious skyscraper with 100 floors. Each floor is guarded by the Keeper of Numbers, a sarcastic master of mathematical riddles who won’t let you pass without solving his clever puzzles.Swap numbered and symbol blocks to build correct equations, solve additional riddles, and overcome tricky logical traps. Every puzzle is a new test of your skills, ranging from simple arithmetic to devious br",
+      "category": "Puzzle",
+      "likes": 103,
+      "favorites": 103,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Quiz",
+        "Mystery",
+        "Math",
+        "Logic",
+        "Mouse",
+        "Brain"
+      ],
+      "features": [],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:46.137819"
+    },
+    {
+      "title": "Noob: Space Escape!",
+      "cover_image": "https://imgs.crazygames.com/noob-space-escape-hni_16x9/20250912061420/noob-space-escape-hni_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/noob-space-escape-hni",
+      "iframe_url": "https://games.crazygames.com/en_US/noob-space-escape-hni/index.html",
+      "description": "Noob: Space Escape! is a survival crafting adventure where you guide Noob through a mysterious floating world filled with danger. Gather resources, upgrade your gear, and battle monsters as you work to repair your rocket. Explore hidden islands packed with traps, secrets, and fierce enemies, digging, building, and fighting your way toward freedom before time runs out.",
+      "category": "Adventure",
+      "likes": 145,
+      "favorites": 145,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Minecraft",
+        "2D",
+        "Survival",
+        "Collect",
+        "Crafting"
+      ],
+      "features": [
+        "W = move forward",
+        "S = move backward",
+        "D = move right",
+        "A = move left",
+        "Space = jump",
+        "Left Mouse Button = break blocks",
+        "Right Mouse Button = place blocks",
+        "E = open inventory"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:47.545262"
+    },
+    {
+      "title": "Jet Bouncer",
+      "cover_image": "https://imgs.crazygames.com/jetbouncer_16x9/20250912044655/jetbouncer_16x9-cover?metadata=none&quality=85&width=273&fit=crop",
+      "game_url": "https://www.crazygames.com/game/jetbouncer",
+      "iframe_url": "https://games.crazygames.com/en_US/jetbouncer/index.html",
+      "description": "Jet Bouncer is a modern twist on the classic brick-breaker formula, blending fast-paced gameplay with fresh layers of strategy. You’ll smash through varied level layouts, adapt to unique enemy encounters, and challenge powerful bosses. With metaprogression systems to enhance your abilities, every run offers new upgrades, surprises, and evolving challenges that keep the action endlessly engaging.",
+      "category": "Casual",
+      "likes": 78,
+      "favorites": 78,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Mobile",
+        "Defense",
+        "Ball",
+        "Cartoon",
+        "Arcade"
+      ],
+      "features": [
+        "AD / right-left arrow keys = movement",
+        "Mouse = interact with UI"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:48.260112"
+    },
+    {
+      "title": "Shell Shockers",
+      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
+      "game_url": "https://www.crazygames.com/game/shellshockersio",
+      "iframe_url": "https://games.crazygames.com/en_US/shellshockersio/index.html",
+      "description": "Shell Shockers (Shellshock.io) is a multiplayer .io FPS game featuring eggs armed with guns. You control one of these weapon-wielding eggs in one of four online game modes where the aim is to shatter your opponents with bullets and bombs. It&#39;s the ultimate online egg shooting game!Kids love games where they shoot other players. Whatever you think about guns this seems to always be the case. We let our children play Shell Shockers before the older rating games with guns because it&#39;s a les",
+      "category": ".io",
+      "likes": 3026055,
+      "favorites": 3026055,
+      "duration": "5-10 分钟",
+      "tags": [
+        "3D",
+        "Controller",
+        "With Friends",
+        "Gun",
+        "Party",
+        "Multiplayer",
+        "FPS"
+      ],
+      "features": [],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:49.203732"
+    },
+    {
+      "title": "Agar io",
+      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
+      "game_url": "https://www.crazygames.com/game/agario",
+      "iframe_url": "https://games.crazygames.com/en_US/agario/index.html",
+      "description": "Agar.io is the original .io grow game. Play as a simple agar cell fighting to become the largest cell in a multiplayer game arena. Avoid the bigger cells and consume the smaller ones to grow larger. This is a simple game about growing your single-cell organism bigger than other players. We love it in our family because there is a surprising amount of strategy and collaboration. You need to pay attention to other players to decide if you are bigger or smaller than them. Taking your time and hidin",
+      "category": ".io",
+      "likes": 144864,
+      "favorites": 144864,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Grow",
+        "2D",
+        "Multiplayer",
+        "Collect"
+      ],
+      "features": [
+        "Move mouse = move",
+        "W = eject mass",
+        "Space = split"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:50.282543"
+    },
+    {
+      "title": "Uno Online",
+      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
+      "game_url": "https://www.crazygames.com/game/uno-online",
+      "iframe_url": "https://games.crazygames.com/en_US/uno-online/index.html",
+      "description": "Four Colors lets you play the popular card game for free in your web browser. The aim of the game is to be the first player with no cards, similar to other Crazy Eights style card games. Play a game like UNO in multiplayer with 2, 3, or 4 players. How to Play Four Colors There are various strategies you can use to maximize your chances of winning at this multiplayer UNO-inspired game. The main principle is to get rid of all your cards before everyone else. You can do that by matching the color o",
+      "category": "Puzzle",
+      "likes": 977147,
+      "favorites": 977147,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Solitaire",
+        "3 Player",
+        "With Friends",
+        "Color",
+        "Card",
+        "Logic",
+        "Multiplayer"
+      ],
+      "features": [
+        "Use the left mouse button to play the cards."
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:51.095841"
+    },
+    {
+      "title": "Geometry Dash",
+      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
+      "game_url": "https://www.crazygames.com/game/geometry-dash-online",
+      "iframe_url": "https://games.crazygames.com/en_US/geometry-dash-online/index.html",
+      "description": "Geometry Dash Online is a free side-scrolling platformer played in sync with musical rhythms. Groove your way over and under obstacles to keep the musical momentum alive. If you slip up, it’s back to the beginning!This game became our family obsession during lockdown but we have recently returned to play it. Combining simple controls and a high level of challenge makes for a fun experience we can all enjoy. Because the play is in time with the music, it’s also a good way to develop children’s se",
+      "category": "Casual",
+      "likes": 965381,
+      "favorites": 965381,
+      "duration": "5-10 分钟",
+      "tags": [
+        "One Button",
+        "Scratch",
+        "Jumping",
+        "Obstacle",
+        "Survival"
+      ],
+      "features": [
+        "SPACE/UP Arrow = Jump",
+        "HOLD DOWN SPACE/UP Arrow = Multi-jump",
+        "UP Arrow = Steer vehicle up",
+        "DOWN Arrow = Steer vehicle down"
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:51.783503"
+    },
+    {
+      "title": "Moto X3M",
+      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
+      "game_url": "https://www.crazygames.com/game/moto-x3m",
+      "iframe_url": "https://games.crazygames.com/en_US/moto-x3m/index.html",
+      "description": "Moto X3M is a driving bike game that takes dirt bike racing to the next level. It combines high-speed thrills with a test of precision and timing across 22 adrenaline-filled levels. Each course introduces fresh, intense obstacles—from gravity-defying loops to dangerous ramps and explosive traps—keeping you on the edge of your seat. Gear up, strap on your helmet, and prepare to perform stunts of a lifetime as you race against the clock. How to Play Moto X3M Sit back, hold on tight, and get ready ",
+      "category": "Driving",
+      "likes": 1173870,
+      "favorites": 1173870,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Stunt",
+        "1 Player",
+        "Side Scrolling",
+        "Bike",
+        "Crash",
+        "Dirt Bike"
+      ],
+      "features": [],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:52.461719"
+    },
+    {
+      "title": "Smash Karts",
+      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
+      "game_url": "https://www.crazygames.com/game/smash-karts",
+      "iframe_url": "https://games.crazygames.com/en_US/smash-karts/index.html",
+      "description": "Smash Karts is a 3D multiplayer IO kart battle game. Drive your go-kart, pick up weapons, and blow up other karts to win! Keep playing to level up and unlock new characters and prizes.How to Play Smash KartsBattle and earn XPFace off with other players in the arena for 3 minutes of kart-smashing mayhem. The game features several maps to explore, and it is continually updated with new ones. Each public match you play will give you XP, which you can then use to level up. Leveling up will reward yo",
+      "category": ".io",
+      "likes": 2020257,
+      "favorites": 2020257,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Mobile",
+        "3D",
+        "Top-Down",
+        "Battle",
+        "Arena",
+        "Destroy",
+        "Car",
+        "Physics",
+        "Controller",
+        "With Friends",
+        "Drifting",
+        "Crash",
+        "Party",
+        "Skill",
+        "Editors' Choice",
+        "Battle Royale",
+        "Multiplayer",
+        "Speed",
+        "Arcade"
+      ],
+      "features": [],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:53.775107"
+    },
+    {
+      "title": "GeoGuessr",
+      "cover_image": "https://imgs.crazygames.com/icon/Home.svg",
+      "game_url": "https://www.crazygames.com/game/worldguessr",
+      "iframe_url": "https://games.crazygames.com/en_US/worldguessr/index.html",
+      "description": "Worldguessr is a casual quiz game, a free alternative to Geoguessr, perfect for testing and expanding your geography skills through immersive Street View exploration. Each round, you will find yourself dropped into random locations around the globe, with only environmental clues to guide you in pinpointing your exact whereabouts. From cityscapes to rural roads, your surroundings become the puzzle pieces you need to analyze, turning each game into a thrilling geographical investigation. How to Pl",
+      "category": "Casual",
+      "likes": 276915,
+      "favorites": 276915,
+      "duration": "5-10 分钟",
+      "tags": [
+        "Mobile",
+        "3D",
+        "Quiz",
+        "With Friends",
+        "Trivia",
+        "Multiplayer"
+      ],
+      "features": [
+        "Use the mouse to play the game."
+      ],
+      "is_new": true,
+      "is_hot": false,
+      "is_featured": true,
+      "collected_at": "2025-09-13T10:59:55.267151"
     }
   ]
 }
