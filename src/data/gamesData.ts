@@ -12,6 +12,7 @@ export interface Game {
   likes?: number;
   favorites?: number;
   duration?: string;
+  addedAt?: string; // 添加时间戳字段
 }
 
 export const games: Game[] = [
@@ -28,7 +29,8 @@ export const games: Game[] = [
     playCount: 0,
     likes: 2075,
     favorites: 2075,
-    duration: "5-10 分钟"
+    duration: "5-10 分钟",
+    addedAt: "2025-01-08T10:00:00Z"
   },
   {
     id: 2,
@@ -43,7 +45,8 @@ export const games: Game[] = [
     playCount: 0,
     likes: 3407,
     favorites: 3407,
-    duration: "5-10 分钟"
+    duration: "5-10 分钟",
+    addedAt: "2025-01-07T14:30:00Z"
   },
   {
     id: 3,
@@ -58,7 +61,8 @@ export const games: Game[] = [
     playCount: 0,
     likes: 4851,
     favorites: 4851,
-    duration: "5-10 分钟"
+    duration: "5-10 分钟",
+    addedAt: "2025-01-06T09:15:00Z"
   },
   {
     id: 4,
@@ -73,7 +77,8 @@ export const games: Game[] = [
     playCount: 0,
     likes: 26100,
     favorites: 26100,
-    duration: "5-10 分钟"
+    duration: "5-10 分钟",
+    addedAt: "2025-01-05T16:45:00Z"
   },
   {
     id: 5,

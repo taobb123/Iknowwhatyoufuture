@@ -438,7 +438,7 @@ const GameHub: React.FC<GameHubProps> = () => {
                     <div className="text-xs text-gray-400">{game.category}</div>
           </div>
                   <div className="text-xs text-gray-500">
-                    {Math.floor(Math.random() * 7) + 1}天前
+                    {game.addedAt ? formatDate(game.addedAt) : '最近'}
         </div>
       </div>
               ))}
