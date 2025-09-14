@@ -97,3 +97,4 @@ export function getRelatedPosts(currentSlug: string, limit: number = 3): BlogPos
 
 export default blogPosts;
 
+
