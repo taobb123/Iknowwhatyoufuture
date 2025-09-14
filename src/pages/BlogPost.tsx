@@ -127,7 +127,7 @@ function BlogPostPage() {
             <div className="relative mb-12">
               <img 
                 src={post.image}
-                alt={post.title} 
+                alt={`${post.title} - 博客文章主图`} 
                 className="w-full h-[400px] object-cover rounded-xl shadow-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent rounded-xl"></div>

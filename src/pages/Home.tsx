@@ -46,15 +46,16 @@ function Home() {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <SEOHead 
-        title="游戏中心 - 免费在线游戏"
-        description="发现最热门的在线游戏，立即开始你的游戏之旅！"
-        keywords="在线游戏,浏览器游戏,免费游戏,游戏中心"
+        title="热门游戏中心 - 免费在线游戏 | Iknowwhatyoufuture"
+        description="体验无忧无虑的游戏时光！精选最热门的免费在线游戏，包含动作、冒险、益智、休闲等多种类型，无需下载即可畅玩，让您享受轻松愉快的游戏体验！"
+        keywords="热门游戏,在线游戏,免费游戏,游戏中心,动作游戏,冒险游戏,益智游戏,休闲游戏,无忧无虑"
+        canonical="https://streetracer.online/"
       />
 
       <div className="container mx-auto px-4 py-8 pt-24">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-yellow-400 mb-4">🎮 免费在线游戏</h1>
-          <p className="text-gray-300 text-lg">发现最热门的在线游戏，立即开始你的游戏之旅！</p>
+          <h1 className="text-4xl font-bold text-yellow-400 mb-4">👾热门游戏中心</h1>
+          <p className="text-gray-300 text-lg">体验无忧无虑的游戏时光！精选最热门的免费在线游戏，让您享受轻松愉快的游戏体验！</p>
         </div>
 
         {/* 顶部横幅广告 */}

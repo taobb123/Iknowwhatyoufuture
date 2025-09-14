@@ -88,14 +88,14 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   // 获取分类标签
   const getCategoryLabel = (category: string): string => {
     const categoryMap: { [key: string]: string } = {
-      'racing': '赛车游戏',
-      'action': '动作游戏',
-      'adventure': '冒险游戏',
-      'puzzle': '益智游戏',
-      'shooting': '射击游戏',
-      'rpg': '角色扮演',
-      'arcade': '街机游戏',
-      'io': '多人游戏',
+      'racing': '热门赛车',
+      'action': '热门动作',
+      'adventure': '热门冒险',
+      'puzzle': '热门益智',
+      'shooting': '热门射击',
+      'rpg': '热门角色扮演',
+      'arcade': '热门街机',
+      'io': '热门多人',
     };
     return categoryMap[category] || category;
   };
@@ -106,12 +106,34 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
     return null;
   }
 
+  // 生成结构化数据
+  const generateStructuredData = () => {
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbItems.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": item.label,
+        "item": item.href ? `https://streetracer.online${item.href}` : undefined
+      }))
+    };
+  };
+
   return (
-    <nav 
-      className={`flex items-center space-x-1 text-sm text-gray-400 ${className}`}
-      aria-label="面包屑导航"
-    >
-      {breadcrumbItems.map((item, index) => {
+    <>
+      {/* 结构化数据 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateStructuredData())
+        }}
+      />
+      <nav 
+        className={`flex items-center space-x-1 text-sm text-gray-400 ${className}`}
+        aria-label="面包屑导航"
+      >
+        {breadcrumbItems.map((item, index) => {
         const isLast = index === breadcrumbItems.length - 1;
         const isFirst = index === 0;
 
@@ -143,7 +165,8 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
           </React.Fragment>
         );
       })}
-    </nav>
+      </nav>
+    </>
   );
 };
 
@@ -184,14 +207,14 @@ export const GameCategoryBreadcrumb: React.FC<{
 // 获取分类标签的辅助函数
 const getCategoryLabel = (category: string): string => {
   const categoryMap: { [key: string]: string } = {
-    'racing': '赛车游戏',
-    'action': '动作游戏',
-    'adventure': '冒险游戏',
-    'puzzle': '益智游戏',
-    'shooting': '射击游戏',
-    'rpg': '角色扮演',
-    'arcade': '街机游戏',
-    'io': '多人游戏',
+    'racing': '热门赛车',
+    'action': '热门动作',
+    'adventure': '热门冒险',
+    'puzzle': '热门益智',
+    'shooting': '热门射击',
+    'rpg': '热门角色扮演',
+    'arcade': '热门街机',
+    'io': '热门多人',
   };
   return categoryMap[category] || category;
 };

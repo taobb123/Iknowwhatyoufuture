@@ -1,7 +1,7 @@
 {
-    "name": "Iknowwhatyoufuture",
-    "short_name": "Iknowwhatyoufuture",
-    "description": "Free online racing games with stunning graphics and realistic physics",
+    "name": "热门游戏中心 - Iknowwhatyoufuture",
+    "short_name": "热门游戏",
+    "description": "体验无忧无虑的游戏时光！精选最热门的免费在线游戏，让您享受轻松愉快的游戏体验！",
     "icons": [
       {
         "src": "/android-chrome-192x192.png",
@@ -14,7 +14,9 @@
         "type": "image/png"
       }
     ],
-    "theme_color": "#ef4444",
-    "background_color": "#111827",
-    "display": "standalone"
+    "theme_color": "#FF6B35",
+    "background_color": "#1a1a1a",
+    "display": "standalone",
+    "start_url": "/",
+    "scope": "/"
   }

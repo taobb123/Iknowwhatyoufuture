@@ -22,43 +22,43 @@ const GameCategory: React.FC = () => {
   const getCategoryInfo = (category: string) => {
     const categoryMap: { [key: string]: { name: string; description: string; color: string } } = {
       'racing': { 
-        name: '赛车游戏', 
-        description: '体验极速驾驶的刺激，挑战各种赛道和车辆',
+        name: '热门赛车', 
+        description: '享受无忧无虑的驾驶乐趣，体验轻松愉快的竞速时光',
         color: 'bg-red-500'
       },
       'action': { 
-        name: '动作游戏', 
-        description: '快节奏的动作冒险，考验你的反应和技巧',
+        name: '热门动作', 
+        description: '轻松畅玩热门动作游戏，享受刺激而放松的游戏体验',
         color: 'bg-orange-500'
       },
       'adventure': { 
-        name: '冒险游戏', 
-        description: '探索未知世界，解开谜题，体验精彩冒险',
+        name: '热门冒险', 
+        description: '探索精彩世界，在轻松愉快的氛围中体验冒险乐趣',
         color: 'bg-green-500'
       },
       'puzzle': { 
-        name: '益智游戏', 
-        description: '挑战你的智力，解决各种有趣的谜题',
+        name: '热门益智', 
+        description: '挑战热门益智游戏，在轻松思考中享受解谜的乐趣',
         color: 'bg-blue-500'
       },
       'shooting': { 
-        name: '射击游戏', 
-        description: '激烈的射击战斗，展现你的射击技巧',
+        name: '热门射击', 
+        description: '体验热门射击游戏，在轻松愉快的氛围中展现技巧',
         color: 'bg-purple-500'
       },
       'rpg': { 
-        name: '角色扮演', 
-        description: '扮演不同角色，体验丰富的故事情节',
+        name: '热门角色扮演', 
+        description: '扮演精彩角色，在无忧无虑的游戏中体验丰富故事',
         color: 'bg-pink-500'
       },
       'arcade': { 
-        name: '街机游戏', 
-        description: '经典的街机游戏体验，怀旧与乐趣并存',
+        name: '热门街机', 
+        description: '重温经典街机游戏，享受怀旧而轻松的游戏时光',
         color: 'bg-yellow-500'
       },
       'io': { 
-        name: '多人游戏', 
-        description: '与其他玩家在线对战，展现你的实力',
+        name: '热门多人', 
+        description: '与朋友一起畅玩热门多人游戏，享受轻松愉快的社交体验',
         color: 'bg-indigo-500'
       },
     };
@@ -87,9 +87,10 @@ const GameCategory: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <SEOHead 
-        title={`${categoryInfo.name} - 免费在线游戏`}
-        description={categoryInfo.description}
-        keywords={`${categoryInfo.name}, 在线游戏, 免费游戏, ${category}`}
+        title={`${categoryInfo.name} - 免费在线游戏 | Iknowwhatyoufuture`}
+        description={`${categoryInfo.description} 精选最热门的${categoryInfo.name}免费在线游戏，让您享受无忧无虑的游戏时光！`}
+        keywords={`${categoryInfo.name},在线游戏,免费游戏,${category},浏览器游戏,游戏中心`}
+        canonical={`https://streetracer.online/games/category/${category}`}
       />
 
       {/* 面包屑导航 */}

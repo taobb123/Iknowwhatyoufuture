@@ -733,64 +733,68 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
 
               {/* 分页组件 - 只在文章列表模式下显示 */}
               {!isViewingArticle && totalPages > 1 && (
-                <div className="bg-gray-700/50 rounded-lg p-4 mt-6 backdrop-blur-sm">
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-gray-400">
-                      显示第 {((currentPage - 1) * guidesPerPage) + 1} - {Math.min(currentPage * guidesPerPage, filteredGuides.length)} 条，共 {filteredGuides.length} 条记录
+                <div className="bg-gray-700/50 rounded-lg p-6 mt-6 backdrop-blur-sm">
+                  <div className="space-y-4">
+                    {/* 分页信息 */}
+                    <div className="text-base text-gray-300 text-center">
+                      显示第 <span className="font-semibold text-white">{((currentPage - 1) * guidesPerPage) + 1}</span> - <span className="font-semibold text-white">{Math.min(currentPage * guidesPerPage, filteredGuides.length)}</span> 条，共 <span className="font-semibold text-blue-400">{filteredGuides.length}</span> 条记录
                     </div>
                     
-                    <div className="flex items-center gap-2">
-                      {/* 上一页按钮 */}
-                      <button
-                        onClick={onPrevPage}
-                        disabled={currentPage === 1}
-                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          currentPage === 1
-                            ? 'bg-gray-600/50 text-gray-500 cursor-not-allowed'
-                            : 'bg-gray-600/50 text-white hover:bg-gray-500/50'
-                        }`}
-                      >
-                        上一页
-                      </button>
+                    {/* 分页控制 */}
+                    <div className="flex items-center justify-center">
+                      <div className="flex items-center gap-3">
+                        {/* 上一页按钮 */}
+                        <button
+                          onClick={onPrevPage}
+                          disabled={currentPage === 1}
+                          className={`px-4 py-2.5 rounded-lg text-base font-medium transition-all duration-200 ${
+                            currentPage === 1
+                              ? 'bg-gray-600/30 text-gray-500 cursor-not-allowed'
+                              : 'bg-gray-600/50 text-white hover:bg-gray-500/50 hover:scale-105'
+                          }`}
+                        >
+                          上一页
+                        </button>
 
-                      {/* 页码按钮 */}
-                      <div className="flex items-center gap-1">
-                        {getPageNumbers(totalPages, currentPage).map((pageNum) => (
-                          <button
-                            key={pageNum}
-                            onClick={() => onPageChange(Number(pageNum))}
-                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                              currentPage === pageNum
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-gray-600/50 text-white hover:bg-gray-500/50'
-                            }`}
-                          >
-                            {pageNum}
-                          </button>
-                        ))}
+                        {/* 页码按钮 */}
+                        <div className="flex items-center gap-2">
+                          {getPageNumbers(totalPages, currentPage).map((pageNum) => (
+                            <button
+                              key={pageNum}
+                              onClick={() => onPageChange(Number(pageNum))}
+                              className={`px-4 py-2.5 rounded-lg text-base font-medium transition-all duration-200 min-w-[44px] ${
+                                currentPage === pageNum
+                                  ? 'bg-blue-600 text-white shadow-lg scale-105'
+                                  : 'bg-gray-600/50 text-white hover:bg-gray-500/50 hover:scale-105'
+                              }`}
+                            >
+                              {pageNum}
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* 下一页按钮 */}
+                        <button
+                          onClick={onNextPage}
+                          disabled={currentPage === totalPages}
+                          className={`px-4 py-2.5 rounded-lg text-base font-medium transition-all duration-200 ${
+                            currentPage === totalPages
+                              ? 'bg-gray-600/30 text-gray-500 cursor-not-allowed'
+                              : 'bg-gray-600/50 text-white hover:bg-gray-500/50 hover:scale-105'
+                          }`}
+                        >
+                          下一页
+                        </button>
                       </div>
-
-                      {/* 下一页按钮 */}
-                      <button
-                        onClick={onNextPage}
-                        disabled={currentPage === totalPages}
-                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          currentPage === totalPages
-                            ? 'bg-gray-600/50 text-gray-500 cursor-not-allowed'
-                            : 'bg-gray-600/50 text-white hover:bg-gray-500/50'
-                        }`}
-                      >
-                        下一页
-                      </button>
                     </div>
 
                     {/* 快速跳转 */}
-                    <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-gray-600">
-                      <span className="text-sm text-gray-400">快速跳转：</span>
+                    <div className="flex items-center justify-center gap-3 pt-4 border-t border-gray-600">
+                      <span className="text-base text-gray-300">快速跳转：</span>
                       <select
                         value={currentPage}
                         onChange={(e) => onPageChange(Number(e.target.value))}
-                        className="px-3 py-1 bg-gray-600/50 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"
+                        className="px-4 py-2 bg-gray-600/50 rounded-lg text-white text-base focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600 hover:bg-gray-500/50 transition-colors"
                       >
                         {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                           <option key={page} value={page}>

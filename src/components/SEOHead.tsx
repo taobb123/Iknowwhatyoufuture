@@ -8,15 +8,21 @@ interface SEOHeadProps {
   image?: string;
   url?: string;
   type?: string;
+  canonical?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
 }
 
 const SEOHead: React.FC<SEOHeadProps> = ({
-  title = "免费在线游戏 - 最热门的浏览器游戏",
-  description = "发现最热门的免费在线游戏！包含赛车、射击、冒险、益智等多种类型的高质量浏览器游戏，无需下载，立即开始游戏！",
-  keywords = "免费游戏,在线游戏,浏览器游戏,赛车游戏,射击游戏,冒险游戏,益智游戏,多人游戏",
+  title = "热门游戏中心 - 免费在线游戏平台",
+  description = "体验无忧无虑的游戏时光！精选最热门的免费在线游戏，包含动作、冒险、益智、休闲等多种类型，无需下载即可畅玩，让您享受轻松愉快的游戏体验！",
+  keywords = "热门游戏,在线游戏,免费游戏,游戏中心,动作游戏,冒险游戏,益智游戏,休闲游戏,无忧无虑",
   image = "/racing-horizon.jpg",
-  url = "https://your-domain.com",
-  type = "website"
+  url = "https://streetracer.online",
+  type = "website",
+  canonical,
+  noindex = false,
+  nofollow = false
 }) => {
   return (
     <Helmet>
@@ -28,9 +34,18 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      <meta name="author" content="Your Gaming Site" />
-      <meta name="robots" content="index, follow" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="author" content="Iknowwhatyoufuture" />
+      <meta name="robots" content={`${noindex ? 'noindex' : 'index'}, ${nofollow ? 'nofollow' : 'follow'}`} />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+      
+      {/* Canonical URL */}
+      {canonical && <link rel="canonical" href={canonical} />}
+      
+      {/* 额外的SEO标签 */}
+      <meta name="theme-color" content="#ef4444" />
+      <meta name="msapplication-TileColor" content="#111827" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       
       {/* Open Graph标签 */}
       <meta property="og:title" content={title} />

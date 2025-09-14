@@ -110,9 +110,10 @@ const GameDetail: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <SEOHead 
-        title={`${game.title} - 免费在线游戏`}
-        description={game.description}
-        keywords={`${game.title}, 在线游戏, ${game.category}, 免费游戏`}
+        title={`${game.title} - 免费在线游戏 | Iknowwhatyoufuture`}
+        description={`${game.description} 立即体验热门游戏${game.title}，享受无忧无虑的${game.category}游戏时光！`}
+        keywords={`${game.title},在线游戏,${game.category},免费游戏,浏览器游戏,游戏中心`}
+        canonical={`https://streetracer.online/games/${game.id}`}
       />
 
       {/* 面包屑导航 */}

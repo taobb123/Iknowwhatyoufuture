@@ -198,7 +198,7 @@ function Guides() {
         <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent z-10" />
         <img
           src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1600"
-          alt="Game Guides"
+          alt="游戏攻略页面背景图片 - 展示各种游戏攻略和指南"
           className="w-full h-[400px] object-cover"
         />
         <div className="absolute inset-0 flex items-center z-20">
@@ -229,7 +229,7 @@ function Guides() {
                 onClick={() => setSelectedGuide(guide.id)}
               >
                 <div className="relative">
-                  <img src={guide.image} alt={guide.title} className="w-full h-48 object-cover" />
+                  <img src={guide.image} alt={`${guide.title} - 游戏攻略封面图片`} className="w-full h-48 object-cover" />
                   <div className="absolute top-4 left-4">
                     <span className={`px-3 py-1 rounded-full text-sm font-bold ${getDifficultyColor(guide.difficulty)}`}>
                       {guide.difficulty}

@@ -92,9 +92,10 @@ const GamesList: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <SEOHead 
-        title="所有游戏 - 免费在线游戏"
-        description="浏览所有免费在线游戏，找到你喜欢的游戏类型"
-        keywords="在线游戏, 免费游戏, 浏览器游戏"
+        title="所有热门游戏 - 免费在线游戏 | Iknowwhatyoufuture"
+        description="浏览所有热门免费在线游戏，包含动作、冒险、益智、休闲等多种类型，让您享受无忧无虑的游戏时光！"
+        keywords="热门游戏,在线游戏,免费游戏,浏览器游戏,动作游戏,冒险游戏,益智游戏,休闲游戏,无忧无虑"
+        canonical="https://streetracer.online/games"
       />
 
       {/* 面包屑导航 */}

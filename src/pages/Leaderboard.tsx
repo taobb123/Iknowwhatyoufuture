@@ -220,7 +220,7 @@ function Leaderboard() {
         <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent z-10" />
         <img
           src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1600"
-          alt="Leaderboard"
+          alt="游戏排行榜页面背景图片 - 展示热门游戏排名"
           className="w-full h-[400px] object-cover"
         />
         <div className="absolute inset-0 flex items-center z-20">
