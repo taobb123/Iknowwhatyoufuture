@@ -1,10 +1,10 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 // import ErrorBoundary from './components/ErrorBoundary';
 import { GameProvider, useGameContext } from './contexts/GameContext.simple';
-import { initGA } from './utils/analytics';
+import { initGA, trackPageView } from './utils/analytics';
 import { games } from './data/gamesData';
 
 // 懒加载页面组件
@@ -24,6 +24,18 @@ const GamesList = lazy(() => import('./pages/GamesList'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 import LoadingSpinner from './components/common/LoadingSpinner';
+
+// 页面跟踪组件
+const PageTracker: React.FC = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // 跟踪页面浏览
+    trackPageView(location.pathname + location.search, document.title);
+  }, [location]);
+
+  return null;
+};
 
 // 内部组件用于初始化游戏数据
 const AppContent: React.FC = () => {
@@ -75,6 +87,7 @@ function App() {
   return (
     <GameProvider>
       <Router>
+        <PageTracker />
         <AppContent />
       </Router>
     </GameProvider>

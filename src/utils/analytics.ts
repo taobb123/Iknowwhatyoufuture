@@ -1,5 +1,5 @@
 // Google Analytics 4 集成
-export const GA_TRACKING_ID = 'G-XXXXXXXXXX'; // 替换为你的GA4跟踪ID
+export const GA_TRACKING_ID = 'G-DNY1SK31TR'; // Google Analytics 4 跟踪ID
 
 // 初始化Google Analytics
 export const initGA = () => {
