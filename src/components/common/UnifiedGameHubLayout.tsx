@@ -1,22 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { Search, Heart, MessageCircle, Share2, Eye, Clock, User, Gamepad2, Star, TrendingUp, Grid, Code, Server, Brain, Palette, Wrench, ArrowLeft, ArrowRight, Tag } from 'lucide-react';
-import { getArticleById } from '../../data/articlesData';
+import { Search, Heart, MessageCircle, Share2, Eye, Clock, User, Gamepad2, Star, TrendingUp, Grid, Code, Server, Brain, Palette, Wrench, ArrowLeft, ArrowRight, Tag, Plus } from 'lucide-react';
+import { Article } from '../../data/articleManager';
+import MarkdownRenderer from '../MarkdownRenderer';
 
-interface Guide {
-  id: number;
-  title: string;
-  content: string;
-  author: string;
-  gameId: number;
-  gameTitle: string;
-  category: string;
-  likes: number;
-  views: number;
-  comments: number;
-  createdAt: string;
-  tags: string[];
-  articleId?: string;
-}
+// 使用 Article 接口替代 Guide
+type Guide = Article;
 
 interface Game {
   id: number;
@@ -59,6 +47,8 @@ interface UnifiedGameHubLayoutProps {
   newGames: Game[];
   // 用户信息
   userInfo: UserInfo;
+  // 发表按钮回调
+  onPublishClick?: () => void;
   className?: string;
 }
 
@@ -91,6 +81,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
   hotGames,
   newGames,
   userInfo,
+  onPublishClick,
   className = ''
 }) => {
   // 文章查看状态
@@ -105,8 +96,8 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
   // 文章内容区域的ref
   const articleContentRef = useRef<HTMLDivElement>(null);
 
-  // 获取当前文章
-  const currentArticle = currentArticleId ? getArticleById(currentArticleId) : null;
+  // 获取当前文章 - 从 guides 中查找
+  const currentArticle = currentArticleId ? guides.find(guide => guide.id === currentArticleId) : null;
 
   // 智能定位到文章顶部的通用函数
   const scrollToArticleTop = (delay: number = 100) => {
@@ -123,7 +114,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
   // 打开文章
   const handleArticleClick = (articleId: string) => {
     // 先检查文章是否存在
-    const article = getArticleById(articleId);
+    const article = guides.find(guide => guide.id === articleId);
     if (!article) {
       // 如果文章不存在，为该文章设置错误状态
       setArticleErrors(prev => ({
@@ -150,9 +141,9 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
     });
     setCurrentArticleId(articleId);
     setIsViewingArticle(true);
-    // 模拟文章统计
-    setLikesCount(Math.floor(Math.random() * 1000) + 100);
-    setViewsCount(Math.floor(Math.random() * 5000) + 500);
+    // 使用真实的文章统计
+    setLikesCount(article.likes);
+    setViewsCount(article.views);
     
     // 智能定位到文章顶部
     scrollToArticleTop(100);
@@ -442,6 +433,15 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                   <option value="最多点赞">最多点赞</option>
                   <option value="最多评论">最多评论</option>
                 </select>
+                {onPublishClick && (
+                  <button
+                    onClick={onPublishClick}
+                    className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
+                  >
+                    <Plus size={20} />
+                    发表
+                  </button>
+                )}
               </div>
               <div className="text-sm text-gray-400">
                 找到 {filteredGuides.length} 篇攻略，当前显示第 {currentPage} 页，共 {totalPages} 页
@@ -482,11 +482,11 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                     <header className="mb-8">
                       <div className="flex items-center gap-2 mb-4">
                         <span className="px-3 py-1 bg-blue-600 text-white text-sm rounded-full">
-                          {currentArticle.meta.category}
+                          {currentArticle.category}
                         </span>
                         <span className="text-gray-400 text-sm">•</span>
                         <span className="text-gray-400 text-sm">
-                          {formatDate(currentArticle.meta.publishDate)}
+                          {formatDate(currentArticle.createdAt)}
                         </span>
                       </div>
                       
@@ -494,18 +494,18 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                         {currentArticle.title}
                       </h1>
                       
-                      <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                        {currentArticle.meta.description}
-                      </p>
+                      <div className="text-lg text-gray-300 mb-6 leading-relaxed">
+                        <MarkdownRenderer content={currentArticle.content.substring(0, 200) + '...'} />
+                      </div>
                       
                       <div className="flex items-center gap-6 text-sm text-gray-400">
                         <div className="flex items-center gap-2">
                           <User size={16} />
-                          <span>{currentArticle.meta.author}</span>
+                          <span>{currentArticle.author}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock size={16} />
-                          <span>{currentArticle.meta.readTime} 分钟阅读</span>
+                          <span>{Math.ceil(currentArticle.content.length / 500)} 分钟阅读</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Eye size={16} />
@@ -516,11 +516,12 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
 
                     {/* 文章正文 */}
                     <article className="prose prose-invert prose-lg max-w-none">
-                      <div 
+                      <div
                         ref={articleContentRef}
-                        dangerouslySetInnerHTML={{ __html: currentArticle.content }}
                         className="article-content"
-                      />
+                      >
+                        <MarkdownRenderer content={currentArticle.content} />
+                      </div>
                     </article>
 
                     {/* 文章底部操作 */}
@@ -632,7 +633,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                 /* 攻略列表 */
                 <>
                   {paginatedGuides.map(guide => {
-                    const articleId = guide.articleId || guide.id.toString();
+                    const articleId = guide.id;
                     const hasError = articleErrors[articleId];
                     
                     return (
@@ -676,11 +677,11 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                               </div>
                             )}
                             
-                            <p className={`mb-3 line-clamp-2 ${
+                            <div className={`mb-3 line-clamp-2 ${
                               hasError ? 'text-red-300/70' : 'text-gray-400'
                             }`}>
-                              {guide.content}
-                            </p>
+                              <MarkdownRenderer content={guide.content.substring(0, 150) + '...'} />
+                            </div>
                             <div className={`flex items-center gap-4 text-sm mb-3 ${
                               hasError ? 'text-red-400/70' : 'text-gray-500'
                             }`}>
@@ -692,9 +693,11 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                                 <Clock size={16} />
                                 {formatDate(guide.createdAt)}
                               </span>
+                              {guide.gameTitle && (
                               <span className={hasError ? 'text-red-400' : 'text-blue-400'}>
                                 {guide.gameTitle}
                               </span>
+                              )}
                             </div>
                             <div className={`flex items-center gap-4 text-sm ${
                               hasError ? 'text-red-400/70' : 'text-gray-500'

@@ -18,6 +18,7 @@ const Terms = lazy(() => import('./pages/Terms'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const GameChecker = lazy(() => import('./pages/GameChecker'));
 const GameHub = lazy(() => import('./pages/GameHub'));
+const ArticleEditor = lazy(() => import('./pages/ArticleEditor'));
 const GameDetail = lazy(() => import('./pages/GameDetail'));
 const GameCategory = lazy(() => import('./pages/GameCategory'));
 const GamesList = lazy(() => import('./pages/GamesList'));
@@ -66,6 +67,7 @@ const AppContent: React.FC = () => {
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/game-checker" element={<GameChecker />} />
             <Route path="/game-hub" element={<GameHub />} />
+            <Route path="/article-editor" element={<ArticleEditor />} />
             <Route path="/games" element={<GamesList />} />
             <Route path="/games/:id" element={<GameDetail />} />
             <Route path="/games/category/:category" element={<GameCategory />} />
