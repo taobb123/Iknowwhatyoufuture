@@ -45,6 +45,8 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
+      {/* 添加顶部间距避免被导航栏遮挡 */}
+      <div className="pt-16"></div>
       <SEOHead 
         title="热门游戏中心 - 免费在线游戏 | Iknowwhatyoufuture"
         description="体验无忧无虑的游戏时光！精选最热门的免费在线游戏，包含动作、冒险、益智、休闲等多种类型，无需下载即可畅玩，让您享受轻松愉快的游戏体验！"

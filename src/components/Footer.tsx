@@ -1,6 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function Footer() {
+  const location = useLocation();
+  
+  // 在文章编辑页面隐藏Footer
+  if (location.pathname.startsWith('/article-edit/')) {
+    return null;
+  }
   return (
     <footer className="bg-gray-800 border-t border-gray-700">
       <div className="max-w-7xl mx-auto py-8 px-6">
@@ -33,7 +39,6 @@ function Footer() {
             <h4 className="text-lg font-semibold text-yellow-400 mb-4">快速链接</h4>
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-400 hover:text-white transition-colors">首页</Link></li>
-              <li><Link to="/blog" className="text-gray-400 hover:text-white transition-colors">博客</Link></li>
               <li><Link to="/faq" className="text-gray-400 hover:text-white transition-colors">常见问题</Link></li>
               <li><Link to="/leaderboard" className="text-gray-400 hover:text-white transition-colors">排行榜</Link></li>
             </ul>

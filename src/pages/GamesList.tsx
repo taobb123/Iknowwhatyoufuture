@@ -91,6 +91,8 @@ const GamesList: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
+      {/* 添加顶部间距避免被导航栏遮挡 */}
+      <div className="pt-16"></div>
       <SEOHead 
         title="所有热门游戏 - 免费在线游戏 | Iknowwhatyoufuture"
         description="浏览所有热门免费在线游戏，包含动作、冒险、益智、休闲等多种类型，让您享受无忧无虑的游戏时光！"

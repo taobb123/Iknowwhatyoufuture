@@ -96,13 +96,11 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       document.body.appendChild(successMessage);
       
       // 自动隐藏提示并导航
-      setTimeout(() => {
-        successMessage.remove();
-        navigate('/game-hub');
-      }, 2000);
+        setTimeout(() => {
+          successMessage.remove();
+          navigate('/article-management');
+        }, 2000);
     } catch (error) {
-      console.error('发表文章失败:', error);
-      
       // 显示错误提示
       const errorMessage = document.createElement('div');
       errorMessage.innerHTML = `
@@ -197,13 +195,12 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       `;
       document.body.appendChild(draftMessage);
       
-      // 自动隐藏提示
+      // 自动隐藏提示并导航
       setTimeout(() => {
         draftMessage.remove();
+        navigate('/article-management');
       }, 2000);
     } catch (error) {
-      console.error('保存草稿失败:', error);
-      
       // 显示错误提示
       const errorMessage = document.createElement('div');
       errorMessage.innerHTML = `
@@ -264,40 +261,43 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white relative">
+      {/* 添加顶部间距避免被导航栏遮挡 */}
+      <div className="pt-16"></div>
+      
       {/* 顶部导航栏 */}
       <div className="bg-gray-800 p-4 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <button
               onClick={handleGoBack}
               className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
             >
-              <ArrowLeft size={20} />
-              返回攻略社区
+              <ArrowLeft size={18} />
+              <span className="hidden sm:inline">返回攻略社区</span>
             </button>
-            <div className="h-6 w-px bg-gray-600"></div>
-            <h1 className="text-xl font-semibold">📝 撰写攻略</h1>
+            <div className="h-6 w-px bg-gray-600 hidden sm:block"></div>
+            <h1 className="text-lg sm:text-xl font-semibold">📝 撰写攻略</h1>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setIsPreview(!isPreview)}
-              className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
+              className={`px-3 sm:px-4 py-2 rounded-lg flex items-center gap-1 sm:gap-2 transition-colors ${
                 isPreview 
                   ? 'bg-blue-600 text-white' 
                   : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
             >
-              <Eye size={18} />
-              {isPreview ? '编辑' : '预览'}
+              <Eye size={16} />
+              <span className="hidden sm:inline">{isPreview ? '编辑' : '预览'}</span>
             </button>
             
             <button
               onClick={handleSaveDraft}
-              className="px-4 py-2 bg-gray-700 text-gray-300 hover:bg-gray-600 rounded-lg flex items-center gap-2 transition-colors"
+              className="px-3 sm:px-4 py-2 bg-gray-700 text-gray-300 hover:bg-gray-600 rounded-lg flex items-center gap-1 sm:gap-2 transition-colors"
             >
-              <Save size={18} />
-              保存草稿
+              <Save size={16} />
+              <span className="hidden sm:inline">保存草稿</span>
             </button>
           </div>
         </div>

@@ -10,7 +10,7 @@ interface SearchBoxProps {
 interface SearchResult {
   id: number;
   title: string;
-  type: 'game' | 'blog';
+  type: 'game';
   category?: string;
   description?: string;
 }
@@ -68,16 +68,6 @@ function SearchBox({ onQueryChange }: SearchBoxProps) {
       }
     });
 
-    // 这里可以添加博客搜索逻辑
-    // 暂时添加一些模拟的博客结果
-    if (searchTerm.includes('blog') || searchTerm.includes('文章')) {
-      searchResults.push({
-        id: 999,
-        title: '游戏开发指南',
-        type: 'blog',
-        description: '学习如何开发有趣的浏览器游戏'
-      });
-    }
 
     setResults(searchResults.slice(0, 8)); // 限制结果数量
     setSelectedIndex(0);
@@ -118,13 +108,6 @@ function SearchBox({ onQueryChange }: SearchBoxProps) {
     if (result.type === 'game') {
       // 导航到游戏详情页
       navigate(`/games/${result.id}`);
-    } else if (result.type === 'blog') {
-      // 导航到博客页面
-      navigate('/blog', { 
-        state: { 
-          searchQuery: query 
-        } 
-      });
     }
 
     // 清空搜索框

@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, Menu, X, Settings, LogOut, User } from 'lucide-react';
 import SearchBox from './SearchBox';
 import GameNavigation from './GameNavigation';
+import { useAuth } from '../contexts/AuthContext';
+import PermissionWrapper from './PermissionWrapper';
 
 interface NavbarProps {}
 
 function Navbar({}: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const { state, logout, isAdmin, isSuperAdmin } = useAuth();
 
   // 监听 Ctrl+K 快捷键
   useEffect(() => {
@@ -31,6 +35,11 @@ function Navbar({}: NavbarProps) {
     };
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    setShowUserMenu(false);
+  };
+
   return (
     <>
     <nav className="fixed top-0 left-0 right-0 bg-gray-800 z-50 border-b border-gray-700">
@@ -48,7 +57,6 @@ function Navbar({}: NavbarProps) {
               <SearchBox 
                 onQueryChange={(query) => {
                   // 可以在这里处理搜索查询变化
-                  console.log('Search query:', query);
                 }}
               />
             </div>
@@ -74,12 +82,67 @@ function Navbar({}: NavbarProps) {
             >
               游戏中心
             </Link>
-            <Link
-              to="/blog"
-              className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-            >
-              Blog
-            </Link>
+            
+            {/* 管理入口 - 只有管理员可见 */}
+            {state.isAuthenticated && isAdmin() && (
+              <Link
+                to="/article-management"
+                className="flex items-center gap-1 text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                <Settings size={16} />
+                管理
+              </Link>
+            )}
+
+            {/* 用户菜单 */}
+            {state.isAuthenticated ? (
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center gap-2 text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  <User size={16} />
+                  {state.user?.username}
+                </button>
+                
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-lg shadow-lg py-1 z-50">
+                    <div className="px-4 py-2 text-sm text-gray-300 border-b border-gray-600">
+                      {state.user?.email}
+                    </div>
+                    <div className="px-4 py-2 text-xs text-gray-400 border-b border-gray-600">
+                      角色: {state.user?.role === 'superAdmin' ? '超级管理员' : state.user?.role === 'admin' ? '管理员' : '普通用户'}
+                    </div>
+                    
+                {/* 用户管理 - 只有超级管理员可见 */}
+                {state.isAuthenticated && isSuperAdmin() && (
+                  <Link
+                    to="/user-management"
+                    className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    用户管理
+                  </Link>
+                )}
+                    
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 flex items-center gap-2"
+                    >
+                      <LogOut size={14} />
+                      登出
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                登录
+              </Link>
+            )}
           </div>
 
             {/* 移动端菜单按钮 */}
@@ -108,19 +171,70 @@ function Navbar({}: NavbarProps) {
                   首页
                 </Link>
                 <Link
+                  to="/games"
+                  className="block text-white hover:text-yellow-400 px-3 py-2 rounded-md text-base font-medium"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  所有游戏
+                </Link>
+                <Link
                   to="/game-hub"
                   className="block text-white hover:text-yellow-400 px-3 py-2 rounded-md text-base font-medium"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   游戏中心
                 </Link>
-                <Link
-                  to="/blog"
-                  className="block text-white hover:text-yellow-400 px-3 py-2 rounded-md text-base font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Blog
-                </Link>
+                
+                {/* 管理入口 - 只有管理员可见 */}
+                {state.isAuthenticated && isAdmin() && (
+                  <Link
+                    to="/article-management"
+                    className="flex items-center gap-2 text-white hover:text-yellow-400 px-3 py-2 rounded-md text-base font-medium"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <Settings size={16} />
+                    管理
+                  </Link>
+                )}
+
+                {/* 用户管理 - 只有超级管理员可见 */}
+                {state.isAuthenticated && isSuperAdmin() && (
+                  <Link
+                    to="/user-management"
+                    className="flex items-center gap-2 text-white hover:text-yellow-400 px-3 py-2 rounded-md text-base font-medium"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <User size={16} />
+                    用户管理
+                  </Link>
+                )}
+
+                {/* 用户信息 */}
+                {state.isAuthenticated ? (
+                  <div className="px-3 py-2 border-t border-gray-600">
+                    <div className="text-sm text-gray-300">
+                      {state.user?.username} ({state.user?.role === 'superAdmin' ? '超级管理员' : state.user?.role === 'admin' ? '管理员' : '普通用户'})
+                    </div>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm mt-2"
+                    >
+                      <LogOut size={14} />
+                      登出
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="block text-white hover:text-yellow-400 px-3 py-2 rounded-md text-base font-medium"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    登录
+                  </Link>
+                )}
               </div>
             </div>
           )}

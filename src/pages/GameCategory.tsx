@@ -86,6 +86,8 @@ const GameCategory: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
+      {/* 添加顶部间距避免被导航栏遮挡 */}
+      <div className="pt-16"></div>
       <SEOHead 
         title={`${categoryInfo.name} - 免费在线游戏 | Iknowwhatyoufuture`}
         description={`${categoryInfo.description} 精选最热门的${categoryInfo.name}免费在线游戏，让您享受无忧无虑的游戏时光！`}

@@ -4,21 +4,25 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 // import ErrorBoundary from './components/ErrorBoundary';
 import { GameProvider, useGameContext } from './contexts/GameContext.simple';
+import { AuthProvider } from './contexts/AuthContext';
 import { initGA, trackPageView } from './utils/analytics';
 import { games } from './data/gamesData';
+import { initializeDefaultAdmin } from './data/userManager';
 
 // 懒加载页面组件
 const Home = lazy(() => import('./pages/Home'));
 const Guides = lazy(() => import('./pages/Guides'));
 const Leaderboard = lazy(() => import('./pages/Leaderboard'));
-const Blog = lazy(() => import('./pages/Blog'));
 const FAQ = lazy(() => import('./pages/FAQ'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
-const BlogPost = lazy(() => import('./pages/BlogPost'));
 const GameChecker = lazy(() => import('./pages/GameChecker'));
 const GameHub = lazy(() => import('./pages/GameHub'));
 const ArticleEditor = lazy(() => import('./pages/ArticleEditor'));
+const ArticleManagement = lazy(() => import('./pages/ArticleManagement'));
+const ArticleEdit = lazy(() => import('./pages/ArticleEdit'));
+const Login = lazy(() => import('./pages/Login'));
+const UserManagement = lazy(() => import('./pages/UserManagement'));
 const GameDetail = lazy(() => import('./pages/GameDetail'));
 const GameCategory = lazy(() => import('./pages/GameCategory'));
 const GamesList = lazy(() => import('./pages/GamesList'));
@@ -45,6 +49,8 @@ const AppContent: React.FC = () => {
   useEffect(() => {
     // 初始化游戏数据
     loadGames(games);
+    // 初始化默认管理员账户
+    initializeDefaultAdmin();
   }, []); // 移除loadGames依赖，避免无限循环
 
   return (
@@ -60,14 +66,16 @@ const AppContent: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/guides" element={<Guides />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/blog" element={<Blog />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/game-checker" element={<GameChecker />} />
             <Route path="/game-hub" element={<GameHub />} />
             <Route path="/article-editor" element={<ArticleEditor />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/article-management" element={<ArticleManagement />} />
+            <Route path="/article-edit/:id" element={<ArticleEdit />} />
+            <Route path="/user-management" element={<UserManagement />} />
             <Route path="/games" element={<GamesList />} />
             <Route path="/games/:id" element={<GameDetail />} />
             <Route path="/games/category/:category" element={<GameCategory />} />
@@ -87,12 +95,14 @@ function App() {
   }, []);
 
   return (
-    <GameProvider>
-      <Router>
-        <PageTracker />
-        <AppContent />
-      </Router>
-    </GameProvider>
+    <AuthProvider>
+      <GameProvider>
+        <Router>
+          <PageTracker />
+          <AppContent />
+        </Router>
+      </GameProvider>
+    </AuthProvider>
   );
 }
 

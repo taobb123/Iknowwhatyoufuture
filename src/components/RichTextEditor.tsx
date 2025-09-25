@@ -32,6 +32,30 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
     }
   };
 
+  // 检查当前光标是否在代码格式中
+  const isInCodeFormat = () => {
+    const textarea = textareaRef.current;
+    if (!textarea) return false;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const beforeCursor = value.substring(0, start);
+    const afterCursor = value.substring(end);
+    
+    // 检查是否在代码块中
+    const codeBlockStart = beforeCursor.lastIndexOf('```');
+    const codeBlockEnd = afterCursor.indexOf('```');
+    const isInCodeBlock = codeBlockStart !== -1 && (codeBlockEnd === -1 || codeBlockStart > beforeCursor.lastIndexOf('```', codeBlockStart));
+    
+    if (isInCodeBlock) return true;
+    
+    // 检查是否在行内代码中
+    const beforeMatch = beforeCursor.match(/`([^`]*)$/);
+    const afterMatch = afterCursor.match(/^([^`]*)`/);
+    
+    return !!(beforeMatch && afterMatch);
+  };
+
   // 插入文本到光标位置
   const insertText = (before: string, after: string = '', placeholder: string = '') => {
     const textarea = textareaRef.current;
@@ -71,7 +95,51 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   };
 
   const formatCode = () => {
-    insertText('`', '`', '代码');
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = value.substring(start, end);
+    
+    // 检查当前光标位置是否已经在代码块中
+    const beforeCursor = value.substring(0, start);
+    const afterCursor = value.substring(end);
+    
+    // 检查是否在代码块中（```包围的区域）
+    const codeBlockStart = beforeCursor.lastIndexOf('```');
+    const codeBlockEnd = afterCursor.indexOf('```');
+    const isInCodeBlock = codeBlockStart !== -1 && (codeBlockEnd === -1 || codeBlockStart > beforeCursor.lastIndexOf('```', codeBlockStart));
+    
+    if (isInCodeBlock) {
+      // 如果在代码块中，不添加额外的反引号
+      return;
+    }
+    
+    // 检查是否已经在行内代码中
+    const beforeMatch = beforeCursor.match(/`([^`]*)$/);
+    const afterMatch = afterCursor.match(/^([^`]*)`/);
+    
+    if (beforeMatch && afterMatch) {
+      // 如果已经在行内代码中，移除反引号
+      const newValue = 
+        value.substring(0, start - beforeMatch[0].length) + 
+        beforeMatch[1] + afterMatch[1] + 
+        value.substring(end + afterMatch[0].length);
+      onChange(newValue);
+      
+      // 设置光标位置
+      const newCursorPosition = start - beforeMatch[0].length;
+      setTimeout(() => {
+        setCursorPosition(newCursorPosition, newCursorPosition + beforeMatch[1].length + afterMatch[1].length);
+      }, 0);
+    } else if (selectedText && selectedText.trim()) {
+      // 如果选中了有效文本，用反引号包围
+      insertText('`', '`', '');
+    } else {
+      // 如果没有选中文本，插入占位符
+      insertText('`', '`', '代码');
+    }
   };
 
   const formatCodeBlock = () => {
@@ -83,7 +151,34 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   };
 
   const formatList = () => {
-    insertText('- ', '', '列表项');
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = value.substring(start, end);
+    
+    // 检查当前行是否已经是列表项
+    const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+    const currentLine = value.substring(currentLineStart, end);
+    
+    if (currentLine.trim().startsWith('- ')) {
+      // 如果已经是列表项，移除列表标记
+      const newValue = 
+        value.substring(0, currentLineStart) + 
+        currentLine.replace(/^- /, '') + 
+        value.substring(end);
+      onChange(newValue);
+      
+      // 设置光标位置
+      const newCursorPosition = start - 2; // 减去 "- " 的长度
+      setTimeout(() => {
+        setCursorPosition(newCursorPosition, newCursorPosition);
+      }, 0);
+    } else {
+      // 如果不是列表项，添加列表标记
+      insertText('- ', '', '列表项');
+    }
   };
 
   const formatQuote = () => {
@@ -164,11 +259,18 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
         <div className="flex flex-wrap gap-2">
           {toolbarButtons.map((button, index) => {
             const IconComponent = button.icon;
+            const isCodeButton = button.label === '代码';
+            const isActive = isCodeButton && isInCodeFormat();
+            
             return (
               <button
                 key={index}
                 onClick={button.action}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-600 hover:bg-gray-500 text-gray-300 hover:text-white rounded-lg transition-colors text-sm font-medium"
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
+                  isActive 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-600 hover:bg-gray-500 text-gray-300 hover:text-white'
+                }`}
                 title={`${button.label} (${button.shortcut})`}
               >
                 <IconComponent size={16} />

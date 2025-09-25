@@ -58,7 +58,6 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   // 获取路径标签
   const getPathLabel = (segment: string, fullPath: string): string => {
     const labelMap: { [key: string]: string } = {
-      'blog': '博客',
       'guides': '攻略',
       'leaderboard': '排行榜',
       'faq': '常见问题',
@@ -71,10 +70,6 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
       'search': '搜索',
     };
 
-    // 特殊处理
-    if (fullPath.includes('/blog/') && segment !== 'blog') {
-      return '文章详情';
-    }
     if (fullPath.includes('/games/category/') && segment !== 'category' && segment !== 'games') {
       return getCategoryLabel(segment);
     }

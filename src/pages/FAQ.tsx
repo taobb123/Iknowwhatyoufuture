@@ -32,7 +32,7 @@ function FAQ() {
     },
     {
       question: "Are there regular updates?",
-      answer: "Yes, we regularly update our games with new features, improvements, and bug fixes. Keep an eye on our blog for the latest updates."
+      answer: "Yes, we regularly update our games with new features, improvements, and bug fixes. Keep an eye on our game hub for the latest updates."
     }
   ];
 

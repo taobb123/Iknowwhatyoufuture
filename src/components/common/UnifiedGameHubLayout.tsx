@@ -516,7 +516,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
 
                     {/* 文章正文 */}
                     <article className="prose prose-invert prose-lg max-w-none">
-                      <div
+                      <div 
                         ref={articleContentRef}
                         className="article-content"
                       >

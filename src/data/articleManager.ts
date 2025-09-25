@@ -36,7 +36,6 @@ export const getAllArticles = (): Article[] => {
     const articles = localStorage.getItem(ARTICLES_STORAGE_KEY);
     return articles ? JSON.parse(articles) : [];
   } catch (error) {
-    console.error('Error loading articles:', error);
     return [];
   }
 };
@@ -49,7 +48,7 @@ const saveAllArticles = (articles: Article[]): void => {
     }
     localStorage.setItem(ARTICLES_STORAGE_KEY, JSON.stringify(articles));
   } catch (error) {
-    console.error('Error saving articles:', error);
+    // 保存文章失败
   }
 };
 
@@ -108,6 +107,40 @@ export const getArticlesByCategory = (category: string): Article[] => {
   return getPublishedArticles().filter(article => article.category === category);
 };
 
+// 删除文章
+export const deleteArticle = (id: string): boolean => {
+  const articles = getAllArticles();
+  const index = articles.findIndex(article => article.id === id);
+  
+  if (index === -1) return false;
+  
+  articles.splice(index, 1);
+  saveAllArticles(articles);
+  return true;
+};
+
+// 获取所有分类
+export const getAllCategories = (): string[] => {
+  const articles = getAllArticles();
+  const categories = new Set(articles.map(article => article.category));
+  return Array.from(categories).sort();
+};
+
+// 按主题分类获取文章
+export const getArticlesByTopic = (topic: string): Article[] => {
+  if (topic === '全部') {
+    return getAllArticlesSortedByTime();
+  }
+  return getAllArticles()
+    .filter(article => article.category === topic)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+};
+
+// 按时间排序获取所有文章
+export const getAllArticlesSortedByTime = (): Article[] => {
+  return getAllArticles().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+};
+
 // 搜索文章
 export const searchArticles = (query: string): Article[] => {
   const publishedArticles = getPublishedArticles();
@@ -131,9 +164,12 @@ export const initializeSampleArticles = (): void => {
     const articles = getAllArticles();
     
     if (articles.length === 0) {
+      // 重置计数器
+      localStorage.setItem(ARTICLE_ID_COUNTER_KEY, '0');
+      
       const sampleArticles: Article[] = [
         {
-          id: 'article_1',
+          id: generateArticleId(),
           title: 'React游戏开发完整攻略',
           content: '从零开始学习React游戏开发，包括状态管理、组件设计、性能优化等核心概念...',
           author: '游戏大师',
@@ -150,7 +186,7 @@ export const initializeSampleArticles = (): void => {
           articleId: 'react-game-development'
         },
         {
-          id: 'article_2',
+          id: generateArticleId(),
           title: 'TypeScript在游戏项目中的应用',
           content: '详细介绍如何在游戏开发中使用TypeScript，提升代码质量和开发效率...',
           author: '代码猎人',
@@ -167,7 +203,7 @@ export const initializeSampleArticles = (): void => {
           articleId: 'typescript-game-project'
         },
         {
-          id: 'article_3',
+          id: generateArticleId(),
           title: 'Vue.js游戏组件设计模式',
           content: '探索Vue.js在游戏开发中的最佳实践，包括组件通信、状态管理等...',
           author: 'Vue专家',
@@ -186,9 +222,8 @@ export const initializeSampleArticles = (): void => {
       ];
       
       saveAllArticles(sampleArticles);
-      localStorage.setItem(ARTICLE_ID_COUNTER_KEY, '3');
     }
   } catch (error) {
-    console.error('初始化示例文章失败:', error);
+    // 初始化示例文章失败
   }
 };

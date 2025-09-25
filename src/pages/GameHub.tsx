@@ -173,20 +173,23 @@ const GameHub: React.FC<GameHubProps> = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+      {/* 添加顶部间距避免被导航栏遮挡 */}
+      <div className="pt-16"></div>
+      
       {/* 顶部导航栏 */}
       <div className="bg-gray-800 p-4 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="text-2xl font-bold">🎮 游戏攻略社区</h1>
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <h1 className="text-xl sm:text-2xl font-bold">🎮 游戏攻略社区</h1>
           <div className="flex items-center gap-4">
             <button 
               onClick={handlePublishClick}
-              className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
             >
-              <Plus size={20} />
-              发布攻略
+              <Plus size={18} />
+              <span className="hidden sm:inline">发布攻略</span>
             </button>
             <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-              <User size={20} />
+              <User size={18} />
             </div>
           </div>
         </div>
