@@ -26,8 +26,6 @@ const TopicManagementSimple: React.FC = () => {
 
   const loadData = () => {
     try {
-      console.log('加载主题和板块数据...');
-      
       // 加载板块数据
       const boardsList = getAllBoards();
       setBoards(boardsList);
@@ -36,7 +34,6 @@ const TopicManagementSimple: React.FC = () => {
       const topicsList = getAllTopics();
       setTopics(topicsList);
       
-      console.log('加载的数据:', { boards: boardsList.length, topics: topicsList.length });
       setLoading(false);
     } catch (error) {
       console.error('加载数据失败:', error);
@@ -51,14 +48,12 @@ const TopicManagementSimple: React.FC = () => {
     }
     
     try {
-      console.log('TopicManagementSimple: 创建主题:', { ...formData, boardId: selectedBoard });
       const module = await import('../data/communityManager');
       const newTopic = module.addTopic({ ...formData, boardId: selectedBoard });
       setTopics([...topics, newTopic]);
       setShowAddModal(false);
       setFormData({ name: '', description: '', icon: '🌟', color: 'from-yellow-500 to-orange-500' });
       setSelectedBoard('');
-      console.log('TopicManagementSimple: 主题创建成功');
     } catch (error) {
       console.error('TopicManagementSimple: 创建主题失败:', error);
     }
@@ -68,14 +63,12 @@ const TopicManagementSimple: React.FC = () => {
     if (!editingTopic) return;
     
     try {
-      console.log('TopicManagementSimple: 更新主题:', editingTopic.id, formData);
       const module = await import('../data/communityManager');
       const updatedTopic = module.updateTopic(editingTopic.id, formData);
       setTopics(topics.map(t => t.id === editingTopic.id ? updatedTopic : t));
       setShowEditModal(false);
       setEditingTopic(null);
       setFormData({ name: '', description: '', icon: '🌟', color: 'from-yellow-500 to-orange-500' });
-      console.log('TopicManagementSimple: 主题更新成功');
     } catch (error) {
       console.error('TopicManagementSimple: 更新主题失败:', error);
     }
@@ -83,19 +76,16 @@ const TopicManagementSimple: React.FC = () => {
 
   const handleDeleteTopic = async (topicId: string) => {
     try {
-      console.log('TopicManagementSimple: 删除主题:', topicId);
       const module = await import('../data/communityManager');
       module.deleteTopic(topicId);
       setTopics(topics.filter(t => t.id !== topicId));
       setShowDeleteConfirm(null);
-      console.log('TopicManagementSimple: 主题删除成功');
     } catch (error) {
       console.error('TopicManagementSimple: 删除主题失败:', error);
     }
   };
 
   const openEditModal = (topic: any) => {
-    console.log('TopicManagementSimple: 打开编辑模态框:', topic);
     setEditingTopic(topic);
     setFormData({
       name: topic.name || '',
@@ -239,7 +229,6 @@ const TopicManagementSimple: React.FC = () => {
                     </span>
                     <button
                       onClick={() => {
-                        console.log('TopicManagementSimple: 点击编辑按钮', topic);
                         openEditModal(topic);
                       }}
                       className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-colors"
@@ -248,7 +237,6 @@ const TopicManagementSimple: React.FC = () => {
                     </button>
                     <button
                       onClick={() => {
-                        console.log('TopicManagementSimple: 点击删除按钮', topic.id);
                         setShowDeleteConfirm(topic.id);
                       }}
                       className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded transition-colors"
@@ -402,7 +390,6 @@ const TopicManagementSimple: React.FC = () => {
                 </button>
                 <button
                   onClick={() => {
-                    console.log('TopicManagementSimple: 保存按钮被点击');
                     handleEditTopic();
                   }}
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"

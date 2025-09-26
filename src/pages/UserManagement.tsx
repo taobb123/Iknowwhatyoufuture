@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { 
   getAllUsers, 
+  getAllUsersIncludingSimple,
   addUser, 
   updateUser, 
   deleteUser, 
   getUserStats,
   type User 
 } from '../data/userManager';
+import { 
+  getSystemConfig, 
+  updateGuestAnonymousPostSetting,
+  initializeSystemConfig 
+} from '../data/systemConfig';
 import { 
   Plus, 
   Edit, 
@@ -18,7 +24,10 @@ import {
   Crown, 
   Calendar,
   Check,
-  X
+  X,
+  Settings,
+  ToggleLeft,
+  ToggleRight
 } from 'lucide-react';
 
 const UserManagement: React.FC = () => {
@@ -38,14 +47,21 @@ const UserManagement: React.FC = () => {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
+  // 系统配置状态
+  const [systemConfig, setSystemConfig] = useState(getSystemConfig());
+  const [isConfigLoading, setIsConfigLoading] = useState(false);
 
   // 加载用户数据
   useEffect(() => {
     loadUsers();
+    // 初始化系统配置
+    initializeSystemConfig();
+    setSystemConfig(getSystemConfig());
   }, []);
 
   const loadUsers = () => {
-    const allUsers = getAllUsers();
+    const allUsers = getAllUsersIncludingSimple();
     setUsers(allUsers);
     setStats(getUserStats());
   };
@@ -224,6 +240,29 @@ const UserManagement: React.FC = () => {
     });
   };
 
+  // 处理游客匿名发表设置变更
+  const handleGuestAnonymousPostToggle = async () => {
+    if (!state.user) return;
+    
+    setIsConfigLoading(true);
+    try {
+      const newValue = !systemConfig.allowGuestAnonymousPost;
+      updateGuestAnonymousPostSetting(newValue, state.user.username);
+      
+      // 更新本地状态
+      setSystemConfig(getSystemConfig());
+      
+      // 显示成功提示
+      const message = newValue ? '已允许游客匿名发表文章' : '已禁止游客匿名发表文章';
+      alert(`✅ ${message}`);
+    } catch (error) {
+      console.error('更新系统配置失败:', error);
+      alert('❌ 更新配置失败，请重试');
+    } finally {
+      setIsConfigLoading(false);
+    }
+  };
+
   // 只有超级管理员可以访问
   if (!isSuperAdmin()) {
     return (
@@ -290,6 +329,60 @@ const UserManagement: React.FC = () => {
           </div>
         </div>
 
+        {/* 系统配置区域 */}
+        <div className="mb-8">
+          <div className="bg-gray-800 rounded-lg p-6">
+            <div className="flex items-center mb-4">
+              <Settings className="h-6 w-6 text-yellow-400 mr-3" />
+              <h2 className="text-xl font-bold text-white">系统配置</h2>
+            </div>
+            
+            <div className="space-y-4">
+              {/* 游客匿名发表设置 */}
+              <div className="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-white mb-1">
+                    游客匿名发表文章
+                  </h3>
+                  <p className="text-sm text-gray-400">
+                    {systemConfig.allowGuestAnonymousPost 
+                      ? '当前允许游客匿名发表文章' 
+                      : '当前禁止游客匿名发表文章'
+                    }
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    最后更新: {formatDate(systemConfig.lastUpdated)} | 更新者: {systemConfig.updatedBy}
+                  </p>
+                </div>
+                
+                <button
+                  onClick={handleGuestAnonymousPostToggle}
+                  disabled={isConfigLoading}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                    systemConfig.allowGuestAnonymousPost
+                      ? 'bg-green-600 hover:bg-green-700 text-white'
+                      : 'bg-red-600 hover:bg-red-700 text-white'
+                  } ${isConfigLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  {isConfigLoading ? (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : systemConfig.allowGuestAnonymousPost ? (
+                    <>
+                      <ToggleRight size={16} />
+                      允许
+                    </>
+                  ) : (
+                    <>
+                      <ToggleLeft size={16} />
+                      禁止
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* 操作按钮 */}
         <div className="mb-6">
           <button
@@ -335,7 +428,7 @@ const UserManagement: React.FC = () => {
                         <div className="text-sm font-medium text-white">{user.username}</div>
                         <div className="text-sm text-gray-400 flex items-center gap-1">
                           <Mail className="h-3 w-3" />
-                          {user.email}
+                          {user.email || '无邮箱'}
                         </div>
                       </div>
                     </td>
@@ -508,9 +601,15 @@ const UserManagement: React.FC = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
+                      className={`w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                        !formData.email ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                      disabled={!formData.email}
+                      required={!!formData.email}
                     />
+                    {!formData.email && (
+                      <p className="text-xs text-gray-500 mt-1">简单注册用户无邮箱字段</p>
+                    )}
                   </div>
                   
                   <div>

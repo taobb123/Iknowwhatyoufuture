@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { User, Mail, Lock, Eye, EyeOff, Check, X } from 'lucide-react';
+import { User, Lock, Eye, EyeOff, Check, X } from 'lucide-react';
+import { simpleRegister } from '../data/simpleRegistration';
 
 interface UserRegistrationProps {
   onSuccess?: () => void;
@@ -11,7 +12,6 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
   const { registerGuest } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
-    email: '',
     password: '',
     confirmPassword: ''
   });
@@ -19,6 +19,20 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // ESC键关闭功能
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && !isLoading) {
+        onCancel?.();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onCancel, isLoading]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -34,12 +48,6 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
       newErrors.username = '用户名只能包含字母、数字、下划线和中文';
     }
 
-    // 邮箱验证
-    if (!formData.email.trim()) {
-      newErrors.email = '请输入邮箱';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = '请输入有效的邮箱地址';
-    }
 
     // 密码验证
     if (!formData.password) {
@@ -87,27 +95,68 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
     setIsLoading(true);
     
     try {
-      const success = await registerGuest(
+      // 使用简单注册系统
+      const result = simpleRegister(
         formData.username.trim(),
-        formData.email.trim(),
         formData.password
       );
       
-      if (success) {
+      if (result.success) {
+        // 显示成功提示
+        const successMessage = document.createElement('div');
+        successMessage.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10B981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          ">
+            ✅ 注册成功！欢迎加入我们的社区
+          </div>
+        `;
+        document.body.appendChild(successMessage);
+        setTimeout(() => {
+          successMessage.remove();
+        }, 3000);
+        
         onSuccess?.();
       } else {
-        setErrors({ general: '注册失败，用户名或邮箱可能已存在' });
+        setErrors({ general: result.message });
       }
     } catch (error) {
-      setErrors({ general: '注册失败，请重试' });
+      console.error('注册错误:', error);
+      setErrors({ general: '注册失败，请检查网络连接后重试' });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-800 rounded-2xl p-8 w-full max-w-md shadow-2xl">
+    <div 
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999] p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onCancel?.();
+        }
+      }}
+    >
+      <div className="bg-gray-800 rounded-2xl p-8 w-full max-w-md shadow-2xl relative">
+        {/* 关闭按钮 */}
+        <button
+          onClick={() => onCancel?.()}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+          disabled={isLoading}
+        >
+          <X className="w-6 h-6" />
+        </button>
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-8 h-8 text-white" />
@@ -144,32 +193,6 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
             )}
           </div>
 
-          {/* 邮箱 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              邮箱
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className={`w-full pl-10 pr-4 py-3 bg-gray-700 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.email ? 'border-red-500' : 'border-gray-600'
-                }`}
-                placeholder="请输入邮箱"
-                disabled={isLoading}
-              />
-            </div>
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
-                <X className="w-4 h-4" />
-                {errors.email}
-              </p>
-            )}
-          </div>
 
           {/* 密码 */}
           <div>

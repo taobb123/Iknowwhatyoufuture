@@ -39,6 +39,48 @@ export const getAllUsers = (): User[] => {
   }
 };
 
+// 获取所有用户（包括简单注册系统的用户）
+export const getAllUsersIncludingSimple = (): User[] => {
+  try {
+    if (typeof window === 'undefined') {
+      return [];
+    }
+    
+    // 获取管理员用户系统的用户
+    const adminUsers = getAllUsers();
+    
+    // 获取简单注册系统的用户
+    const simpleUsers = JSON.parse(localStorage.getItem('simple_users') || '[]');
+    
+    // 将SimpleUser转换为User格式
+    const convertedSimpleUsers: User[] = simpleUsers.map((simpleUser: any) => ({
+      id: simpleUser.id,
+      username: simpleUser.username,
+      email: '', // SimpleUser没有email字段
+      password: simpleUser.password,
+      role: simpleUser.userType === 'admin' ? 'admin' : 'user',
+      userType: simpleUser.userType,
+      createdAt: simpleUser.createdAt,
+      updatedAt: simpleUser.createdAt,
+      lastLoginAt: null,
+      isActive: true,
+      isGuest: false,
+      guestId: undefined
+    }));
+    
+    // 合并两个系统的用户，排除超级管理员
+    const allUsers = [...adminUsers, ...convertedSimpleUsers].filter(user => 
+      user.role !== 'superAdmin'
+    );
+    
+    // 按创建时间排序
+    return allUsers.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  } catch (error) {
+    console.error('获取所有用户失败:', error);
+    return [];
+  }
+};
+
 // 保存所有用户
 const saveAllUsers = (users: User[]): void => {
   try {
@@ -59,8 +101,39 @@ export const getUserById = (id: string): User | null => {
 
 // 根据用户名获取用户
 export const getUserByUsername = (username: string): User | null => {
+  // 首先检查管理员用户系统
   const users = getAllUsers();
-  return users.find(user => user.username === username) || null;
+  const adminUser = users.find(user => user.username === username);
+  if (adminUser) {
+    return adminUser;
+  }
+  
+  // 然后检查简单用户系统
+  try {
+    const simpleUsers = JSON.parse(localStorage.getItem('simple_users') || '[]');
+    const simpleUser = simpleUsers.find((user: any) => user.username === username);
+    if (simpleUser) {
+      // 将SimpleUser转换为User格式
+      return {
+        id: simpleUser.id,
+        username: simpleUser.username,
+        email: '', // SimpleUser没有email字段
+        password: simpleUser.password,
+        role: simpleUser.userType === 'admin' ? 'admin' : 'user',
+        userType: simpleUser.userType,
+        createdAt: simpleUser.createdAt,
+        updatedAt: simpleUser.createdAt,
+        lastLoginAt: null,
+        isActive: true,
+        isGuest: false,
+        guestId: undefined
+      };
+    }
+  } catch (error) {
+    console.error('检查简单用户失败:', error);
+  }
+  
+  return null;
 };
 
 // 根据邮箱获取用户
@@ -97,47 +170,124 @@ export const addUser = (userData: Omit<User, 'id' | 'createdAt' | 'updatedAt' | 
 
 // 更新用户
 export const updateUser = (id: string, updates: Partial<User>): User | null => {
-  const users = getAllUsers();
-  const index = users.findIndex(user => user.id === id);
+  // 首先尝试从管理员用户系统中更新
+  const adminUsers = getAllUsers();
+  const adminIndex = adminUsers.findIndex(user => user.id === id);
   
-  if (index === -1) return null;
-  
-  // 检查用户名是否与其他用户冲突
-  if (updates.username) {
-    const existingUser = getUserByUsername(updates.username);
-    if (existingUser && existingUser.id !== id) {
-      throw new Error('用户名已存在');
+  if (adminIndex !== -1) {
+    // 检查用户名是否与其他用户冲突
+    if (updates.username) {
+      const existingUser = getUserByUsername(updates.username);
+      if (existingUser && existingUser.id !== id) {
+        throw new Error('用户名已存在');
+      }
     }
+    
+    // 检查邮箱是否与其他用户冲突
+    if (updates.email) {
+      const existingUser = getUserByEmail(updates.email);
+      if (existingUser && existingUser.id !== id) {
+        throw new Error('邮箱已存在');
+      }
+    }
+    
+    adminUsers[adminIndex] = {
+      ...adminUsers[adminIndex],
+      ...updates,
+      updatedAt: new Date().toISOString(),
+    };
+    
+    saveAllUsers(adminUsers);
+    return adminUsers[adminIndex];
   }
   
-  // 检查邮箱是否与其他用户冲突
-  if (updates.email) {
-    const existingUser = getUserByEmail(updates.email);
-    if (existingUser && existingUser.id !== id) {
-      throw new Error('邮箱已存在');
+  // 如果不在管理员系统中，尝试从简单用户系统中更新
+  try {
+    const simpleUsers = JSON.parse(localStorage.getItem('simple_users') || '[]');
+    const simpleIndex = simpleUsers.findIndex((user: any) => user.id === id);
+    
+    if (simpleIndex !== -1) {
+      // 检查用户名是否与其他用户冲突
+      if (updates.username) {
+        const existingUser = getUserByUsername(updates.username);
+        if (existingUser && existingUser.id !== id) {
+          throw new Error('用户名已存在');
+        }
+      }
+      
+      const updatedSimpleUser = { 
+        ...simpleUsers[simpleIndex], 
+        username: updates.username || simpleUsers[simpleIndex].username,
+        password: updates.password || simpleUsers[simpleIndex].password,
+        userType: updates.userType || simpleUsers[simpleIndex].userType
+      };
+      
+      simpleUsers[simpleIndex] = updatedSimpleUser;
+      localStorage.setItem('simple_users', JSON.stringify(simpleUsers));
+      
+      // 如果更新的是当前登录的简单用户，更新当前用户状态
+      const currentSimpleUser = JSON.parse(localStorage.getItem('simple_current_user') || 'null');
+      if (currentSimpleUser && currentSimpleUser.id === id) {
+        localStorage.setItem('simple_current_user', JSON.stringify(updatedSimpleUser));
+      }
+      
+      // 返回转换后的User格式
+      return {
+        id: updatedSimpleUser.id,
+        username: updatedSimpleUser.username,
+        email: '',
+        password: updatedSimpleUser.password,
+        role: updatedSimpleUser.userType === 'admin' ? 'admin' : 'user',
+        userType: updatedSimpleUser.userType,
+        createdAt: updatedSimpleUser.createdAt,
+        updatedAt: new Date().toISOString(),
+        lastLoginAt: null,
+        isActive: true,
+        isGuest: false,
+        guestId: undefined
+      };
     }
+  } catch (error) {
+    console.error('更新简单用户失败:', error);
   }
   
-  users[index] = {
-    ...users[index],
-    ...updates,
-    updatedAt: new Date().toISOString(),
-  };
-  
-  saveAllUsers(users);
-  return users[index];
+  return null;
 };
 
 // 删除用户
 export const deleteUser = (id: string): boolean => {
-  const users = getAllUsers();
-  const index = users.findIndex(user => user.id === id);
+  // 首先尝试从管理员用户系统中删除
+  const adminUsers = getAllUsers();
+  const adminIndex = adminUsers.findIndex(user => user.id === id);
   
-  if (index === -1) return false;
+  if (adminIndex !== -1) {
+    adminUsers.splice(adminIndex, 1);
+    saveAllUsers(adminUsers);
+    return true;
+  }
   
-  users.splice(index, 1);
-  saveAllUsers(users);
-  return true;
+  // 如果不在管理员系统中，尝试从简单用户系统中删除
+  try {
+    const simpleUsers = JSON.parse(localStorage.getItem('simple_users') || '[]');
+    const simpleIndex = simpleUsers.findIndex((user: any) => user.id === id);
+    
+    if (simpleIndex !== -1) {
+      simpleUsers.splice(simpleIndex, 1);
+      localStorage.setItem('simple_users', JSON.stringify(simpleUsers));
+      
+      // 如果删除的是当前登录的简单用户，清除当前用户状态
+      const currentSimpleUser = JSON.parse(localStorage.getItem('simple_current_user') || 'null');
+      if (currentSimpleUser && currentSimpleUser.id === id) {
+        localStorage.removeItem('simple_current_user');
+      }
+      
+      return true;
+    }
+  } catch (error) {
+    console.error('删除简单用户失败:', error);
+  }
+  
+  return false;
 };
 
 // 用户登录验证
@@ -287,12 +437,8 @@ export const migrateExistingUsers = (): void => {
       saveAllUsers(users);
       console.log('用户数据迁移完成');
       
-      // 如果当前没有用户，设置第一个用户为当前用户
-      const currentUser = getCurrentUser();
-      if (!currentUser && users.length > 0) {
-        setCurrentUser(users[0]);
-        console.log('设置第一个用户为当前用户');
-      }
+      // 注意：不自动设置第一个用户为当前用户，让 AuthContext 决定是否创建游客用户
+      console.log('用户数据迁移完成，不自动设置当前用户');
     }
   } catch (error) {
     console.error('数据迁移失败:', error);
@@ -322,27 +468,28 @@ export const createGuestUser = (): User => {
 };
 
 // 游客注册为普通用户
-export const registerGuestAsRegular = (username: string, email: string, password: string): User => {
+export const registerGuestAsRegular = (username: string, password: string): User => {
   const currentUser = getCurrentUser();
   
+  
   if (!currentUser || !currentUser.isGuest) {
+    console.error('当前用户不是游客:', currentUser);
     throw new Error('当前用户不是游客');
   }
   
-  // 检查用户名和邮箱是否已存在
-  if (getUserByUsername(username)) {
-    throw new Error('用户名已存在');
-  }
+  // 检查用户名是否已存在（排除当前游客用户）
+  const existingUser = getUserByUsername(username);
   
-  if (getUserByEmail(email)) {
-    throw new Error('邮箱已存在');
+  if (existingUser && existingUser.id !== currentUser.id) {
+    console.error('用户名已存在:', existingUser);
+    throw new Error('用户名已存在');
   }
   
   // 创建普通用户
   const regularUser: User = {
     id: currentUser.id, // 保持相同的ID
     username,
-    email,
+    email: '', // 空邮箱
     password,
     role: 'user',
     userType: 'regular',
@@ -387,7 +534,7 @@ export const getUserDisplayName = (user: User | null): string => {
 
 // 获取用户统计信息
 export const getUserStats = () => {
-  const users = getAllUsers();
+  const users = getAllUsersIncludingSimple();
   return {
     total: users.length,
     active: users.filter(user => user.isActive).length,

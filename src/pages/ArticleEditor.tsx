@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Send, Eye, Save, FileText, Tag, Calendar, User } from 'lucide-react';
 import { addArticle, Article } from '../data/articleManager';
+import { useAuth } from '../contexts/AuthContext';
+import { getSimpleCurrentUser } from '../data/simpleRegistration';
+import { isGuestAnonymousPostAllowed } from '../data/systemConfig';
 import RichTextEditor from '../components/RichTextEditor';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 
@@ -9,6 +12,7 @@ interface ArticleEditorProps {}
 
 const ArticleEditor: React.FC<ArticleEditorProps> = () => {
   const navigate = useNavigate();
+  const { state: authState, getUserDisplayName } = useAuth();
   
   // 文章状态
   const [title, setTitle] = useState('');
@@ -22,7 +26,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
   const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({});
 
   // 分类选项
-  const categories = ['前端开发', '后端开发', 'AI/ML', '游戏设计', '工具使用'];
+  const categories = ['前端开发', '后端开发', 'AI/ML', '游戏设计', '工具使用', '王者荣耀'];
 
   // 处理返回
   const handleGoBack = () => {
@@ -60,13 +64,51 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       }, 3000);
       return;
     }
+
+    // 检查游客匿名发表权限
+    const simpleUser = getSimpleCurrentUser();
+    const isGuest = !simpleUser && authState.user?.isGuest;
+    
+    if (isGuest && !isGuestAnonymousPostAllowed()) {
+      // 显示权限错误提示
+      const permissionMessage = document.createElement('div');
+      permissionMessage.innerHTML = `
+        <div style="
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #EF4444;
+          color: white;
+          padding: 16px 24px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          z-index: 9999;
+          font-family: system-ui, -apple-system, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+        ">
+          🚫 当前系统设置禁止游客匿名发表文章，请先注册账户！
+        </div>
+      `;
+      document.body.appendChild(permissionMessage);
+      
+      // 自动隐藏提示
+      setTimeout(() => {
+        permissionMessage.remove();
+      }, 5000);
+      return;
+    }
     
     try {
       // 创建新文章
+      const authorDisplayName = getUserDisplayName();
+      const simpleUser = getSimpleCurrentUser();
       const newArticle = addArticle({
         title: title.trim(),
         content: content.trim(),
-        author: '游戏玩家',
+        author: authorDisplayName,
+        authorId: simpleUser ? simpleUser.id : authState.user?.id,
+        authorType: simpleUser ? 'regular' : (authState.user?.userType || 'guest'),
         category,
         tags,
         status: 'published'
@@ -96,10 +138,20 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       document.body.appendChild(successMessage);
       
       // 自动隐藏提示并导航
-        setTimeout(() => {
-          successMessage.remove();
+      setTimeout(() => {
+        successMessage.remove();
+        // 根据用户类型决定重定向目标
+        const simpleUser = getSimpleCurrentUser();
+        const isAdmin = authState.user?.role === 'admin' || authState.user?.role === 'superAdmin';
+        
+        if (simpleUser || !isAdmin) {
+          // 普通用户和游客重定向到游戏中心
+          navigate('/game-hub');
+        } else {
+          // 管理员重定向到文章管理
           navigate('/article-management');
-        }, 2000);
+        }
+      }, 2000);
     } catch (error) {
       // 显示错误提示
       const errorMessage = document.createElement('div');
@@ -164,10 +216,13 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
     
     try {
       // 保存为草稿
+      const authorDisplayName = getUserDisplayName();
       addArticle({
         title: title.trim(),
         content: content.trim(),
-        author: '游戏玩家',
+        author: authorDisplayName,
+        authorId: authState.user?.id,
+        authorType: authState.user?.userType || 'guest',
         category,
         tags,
         status: 'draft'
@@ -417,7 +472,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                   {/* 作者信息 */}
                   <div className="flex items-center gap-2 text-sm text-gray-400">
                     <User size={16} />
-                    <span>作者：游戏玩家</span>
+                    <span>作者：{getUserDisplayName()}</span>
                   </div>
                   
                   <div className="flex items-center gap-2 text-sm text-gray-400">

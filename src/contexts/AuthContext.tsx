@@ -12,6 +12,7 @@ import {
   migrateExistingUsers,
   type User 
 } from '../data/userManager';
+import { getSimpleCurrentUser } from '../data/simpleRegistration';
 
 // 认证状态接口
 interface AuthState {
@@ -38,7 +39,7 @@ interface AuthContextType {
   logout: () => void;
   updateUser: (user: User) => void;
   createGuest: () => User;
-  registerGuest: (username: string, email: string, password: string) => Promise<boolean>;
+  registerGuest: (username: string, password: string) => Promise<boolean>;
   isAdmin: () => boolean;
   isSuperAdmin: () => boolean;
   isGuest: () => boolean;
@@ -173,8 +174,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       logoutUser();
       dispatch({ type: 'LOGOUT' });
+      
+      // 退出登录后自动创建游客用户
+      setTimeout(() => {
+        const guestUser = createGuestUser();
+        dispatch({ type: 'CREATE_GUEST', payload: guestUser });
+      }, 100);
     } catch (error) {
-      // 登出失败
+      console.error('登出失败:', error);
     }
   };
 
@@ -196,28 +203,56 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   // 游客注册为普通用户
-  const registerGuest = async (username: string, email: string, password: string): Promise<boolean> => {
+  const registerGuest = async (username: string, password: string): Promise<boolean> => {
     try {
-      const regularUser = registerGuestAsRegular(username, email, password);
+      console.log('AuthContext registerGuest 开始:', { username, password });
+      const regularUser = registerGuestAsRegular(username, password);
+      console.log('registerGuestAsRegular 成功:', regularUser);
       dispatch({ type: 'REGISTER_GUEST', payload: regularUser });
+      console.log('dispatch 完成');
       return true;
     } catch (error) {
+      console.error('游客注册失败:', error);
       return false;
     }
   };
 
   // 检查是否为管理员
   const isAdmin = (): boolean => {
+    // 首先检查简单注册系统的用户
+    const simpleUser = getSimpleCurrentUser();
+    if (simpleUser) {
+      return simpleUser.role === 'admin' || simpleUser.role === 'superAdmin';
+    }
+    // 然后检查AuthContext的用户
     return state.user?.role === 'admin' || state.user?.role === 'superAdmin';
   };
 
   // 检查是否为超级管理员
   const isSuperAdmin = (): boolean => {
+    // 首先检查简单注册系统的用户
+    const simpleUser = getSimpleCurrentUser();
+    if (simpleUser) {
+      return simpleUser.role === 'superAdmin';
+    }
+    // 然后检查AuthContext的用户
     return state.user?.role === 'superAdmin';
   };
 
   // 检查权限
   const hasPermission = (requiredRole: 'user' | 'admin' | 'superAdmin'): boolean => {
+    // 首先检查简单注册系统的用户
+    const simpleUser = getSimpleCurrentUser();
+    if (simpleUser) {
+      const roleHierarchy = {
+        user: 1,
+        admin: 2,
+        superAdmin: 3
+      };
+      return roleHierarchy[simpleUser.role] >= roleHierarchy[requiredRole];
+    }
+    
+    // 然后检查AuthContext的用户
     if (!state.user) return false;
     
     const roleHierarchy = {
@@ -231,6 +266,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // 检查用户类型权限
   const hasUserTypePermission = (requiredUserType: 'guest' | 'regular' | 'admin' | 'superAdmin'): boolean => {
+    // 首先检查简单注册系统的用户
+    const simpleUser = getSimpleCurrentUser();
+    if (simpleUser) {
+      const userTypeHierarchy = {
+        guest: 1,
+        regular: 2,
+        admin: 3,
+        superAdmin: 4
+      };
+      return userTypeHierarchy[simpleUser.userType] >= userTypeHierarchy[requiredUserType];
+    }
+    
+    // 然后检查AuthContext的用户
     if (!state.user) return false;
     
     const userTypeHierarchy = {
@@ -252,9 +300,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     registerGuest,
     isAdmin,
     isSuperAdmin,
-    isGuest: () => isGuest(state.user),
+    isGuest: () => {
+      // 首先检查简单注册系统的用户
+      const simpleUser = getSimpleCurrentUser();
+      if (simpleUser) {
+        return false; // 简单注册系统的用户不是游客
+      }
+      // 然后检查AuthContext的用户
+      return isGuest(state.user);
+    },
     isRegularUser: () => isRegularUser(state.user),
-    getUserDisplayName: () => getUserDisplayName(state.user),
+    getUserDisplayName: () => {
+      // 首先检查简单注册系统的用户
+      const simpleUser = getSimpleCurrentUser();
+      if (simpleUser) {
+        return simpleUser.username;
+      }
+      // 然后检查AuthContext的用户
+      return getUserDisplayName(state.user);
+    },
     hasPermission,
     hasUserTypePermission,
   };

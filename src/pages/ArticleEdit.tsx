@@ -11,6 +11,8 @@ import {
   type Article 
 } from '../data/articleManager';
 import { useAuth } from '../contexts/AuthContext';
+import { getSimpleCurrentUser } from '../data/simpleRegistration';
+import { isGuestAnonymousPostAllowed } from '../data/systemConfig';
 import ProtectedRoute from '../components/ProtectedRoute';
 import RichTextEditor from '../components/RichTextEditor';
 import MarkdownRenderer from '../components/MarkdownRenderer';
@@ -78,6 +80,17 @@ const ArticleEditContent: React.FC = () => {
       return;
     }
 
+    // 检查游客匿名发表权限（仅对新文章）
+    if (!id) {
+      const simpleUser = getSimpleCurrentUser();
+      const isGuest = !simpleUser && authState.user?.isGuest;
+      
+      if (isGuest && !isGuestAnonymousPostAllowed()) {
+        showToast('当前系统设置禁止游客匿名发表文章，请先注册账户！', 'error');
+        return;
+      }
+    }
+
     setIsSaving(true);
 
     try {
@@ -95,12 +108,13 @@ const ArticleEditContent: React.FC = () => {
       } else {
         // 创建新文章
         const authorDisplayName = getUserDisplayName();
+        const simpleUser = getSimpleCurrentUser();
         savedArticle = addArticle({
           title: title.trim(),
           content: content.trim(),
           author: authorDisplayName,
-          authorId: authState.user?.id,
-          authorType: authState.user?.userType || 'guest',
+          authorId: simpleUser ? simpleUser.id : authState.user?.id,
+          authorType: simpleUser ? 'regular' : (authState.user?.userType || 'guest'),
           category,
           tags,
           status
@@ -110,9 +124,18 @@ const ArticleEditContent: React.FC = () => {
       if (savedArticle) {
         setArticle(savedArticle);
         showToast('文章保存成功！', 'success');
-        // 2秒后自动返回文章列表
+        // 2秒后根据用户类型自动重定向
         setTimeout(() => {
-          navigate('/article-management');
+          const simpleUser = getSimpleCurrentUser();
+          const isAdmin = authState.user?.role === 'admin' || authState.user?.role === 'superAdmin';
+          
+          if (simpleUser || !isAdmin) {
+            // 普通用户和游客重定向到游戏中心
+            navigate('/game-hub');
+          } else {
+            // 管理员重定向到文章管理
+            navigate('/article-management');
+          }
         }, 2000);
       } else {
         showToast('保存失败，请重试！', 'error');
@@ -133,9 +156,18 @@ const ArticleEditContent: React.FC = () => {
       const success = deleteArticle(id);
       if (success) {
         showToast('文章删除成功！', 'success');
-        // 2秒后自动返回文章列表
+        // 2秒后根据用户类型自动重定向
         setTimeout(() => {
-          navigate('/article-management');
+          const simpleUser = getSimpleCurrentUser();
+          const isAdmin = authState.user?.role === 'admin' || authState.user?.role === 'superAdmin';
+          
+          if (simpleUser || !isAdmin) {
+            // 普通用户和游客重定向到游戏中心
+            navigate('/game-hub');
+          } else {
+            // 管理员重定向到文章管理
+            navigate('/article-management');
+          }
         }, 2000);
       } else {
         showToast('删除失败，请重试！', 'error');
@@ -173,7 +205,18 @@ const ArticleEditContent: React.FC = () => {
         }
       }
     }
-    navigate('/article-management');
+    
+    // 根据用户类型决定返回目标
+    const simpleUser = getSimpleCurrentUser();
+    const isAdmin = authState.user?.role === 'admin' || authState.user?.role === 'superAdmin';
+    
+    if (simpleUser || !isAdmin) {
+      // 普通用户和游客返回游戏中心
+      navigate('/game-hub');
+    } else {
+      // 管理员返回文章管理
+      navigate('/article-management');
+    }
   };
 
   const showToast = (message: string, type: 'success' | 'error') => {

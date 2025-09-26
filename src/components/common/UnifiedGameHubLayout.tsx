@@ -59,7 +59,8 @@ const categoryConfig = [
   { id: '后端开发', name: '后端开发', icon: Server, color: 'from-orange-600 to-red-600', hoverColor: 'hover:from-orange-600/50' },
   { id: '游戏设计', name: '游戏设计', icon: Palette, color: 'from-purple-600 to-pink-600', hoverColor: 'hover:from-purple-600/50' },
   { id: 'AI/ML', name: 'AI/ML', icon: Brain, color: 'from-indigo-600 to-blue-600', hoverColor: 'hover:from-indigo-600/50' },
-  { id: '工具使用', name: '工具使用', icon: Wrench, color: 'from-gray-600 to-slate-600', hoverColor: 'hover:from-gray-600/50' }
+  { id: '工具使用', name: '工具使用', icon: Wrench, color: 'from-gray-600 to-slate-600', hoverColor: 'hover:from-gray-600/50' },
+  { id: '王者荣耀', name: '王者荣耀', icon: Gamepad2, color: 'from-red-600 to-orange-600', hoverColor: 'hover:from-red-600/50' }
 ];
 
 const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
@@ -263,7 +264,39 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('链接已复制到剪贴板');
+      // 显示友好的toast提示
+      const toast = document.createElement('div');
+      toast.innerHTML = `
+        <div style="
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #10B981;
+          color: white;
+          padding: 16px 24px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          z-index: 10000;
+          font-family: system-ui, -apple-system, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          animation: slideIn 0.3s ease-out;
+        ">
+          ✅ 链接已复制到剪贴板
+        </div>
+        <style>
+          @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+          }
+        </style>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 3000);
     }
   };
 

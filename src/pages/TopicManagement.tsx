@@ -47,7 +47,39 @@ const TopicManagement: React.FC = () => {
 
   const handleAddTopic = () => {
     if (!selectedBoard) {
-      alert('请选择所属板块');
+      // 显示友好的toast提示
+      const toast = document.createElement('div');
+      toast.innerHTML = `
+        <div style="
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #F59E0B;
+          color: white;
+          padding: 16px 24px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          z-index: 10000;
+          font-family: system-ui, -apple-system, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          animation: slideIn 0.3s ease-out;
+        ">
+          ⚠️ 请选择所属板块
+        </div>
+        <style>
+          @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+          }
+        </style>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 3000);
       return;
     }
     

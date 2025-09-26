@@ -1,0 +1,47 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆形 -->
+  <circle cx="90" cy="90" r="90" fill="#FF6B35"/>
+  
+  <!-- 渐变背景 -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F7931E;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFF8DC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 主背景 -->
+  <circle cx="90" cy="90" r="90" fill="url(#bgGradient)"/>
+  
+  <!-- 游戏手柄图标 -->
+  <g transform="translate(45, 45)">
+    <!-- 手柄主体 -->
+    <rect x="10" y="35" width="70" height="20" rx="10" fill="url(#iconGradient)"/>
+    
+    <!-- 左摇杆 -->
+    <circle cx="25" cy="45" r="8" fill="#FF6B35"/>
+    <circle cx="25" cy="45" r="5" fill="url(#iconGradient)"/>
+    
+    <!-- 右摇杆 -->
+    <circle cx="65" cy="45" r="8" fill="#FF6B35"/>
+    <circle cx="65" cy="45" r="5" fill="url(#iconGradient)"/>
+    
+    <!-- 按钮 -->
+    <circle cx="35" cy="30" r="4" fill="#FF6B35"/>
+    <circle cx="55" cy="30" r="4" fill="#FF6B35"/>
+    
+    <!-- 装饰星星 -->
+    <g fill="url(#iconGradient)">
+      <path d="M5 10 L7 15 L12 15 L8 18 L10 23 L5 20 L0 23 L2 18 L-2 15 L3 15 Z"/>
+      <path d="M85 5 L87 10 L92 10 L88 13 L90 18 L85 15 L80 18 L82 13 L78 10 L83 10 Z"/>
+      <path d="M45 5 L46 8 L49 8 L47 10 L48 13 L45 11 L42 13 L43 10 L41 8 L44 8 Z"/>
+    </g>
+  </g>
+  
+  <!-- 外圈装饰 -->
+  <circle cx="90" cy="90" r="85" fill="none" stroke="url(#iconGradient)" stroke-width="3" opacity="0.3"/>
+</svg>

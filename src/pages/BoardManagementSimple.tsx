@@ -23,71 +23,88 @@ const BoardManagementSimple: React.FC = () => {
 
   const loadBoards = async () => {
     try {
-      console.log('BoardManagementSimple: 开始加载板块数据...');
       const module = await import('../data/communityManager');
       const boardsList = module.getAllBoards();
-      console.log('BoardManagementSimple: 加载的板块:', boardsList);
       setBoards(boardsList);
       setLoading(false);
     } catch (error) {
-      console.error('BoardManagementSimple: 加载板块失败:', error);
+      console.error('加载板块失败:', error);
       setLoading(false);
     }
   };
 
   const handleAddBoard = async () => {
     try {
-      console.log('BoardManagementSimple: 创建板块:', formData);
       const module = await import('../data/communityManager');
       const newBoard = module.addBoard(formData);
       setBoards([...boards, newBoard]);
       setShowAddModal(false);
       setFormData({ name: '', description: '', icon: '🎮', color: 'from-blue-600 to-purple-600' });
-      console.log('BoardManagementSimple: 板块创建成功');
     } catch (error) {
-      console.error('BoardManagementSimple: 创建板块失败:', error);
+      console.error('创建板块失败:', error);
     }
   };
 
   const handleEditBoard = async () => {
-    console.log('BoardManagementSimple: handleEditBoard 被调用');
-    console.log('BoardManagementSimple: editingBoard:', editingBoard);
-    console.log('BoardManagementSimple: formData:', formData);
     
     if (!editingBoard) {
-      console.log('BoardManagementSimple: 没有 editingBoard，退出');
       return;
     }
     
     try {
-      console.log('BoardManagementSimple: 开始更新板块:', editingBoard.id, formData);
       const module = await import('../data/communityManager');
-      console.log('BoardManagementSimple: communityManager 模块加载成功');
       
       const updatedBoard = module.updateBoard(editingBoard.id, formData);
-      console.log('BoardManagementSimple: 板块更新成功:', updatedBoard);
-      
       setBoards(boards.map(b => b.id === editingBoard.id ? updatedBoard : b));
       setShowEditModal(false);
       setEditingBoard(null);
       setFormData({ name: '', description: '', icon: '🎮', color: 'from-blue-600 to-purple-600' });
-      console.log('BoardManagementSimple: 状态更新完成');
     } catch (error) {
-      console.error('BoardManagementSimple: 更新板块失败:', error);
-      alert('更新板块失败: ' + (error instanceof Error ? error.message : '未知错误'));
+      console.error('更新板块失败:', error);
+      // 显示友好的toast提示
+      const toast = document.createElement('div');
+      toast.innerHTML = `
+        <div style="
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #EF4444;
+          color: white;
+          padding: 16px 24px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          z-index: 10000;
+          font-family: system-ui, -apple-system, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          animation: slideIn 0.3s ease-out;
+        ">
+          ❌ 更新板块失败: ${error instanceof Error ? error.message : '未知错误'}
+        </div>
+        <style>
+          @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+          }
+        </style>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 3000);
     }
   };
 
   const handleDeleteBoard = async (boardId: string) => {
     try {
-      console.log('BoardManagementSimple: 删除板块:', boardId);
       const module = await import('../data/communityManager');
       module.deleteBoard(boardId);
       setBoards(boards.filter(b => b.id !== boardId));
       setShowDeleteConfirm(null);
-      console.log('BoardManagementSimple: 板块删除成功');
     } catch (error) {
-      console.error('BoardManagementSimple: 删除板块失败:', error);
+      console.error('删除板块失败:', error);
     }
   };
 
@@ -226,19 +243,13 @@ const BoardManagementSimple: React.FC = () => {
                       {board.topicCount} 个主题
                     </span>
                     <button
-                      onClick={() => {
-                        console.log('BoardManagementSimple: 点击编辑按钮', board);
-                        openEditModal(board);
-                      }}
+                      onClick={() => openEditModal(board)}
                       className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-colors"
                     >
                       编辑
                     </button>
                     <button
-                      onClick={() => {
-                        console.log('BoardManagementSimple: 点击删除按钮', board.id);
-                        setShowDeleteConfirm(board.id);
-                      }}
+                      onClick={() => setShowDeleteConfirm(board.id)}
                       className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded transition-colors"
                     >
                       删除
@@ -376,10 +387,7 @@ const BoardManagementSimple: React.FC = () => {
                   取消
                 </button>
                 <button
-                  onClick={() => {
-                    console.log('BoardManagementSimple: 保存按钮被点击');
-                    handleEditBoard();
-                  }}
+                  onClick={handleEditBoard}
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                 >
                   保存
