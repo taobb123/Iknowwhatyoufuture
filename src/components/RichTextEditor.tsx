@@ -143,7 +143,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   };
 
   const formatCodeBlock = () => {
-    insertText('```\n', '\n```', '代码块');
+    insertText('```\n', '\n```', '// 在这里输入您的代码\nconsole.log("Hello World!");');
   };
 
   const formatLink = () => {

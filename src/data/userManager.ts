@@ -4,10 +4,14 @@ export interface User {
   email: string;
   password: string; // 实际项目中应该加密存储
   role: 'user' | 'admin' | 'superAdmin';
+  userType: 'guest' | 'regular' | 'admin' | 'superAdmin'; // 新增用户类型
   createdAt: string;
   updatedAt: string;
   lastLoginAt?: string;
   isActive: boolean;
+  // 游客相关字段
+  isGuest?: boolean; // 是否为游客
+  guestId?: string; // 游客唯一标识
 }
 
 // 用户数据存储键
@@ -196,6 +200,20 @@ export const hasPermission = (user: User | null, requiredRole: 'user' | 'admin' 
   return roleHierarchy[user.role] >= roleHierarchy[requiredRole];
 };
 
+// 检查用户类型权限
+export const hasUserTypePermission = (user: User | null, requiredUserType: 'guest' | 'regular' | 'admin' | 'superAdmin'): boolean => {
+  if (!user) return false;
+  
+  const userTypeHierarchy = {
+    guest: 1,
+    regular: 2,
+    admin: 3,
+    superAdmin: 4
+  };
+  
+  return userTypeHierarchy[user.userType] >= userTypeHierarchy[requiredUserType];
+};
+
 // 检查是否为管理员
 export const isAdmin = (user: User | null): boolean => {
   return hasPermission(user, 'admin');
@@ -225,18 +243,146 @@ export const initializeDefaultAdmin = (): void => {
         email: 'luguoxiang@gamehub.com',
         password: '123123', // 实际项目中应该使用加密密码
         role: 'superAdmin',
+        userType: 'superAdmin', // 添加用户类型
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        isActive: true
+        isActive: true,
+        isGuest: false,
       };
       
       users.push(defaultAdmin);
       saveAllUsers(users);
       localStorage.setItem(USER_ID_COUNTER_KEY, '1');
+      
+      // 设置为当前用户
+      setCurrentUser(defaultAdmin);
+      console.log('默认管理员创建并设置为当前用户');
     }
   } catch (error) {
-    // 初始化默认管理员失败
+    console.error('初始化默认管理员失败:', error);
   }
+};
+
+// 数据迁移：将现有用户数据迁移为超级管理员
+export const migrateExistingUsers = (): void => {
+  try {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    
+    const users = getAllUsers();
+    let hasChanges = false;
+    
+    // 为现有用户添加新的字段
+    users.forEach(user => {
+      if (!user.userType) {
+        user.userType = user.role === 'superAdmin' ? 'superAdmin' : 
+                       user.role === 'admin' ? 'admin' : 'regular';
+        user.isGuest = false;
+        hasChanges = true;
+      }
+    });
+    
+    if (hasChanges) {
+      saveAllUsers(users);
+      console.log('用户数据迁移完成');
+      
+      // 如果当前没有用户，设置第一个用户为当前用户
+      const currentUser = getCurrentUser();
+      if (!currentUser && users.length > 0) {
+        setCurrentUser(users[0]);
+        console.log('设置第一个用户为当前用户');
+      }
+    }
+  } catch (error) {
+    console.error('数据迁移失败:', error);
+  }
+};
+
+// 游客相关功能
+export const createGuestUser = (): User => {
+  const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  const guestUser: User = {
+    id: guestId,
+    username: '游客',
+    email: '',
+    password: '',
+    role: 'user',
+    userType: 'guest',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    isActive: true,
+    isGuest: true,
+    guestId: guestId,
+  };
+  
+  // 游客不保存到用户列表，只设置当前用户
+  setCurrentUser(guestUser);
+  return guestUser;
+};
+
+// 游客注册为普通用户
+export const registerGuestAsRegular = (username: string, email: string, password: string): User => {
+  const currentUser = getCurrentUser();
+  
+  if (!currentUser || !currentUser.isGuest) {
+    throw new Error('当前用户不是游客');
+  }
+  
+  // 检查用户名和邮箱是否已存在
+  if (getUserByUsername(username)) {
+    throw new Error('用户名已存在');
+  }
+  
+  if (getUserByEmail(email)) {
+    throw new Error('邮箱已存在');
+  }
+  
+  // 创建普通用户
+  const regularUser: User = {
+    id: currentUser.id, // 保持相同的ID
+    username,
+    email,
+    password,
+    role: 'user',
+    userType: 'regular',
+    createdAt: currentUser.createdAt,
+    updatedAt: new Date().toISOString(),
+    isActive: true,
+    isGuest: false,
+    guestId: undefined,
+  };
+  
+  // 保存到用户列表
+  const users = getAllUsers();
+  users.push(regularUser);
+  saveAllUsers(users);
+  
+  // 设置当前用户
+  setCurrentUser(regularUser);
+  
+  return regularUser;
+};
+
+// 检查是否为游客
+export const isGuest = (user: User | null): boolean => {
+  return user?.isGuest === true;
+};
+
+// 检查是否为普通用户
+export const isRegularUser = (user: User | null): boolean => {
+  return user?.userType === 'regular';
+};
+
+// 获取用户显示名称
+export const getUserDisplayName = (user: User | null): string => {
+  if (!user) return '未知用户';
+  
+  if (user.isGuest) {
+    return '游客';
+  }
+  
+  return user.username;
 };
 
 // 获取用户统计信息
@@ -247,6 +393,8 @@ export const getUserStats = () => {
     active: users.filter(user => user.isActive).length,
     admins: users.filter(user => user.role === 'admin').length,
     superAdmins: users.filter(user => user.role === 'superAdmin').length,
-    regularUsers: users.filter(user => user.role === 'user').length
+    regularUsers: users.filter(user => user.role === 'user').length,
+    guests: users.filter(user => user.isGuest).length,
+    regularUserTypes: users.filter(user => user.userType === 'regular').length,
   };
 };

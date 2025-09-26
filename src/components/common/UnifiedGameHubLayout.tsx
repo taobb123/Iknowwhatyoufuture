@@ -494,14 +494,10 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                         {currentArticle.title}
                       </h1>
                       
-                      <div className="text-lg text-gray-300 mb-6 leading-relaxed">
-                        <MarkdownRenderer content={currentArticle.content.substring(0, 200) + '...'} />
-                      </div>
-                      
                       <div className="flex items-center gap-6 text-sm text-gray-400">
                         <div className="flex items-center gap-2">
                           <User size={16} />
-                          <span>{currentArticle.author}</span>
+                          <span>{currentArticle.authorType === 'guest' ? '游客' : currentArticle.author}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock size={16} />
@@ -515,7 +511,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                     </header>
 
                     {/* 文章正文 */}
-                    <article className="prose prose-invert prose-lg max-w-none">
+                    <article className="max-w-none">
                       <div 
                         ref={articleContentRef}
                         className="article-content"
@@ -687,7 +683,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                             }`}>
                               <span className="flex items-center gap-1">
                                 <User size={16} />
-                                {guide.author}
+                                {guide.authorType === 'guest' ? '游客' : guide.author}
                               </span>
                               <span className="flex items-center gap-1">
                                 <Clock size={16} />

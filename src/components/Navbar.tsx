@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Menu, X, Settings, LogOut, User } from 'lucide-react';
+import { Search, Menu, X, Settings, LogOut, User, UserPlus, Shield, Grid3X3, Tag } from 'lucide-react';
 import SearchBox from './SearchBox';
 import GameNavigation from './GameNavigation';
+import UserRegistration from './UserRegistration';
 import { useAuth } from '../contexts/AuthContext';
 import PermissionWrapper from './PermissionWrapper';
+import { getUserDisplayName, getUserTypeDisplayName } from '../utils/permissions';
 
 interface NavbarProps {}
 
 function Navbar({}: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const { state, logout, isAdmin, isSuperAdmin } = useAuth();
+  const [showRegistration, setShowRegistration] = useState(false);
+  const { state, logout, isAdmin, isSuperAdmin, isGuest, getUserDisplayName } = useAuth();
 
   // 监听 Ctrl+K 快捷键
   useEffect(() => {
@@ -37,6 +40,11 @@ function Navbar({}: NavbarProps) {
 
   const handleLogout = () => {
     logout();
+    setShowUserMenu(false);
+  };
+
+  const handleRegistrationSuccess = () => {
+    setShowRegistration(false);
     setShowUserMenu(false);
   };
 
@@ -76,12 +84,18 @@ function Navbar({}: NavbarProps) {
             >
               所有游戏
             </Link>
-            <Link
-              to="/game-hub"
-              className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-            >
-              游戏中心
-            </Link>
+                <Link
+                  to="/game-hub"
+                  className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  游戏中心
+                </Link>
+                <Link
+                  to="/community"
+                  className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  社区
+                </Link>
             
             {/* 管理入口 - 只有管理员可见 */}
             {state.isAuthenticated && isAdmin() && (
@@ -102,27 +116,71 @@ function Navbar({}: NavbarProps) {
                   className="flex items-center gap-2 text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   <User size={16} />
-                  {state.user?.username}
+                  {state.user?.userType ? getUserDisplayName(state.user.userType, state.user.username) : '用户'}
                 </button>
                 
                 {showUserMenu && (
                   <div className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-lg shadow-lg py-1 z-50">
                     <div className="px-4 py-2 text-sm text-gray-300 border-b border-gray-600">
-                      {state.user?.email}
+                      {state.user?.email || '游客模式'}
                     </div>
                     <div className="px-4 py-2 text-xs text-gray-400 border-b border-gray-600">
-                      角色: {state.user?.role === 'superAdmin' ? '超级管理员' : state.user?.role === 'admin' ? '管理员' : '普通用户'}
+                      类型: {state.user?.userType ? getUserTypeDisplayName(state.user.userType) : '未知'}
                     </div>
                     
-                {/* 用户管理 - 只有超级管理员可见 */}
-                {state.isAuthenticated && isSuperAdmin() && (
-                  <Link
-                    to="/user-management"
-                    className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600"
-                    onClick={() => setShowUserMenu(false)}
+                {/* 注册按钮 - 只有游客可见 */}
+                {isGuest() && (
+                  <button
+                    onClick={() => {
+                      setShowRegistration(true);
+                      setShowUserMenu(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 flex items-center gap-2"
                   >
-                    用户管理
-                  </Link>
+                    <UserPlus size={14} />
+                    注册账户
+                  </button>
+                )}
+
+                {/* 管理功能 - 管理员可见 */}
+                {state.isAuthenticated && (isAdmin() || isSuperAdmin()) && (
+                  <>
+                    <div className="px-4 py-2 text-xs text-gray-500 border-b border-gray-600">
+                      管理功能
+                    </div>
+                    <Link
+                      to="/user-management"
+                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 flex items-center gap-2"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      <Shield size={14} />
+                      用户管理
+                    </Link>
+                    <Link
+                      to="/article-management"
+                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 flex items-center gap-2"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      <Settings size={14} />
+                      文章管理
+                    </Link>
+                    <Link
+                      to="/board-management"
+                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 flex items-center gap-2"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      <Grid3X3 size={14} />
+                      板块管理
+                    </Link>
+                    <Link
+                      to="/topic-management"
+                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 flex items-center gap-2"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      <Tag size={14} />
+                      主题管理
+                    </Link>
+                  </>
                 )}
                     
                     <button
@@ -241,6 +299,13 @@ function Navbar({}: NavbarProps) {
       </div>
     </nav>
 
+    {/* 注册弹窗 */}
+    {showRegistration && (
+      <UserRegistration
+        onSuccess={handleRegistrationSuccess}
+        onCancel={() => setShowRegistration(false)}
+      />
+    )}
     </>
   );
 }

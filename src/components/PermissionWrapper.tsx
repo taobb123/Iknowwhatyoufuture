@@ -1,24 +1,39 @@
 import React from 'react';
-import { usePermission } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
+import { hasPermission, type Permission } from '../utils/permissions';
 
 interface PermissionWrapperProps {
   children: React.ReactNode;
-  requiredRole: 'user' | 'admin' | 'superAdmin';
+  permission: Permission;
   fallback?: React.ReactNode;
 }
 
 const PermissionWrapper: React.FC<PermissionWrapperProps> = ({ 
   children, 
-  requiredRole,
+  permission, 
   fallback = null 
 }) => {
-  const hasPermission = usePermission(requiredRole);
-
-  if (!hasPermission) {
+  const { state } = useAuth();
+  
+  // 如果没有用户，显示fallback
+  if (!state.user) {
     return <>{fallback}</>;
   }
-
-  return <>{children}</>;
+  
+  // 如果没有用户类型，默认显示内容（临时解决方案）
+  if (!state.user.userType) {
+    console.warn('用户没有userType，默认显示内容');
+    return <>{children}</>;
+  }
+  
+  // 检查权限
+  const hasRequiredPermission = hasPermission(state.user.userType, permission);
+  
+  if (hasRequiredPermission) {
+    return <>{children}</>;
+  }
+  
+  return <>{fallback}</>;
 };
 
 export default PermissionWrapper;

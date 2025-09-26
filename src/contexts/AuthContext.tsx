@@ -4,6 +4,12 @@ import {
   setCurrentUser, 
   logoutUser, 
   validateUser,
+  createGuestUser,
+  registerGuestAsRegular,
+  isGuest,
+  isRegularUser,
+  getUserDisplayName,
+  migrateExistingUsers,
   type User 
 } from '../data/userManager';
 
@@ -21,7 +27,9 @@ type AuthAction =
   | { type: 'LOGIN_FAILURE' }
   | { type: 'LOGOUT' }
   | { type: 'SET_LOADING'; payload: boolean }
-  | { type: 'UPDATE_USER'; payload: User };
+  | { type: 'UPDATE_USER'; payload: User }
+  | { type: 'CREATE_GUEST'; payload: User }
+  | { type: 'REGISTER_GUEST'; payload: User };
 
 // 认证上下文接口
 interface AuthContextType {
@@ -29,9 +37,15 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   updateUser: (user: User) => void;
+  createGuest: () => User;
+  registerGuest: (username: string, email: string, password: string) => Promise<boolean>;
   isAdmin: () => boolean;
   isSuperAdmin: () => boolean;
+  isGuest: () => boolean;
+  isRegularUser: () => boolean;
+  getUserDisplayName: () => string;
   hasPermission: (requiredRole: 'user' | 'admin' | 'superAdmin') => boolean;
+  hasUserTypePermission: (requiredUserType: 'guest' | 'regular' | 'admin' | 'superAdmin') => boolean;
 }
 
 // 初始状态
@@ -80,6 +94,20 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         ...state,
         user: action.payload,
       };
+    case 'CREATE_GUEST':
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        isLoading: false,
+      };
+    case 'REGISTER_GUEST':
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        isLoading: false,
+      };
     default:
       return state;
   }
@@ -100,13 +128,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const initAuth = () => {
       try {
+        // 先进行数据迁移
+        migrateExistingUsers();
+        
         const currentUser = getCurrentUser();
         if (currentUser) {
           dispatch({ type: 'LOGIN_SUCCESS', payload: currentUser });
         } else {
-          dispatch({ type: 'SET_LOADING', payload: false });
+          // 如果没有用户，创建游客用户
+          const guestUser = createGuestUser();
+          dispatch({ type: 'CREATE_GUEST', payload: guestUser });
         }
       } catch (error) {
+        console.error('认证初始化失败:', error);
         dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
@@ -154,6 +188,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // 创建游客用户
+  const createGuest = (): User => {
+    const guestUser = createGuestUser();
+    dispatch({ type: 'CREATE_GUEST', payload: guestUser });
+    return guestUser;
+  };
+
+  // 游客注册为普通用户
+  const registerGuest = async (username: string, email: string, password: string): Promise<boolean> => {
+    try {
+      const regularUser = registerGuestAsRegular(username, email, password);
+      dispatch({ type: 'REGISTER_GUEST', payload: regularUser });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   // 检查是否为管理员
   const isAdmin = (): boolean => {
     return state.user?.role === 'admin' || state.user?.role === 'superAdmin';
@@ -177,14 +229,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return roleHierarchy[state.user.role] >= roleHierarchy[requiredRole];
   };
 
+  // 检查用户类型权限
+  const hasUserTypePermission = (requiredUserType: 'guest' | 'regular' | 'admin' | 'superAdmin'): boolean => {
+    if (!state.user) return false;
+    
+    const userTypeHierarchy = {
+      guest: 1,
+      regular: 2,
+      admin: 3,
+      superAdmin: 4
+    };
+    
+    return userTypeHierarchy[state.user.userType] >= userTypeHierarchy[requiredUserType];
+  };
+
   const value: AuthContextType = {
     state,
     login,
     logout,
     updateUser,
+    createGuest,
+    registerGuest,
     isAdmin,
     isSuperAdmin,
+    isGuest: () => isGuest(state.user),
+    isRegularUser: () => isRegularUser(state.user),
+    getUserDisplayName: () => getUserDisplayName(state.user),
     hasPermission,
+    hasUserTypePermission,
   };
 
   return (

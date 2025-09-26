@@ -7,8 +7,10 @@ import {
   addArticle,
   getAllCategories,
   initializeSampleArticles,
+  getArticleAuthorDisplayName,
   type Article 
 } from '../data/articleManager';
+import { useAuth } from '../contexts/AuthContext';
 import ProtectedRoute from '../components/ProtectedRoute';
 import RichTextEditor from '../components/RichTextEditor';
 import MarkdownRenderer from '../components/MarkdownRenderer';
@@ -17,6 +19,7 @@ import { ArrowLeft, Save, Trash2, Eye, EyeOff } from 'lucide-react';
 const ArticleEditContent: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { state: authState, getUserDisplayName } = useAuth();
   const [article, setArticle] = useState<Article | null>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -91,10 +94,13 @@ const ArticleEditContent: React.FC = () => {
         });
       } else {
         // 创建新文章
+        const authorDisplayName = getUserDisplayName();
         savedArticle = addArticle({
           title: title.trim(),
           content: content.trim(),
-          author: '游戏玩家',
+          author: authorDisplayName,
+          authorId: authState.user?.id,
+          authorType: authState.user?.userType || 'guest',
           category,
           tags,
           status

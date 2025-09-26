@@ -10,7 +10,15 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
   const cleanMarkdown = (text: string) => {
     let cleaned = text;
     
-    // 1. 移除所有孤立的反引号（没有成对的反引号）
+    // 1. 先保护代码块，避免被后续清理影响
+    const codeBlocks: string[] = [];
+    cleaned = cleaned.replace(/```[\s\S]*?```/g, (match) => {
+      const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
+      codeBlocks.push(match);
+      return placeholder;
+    });
+    
+    // 2. 移除所有孤立的反引号（没有成对的反引号）
     const backtickCount = (cleaned.match(/`/g) || []).length;
     if (backtickCount % 2 === 1) {
       // 移除最后一个反引号
@@ -20,13 +28,10 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
       }
     }
     
-    // 2. 移除行首或行尾的孤立反引号
+    // 3. 移除行首或行尾的孤立反引号
     cleaned = cleaned.replace(/^`+$/gm, ''); // 整行只有反引号
     cleaned = cleaned.replace(/^`+ /gm, ''); // 行首反引号后跟空格
     cleaned = cleaned.replace(/ `+$/gm, ''); // 行尾空格后跟反引号
-    
-    // 3. 移除连续的反引号（超过2个的）
-    cleaned = cleaned.replace(/`{3,}/g, '```'); // 保留最多3个反引号用于代码块
     
     // 4. 移除反引号包围的空内容
     cleaned = cleaned.replace(/`\s*`/g, ''); // 反引号包围空白内容
@@ -35,6 +40,11 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
     // 5. 清理多余的空行
     cleaned = cleaned.replace(/\n\s*\n\s*\n/g, '\n\n'); // 最多保留两个连续换行
     
+    // 6. 恢复代码块
+    codeBlocks.forEach((codeBlock, index) => {
+      cleaned = cleaned.replace(`__CODE_BLOCK_${index}__`, codeBlock);
+    });
+    
     return cleaned;
   };
 
@@ -42,11 +52,33 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
   const parseMarkdown = (text: string) => {
     let html = cleanMarkdown(text);
 
-    // 处理代码块
-    html = html.replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-800 p-4 rounded-lg overflow-x-auto my-4"><code class="text-gray-300">$1</code></pre>');
+    // 处理代码块 - 改进代码块处理逻辑
+    html = html.replace(/```([\s\S]*?)```/g, (match, codeContent) => {
+      // 清理代码内容，移除首尾空白
+      const cleanCode = codeContent.trim();
+      // HTML 转义处理
+      const escapedCode = cleanCode
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+      
+      return `<pre class="bg-gray-800 border border-gray-600 p-4 rounded-lg overflow-x-auto my-4"><code class="text-green-400 font-mono text-sm leading-relaxed whitespace-pre">${escapedCode}</code></pre>`;
+    });
     
-    // 处理行内代码 - 只处理成对的反引号，且内容不为空
-    html = html.replace(/`([^`\n\s][^`\n]*[^`\n\s]|[^`\n\s])`/g, '<code class="bg-gray-700 px-2 py-1 rounded text-sm text-green-400">$1</code>');
+    // 处理行内代码 - 改进行内代码处理逻辑
+    html = html.replace(/`([^`\n]+)`/g, (match, codeContent) => {
+      // HTML 转义处理
+      const escapedCode = codeContent
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+      
+      return `<code class="bg-gray-700 border border-gray-600 px-2 py-1 rounded text-sm text-green-400 font-mono">${escapedCode}</code>`;
+    });
     
     // 处理标题
     html = html.replace(/^### (.*$)/gm, '<h3 class="text-xl font-bold text-white mt-6 mb-3">$1</h3>');
@@ -62,7 +94,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
     // 处理链接
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-400 hover:text-blue-300 underline" target="_blank" rel="noopener noreferrer">$1</a>');
     
-    // 处理列表 - 改进列表处理逻辑，避免重复
+    // 处理列表 - 使用内联样式和!important确保样式生效
     const lines = html.split('\n');
     let inList = false;
     let listItems: string[] = [];
@@ -80,11 +112,16 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
         // 确保列表项内容不为空
         const listContent = listMatch[1].trim();
         if (listContent) {
-          listItems.push(`<li class="ml-4 text-gray-300">${listContent}</li>`);
+          listItems.push(`<li style="list-style: none !important; list-style-type: none !important; display: flex; align-items: center; color: #D1D5DB; margin-bottom: 4px; padding-left: 0;">
+            <span style="color: #EF4444 !important; font-weight: bold; font-size: 14px; margin-right: 2.4em;">•</span>
+            <span>${listContent}</span>
+          </li>`);
         }
       } else {
         if (inList && listItems.length > 0) {
-          processedLines.push(`<ul class="list-disc ml-6 my-4">${listItems.join('')}</ul>`);
+          processedLines.push(`<ul style="list-style: none !important; padding-left: 0; margin-left: 0; margin-top: 16px; margin-bottom: 16px;">
+            ${listItems.join('')}
+          </ul>`);
           listItems = [];
           inList = false;
         }
@@ -94,7 +131,9 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
     
     // 处理最后一个列表
     if (inList && listItems.length > 0) {
-      processedLines.push(`<ul class="list-disc ml-6 my-4">${listItems.join('')}</ul>`);
+      processedLines.push(`<ul style="list-style: none !important; padding-left: 0; margin-left: 0; margin-top: 16px; margin-bottom: 16px;">
+        ${listItems.join('')}
+      </ul>`);
     }
     
     html = processedLines.join('\n');
@@ -116,7 +155,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
 
   return (
     <div 
-      className={`markdown-content prose prose-invert prose-lg max-w-none ${className}`}
+      className={`markdown-content max-w-none ${className}`}
       dangerouslySetInnerHTML={{ __html: renderedContent }}
     />
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -8,6 +8,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { initGA, trackPageView } from './utils/analytics';
 import { games } from './data/gamesData';
 import { initializeDefaultAdmin } from './data/userManager';
+import { initializeDefaultCommunity } from './data/communityManager';
 
 // 懒加载页面组件
 const Home = lazy(() => import('./pages/Home'));
@@ -23,6 +24,12 @@ const ArticleManagement = lazy(() => import('./pages/ArticleManagement'));
 const ArticleEdit = lazy(() => import('./pages/ArticleEdit'));
 const Login = lazy(() => import('./pages/Login'));
 const UserManagement = lazy(() => import('./pages/UserManagement'));
+const BoardManagement = lazy(() => import('./pages/BoardManagementSimple'));
+const TopicManagement = lazy(() => import('./pages/TopicManagementSimple'));
+const CommunityHome = lazy(() => import('./pages/CommunityHome'));
+const BoardDetail = lazy(() => import('./pages/BoardDetail'));
+const TopicDetail = lazy(() => import('./pages/TopicDetail'));
+const CodeFormatTest = lazy(() => import('./pages/CodeFormatTest'));
 const GameDetail = lazy(() => import('./pages/GameDetail'));
 const GameCategory = lazy(() => import('./pages/GameCategory'));
 const GamesList = lazy(() => import('./pages/GamesList'));
@@ -51,6 +58,8 @@ const AppContent: React.FC = () => {
     loadGames(games);
     // 初始化默认管理员账户
     initializeDefaultAdmin();
+    // 初始化默认社区数据
+    initializeDefaultCommunity();
   }, []); // 移除loadGames依赖，避免无限循环
 
   return (
@@ -75,7 +84,13 @@ const AppContent: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/article-management" element={<ArticleManagement />} />
             <Route path="/article-edit/:id" element={<ArticleEdit />} />
-            <Route path="/user-management" element={<UserManagement />} />
+              <Route path="/user-management" element={<UserManagement />} />
+            <Route path="/board-management" element={<BoardManagement />} />
+            <Route path="/topic-management" element={<TopicManagement />} />
+            <Route path="/community" element={<CommunityHome />} />
+            <Route path="/board/:id" element={<BoardDetail />} />
+            <Route path="/topic/:id" element={<TopicDetail />} />
+            <Route path="/code-format-test" element={<CodeFormatTest />} />
             <Route path="/games" element={<GamesList />} />
             <Route path="/games/:id" element={<GameDetail />} />
             <Route path="/games/category/:category" element={<GameCategory />} />
