@@ -219,12 +219,12 @@ function Navbar({}: NavbarProps) {
             >
               所有游戏
             </Link>
-                <Link
-                  to="/game-hub"
-                  className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  游戏中心
-                </Link>
+            <Link
+              to="/game-hub"
+              className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+            >
+              游戏中心
+            </Link>
                 <Link
                   to="/community"
                   className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
@@ -297,14 +297,14 @@ function Navbar({}: NavbarProps) {
                     <div className="px-4 py-2 text-xs text-gray-500 border-b border-gray-600">
                       管理功能
                     </div>
-                    <Link
-                      to="/user-management"
+                  <Link
+                    to="/user-management"
                       className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 flex items-center gap-2"
-                      onClick={() => setShowUserMenu(false)}
-                    >
+                    onClick={() => setShowUserMenu(false)}
+                  >
                       <Shield size={14} />
-                      用户管理
-                    </Link>
+                    用户管理
+                  </Link>
                     <Link
                       to="/article-management"
                       className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 flex items-center gap-2"
@@ -334,13 +334,13 @@ function Navbar({}: NavbarProps) {
                     
                     {/* 登出按钮 - 非游客用户可见 */}
                     {(!isGuest() || simpleCurrentUser) && (
-                      <button
+                    <button
                         onClick={simpleCurrentUser ? handleSimpleLogout : handleLogout}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 flex items-center gap-2"
-                      >
-                        <LogOut size={14} />
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 flex items-center gap-2"
+                    >
+                      <LogOut size={14} />
                         退出
-                      </button>
+                    </button>
                     )}
                   </div>
                 )}
@@ -430,7 +430,7 @@ function Navbar({}: NavbarProps) {
                         if (simpleCurrentUser) {
                           handleSimpleLogout();
                         } else {
-                          handleLogout();
+                        handleLogout();
                         }
                         setIsMobileMenuOpen(false);
                       }}

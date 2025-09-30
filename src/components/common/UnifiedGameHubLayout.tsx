@@ -355,24 +355,24 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
   };
 
   return (
-    <div className={`max-w-7xl mx-auto grid grid-cols-12 gap-6 p-6 w-full ${className}`}>
+    <div className={`max-w-7xl mx-auto grid grid-cols-12 gap-4 p-4 w-full ${className}`}>
       {/* 合并的左侧和中间内容区域 - 使用统一背景 */}
-      <div className="col-span-9 bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl p-6 shadow-2xl">
-        <div className="grid grid-cols-12 gap-6 h-full">
+      <div className="col-span-9 bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-xl p-4 shadow-2xl">
+        <div className="grid grid-cols-12 gap-4 h-full">
           {/* 左侧导航栏 */}
-          <div className="col-span-3 space-y-6">
+          <div className="col-span-3 space-y-4">
             {/* 用户信息卡片 */}
-            <div className="bg-gray-700/50 rounded-lg p-4 backdrop-blur-sm">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-                  <User size={24} />
+            <div className="bg-gray-700/50 rounded-lg p-3 backdrop-blur-sm">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                  <User size={16} />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">{userInfo.name}</h3>
-                  <p className="text-sm text-gray-400">{userInfo.level}</p>
+                  <h3 className="font-semibold text-white text-sm">{userInfo.name}</h3>
+                  <p className="text-xs text-gray-400">{userInfo.level}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-2 text-center text-sm">
+              <div className="grid grid-cols-3 gap-1 text-center text-xs">
                 <div>
                   <div className="font-semibold text-white">{userInfo.guides}</div>
                   <div className="text-gray-400">攻略</div>
@@ -389,9 +389,9 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
             </div>
 
             {/* 攻略分类导航 */}
-            <div className="space-y-2">
-              <h4 className="text-sm font-semibold text-gray-400 mb-3 flex items-center">
-                <Grid className="w-4 h-4 mr-2" />
+            <div className="space-y-1">
+              <h4 className="text-xs font-semibold text-gray-400 mb-2 flex items-center">
+                <Grid className="w-3 h-3 mr-1" />
                 攻略分类
               </h4>
               {categoriesWithCount.map((category) => {
@@ -403,20 +403,20 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                     key={category.id}
                     onClick={() => onCategoryChange(category.id)}
                     className={`
-                      w-full text-left px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg
+                      w-full text-left px-2 py-2 rounded-lg transition-all duration-200 transform hover:scale-102 hover:shadow-md
                       ${isSelected 
-                        ? `bg-gradient-to-r ${category.color} shadow-lg scale-105 text-white` 
+                        ? `bg-gradient-to-r ${category.color} shadow-md scale-102 text-white` 
                         : `bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 hover:text-white ${category.hoverColor}`
                       }
-                      border-2 ${isSelected ? 'border-white/30' : 'border-transparent hover:border-white/20'}
+                      border ${isSelected ? 'border-white/30' : 'border-transparent hover:border-white/20'}
                     `}
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <IconComponent size={18} />
-                        <span className="font-medium">{category.name}</span>
+                      <div className="flex items-center gap-2">
+                        <IconComponent size={14} />
+                        <span className="font-medium text-sm">{category.name}</span>
                       </div>
-                      <span className="text-xs bg-white/20 rounded-full px-2 py-1">
+                      <span className="text-xs bg-white/20 rounded-full px-1.5 py-0.5">
                         {category.count}
                       </span>
                     </div>
@@ -426,14 +426,14 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
             </div>
 
             {/* 热门话题 */}
-            <div className="space-y-2">
-              <h4 className="text-sm font-semibold text-gray-400 mb-3 flex items-center">
-                <TrendingUp className="w-4 h-4 mr-2" />
+            <div className="space-y-1">
+              <h4 className="text-xs font-semibold text-gray-400 mb-2 flex items-center">
+                <TrendingUp className="w-3 h-3 mr-1" />
                 热门话题
               </h4>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 {['React游戏开发', 'TypeScript技巧', 'Vue组件设计', 'Node.js服务器'].map(topic => (
-                  <div key={topic} className="text-sm text-gray-300 hover:text-white cursor-pointer hover:bg-gray-700/50 rounded-lg px-3 py-2 transition-colors">
+                  <div key={topic} className="text-xs text-gray-300 hover:text-white cursor-pointer hover:bg-gray-700/50 rounded px-2 py-1 transition-colors">
                     #{topic}
                   </div>
                 ))}
@@ -444,22 +444,22 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
           {/* 中间内容区域 */}
           <div className="col-span-9 flex flex-col">
             {/* 搜索和排序栏 */}
-            <div className="bg-gray-700/50 rounded-lg p-4 mb-6 backdrop-blur-sm">
-              <div className="flex items-center gap-4 mb-4">
+            <div className="bg-gray-700/50 rounded-lg p-3 mb-4 backdrop-blur-sm">
+              <div className="flex items-center gap-3 mb-2">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
                   <input
                     type="text"
                     placeholder="搜索攻略、游戏、作者..."
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"
+                    className="w-full pl-8 pr-3 py-1.5 bg-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600 text-sm"
                   />
                 </div>
                 <select
                   value={sortBy}
                   onChange={(e) => onSortChange(e.target.value)}
-                  className="px-4 py-2 bg-gray-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"
+                  className="px-3 py-1.5 bg-gray-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600 text-sm"
                 >
                   <option value="最新">最新</option>
                   <option value="热门">热门</option>
@@ -469,20 +469,20 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                 {onPublishClick && (
                   <button
                     onClick={onPublishClick}
-                    className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors"
+                    className="bg-blue-600 px-3 py-1.5 rounded-lg hover:bg-blue-700 flex items-center gap-1 transition-colors text-sm"
                   >
-                    <Plus size={20} />
+                    <Plus size={16} />
                     发表
                   </button>
                 )}
               </div>
-              <div className="text-sm text-gray-400">
+              <div className="text-xs text-gray-400">
                 找到 {filteredGuides.length} 篇攻略，当前显示第 {currentPage} 页，共 {totalPages} 页
               </div>
             </div>
 
             {/* 内容区域 */}
-            <div className="flex-1 overflow-y-auto space-y-4">
+            <div className="flex-1 overflow-y-auto space-y-2">
               {isViewingArticle && currentArticle ? (
                 /* 文章内容页面 */
                 <div className="bg-gray-800/50 rounded-lg backdrop-blur-sm">
@@ -666,21 +666,21 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                     const hasError = articleErrors[articleId];
                     
                     return (
-                      <div key={guide.id} className={`rounded-lg p-6 transition-colors backdrop-blur-sm ${
+                      <div key={guide.id} className={`rounded-lg p-3 transition-colors backdrop-blur-sm ${
                         hasError 
                           ? 'bg-red-900/20 border border-red-500/50' 
                           : 'bg-gray-700/50 hover:bg-gray-600/50'
                       }`}>
-                        <div className="flex items-start gap-4">
-                          <div className={`w-16 h-16 rounded-lg flex items-center justify-center ${
+                        <div className="flex items-start gap-3">
+                          <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
                             hasError ? 'bg-red-600/50' : 'bg-gray-600/50'
                           }`}>
-                            <Gamepad2 size={24} className={hasError ? 'text-red-400' : 'text-gray-400'} />
+                            <Gamepad2 size={18} className={hasError ? 'text-red-400' : 'text-gray-400'} />
                           </div>
                           <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
+                            <div className="flex items-center gap-2 mb-1">
                               <h3 
-                                className={`text-lg font-semibold cursor-pointer transition-colors ${
+                                className={`text-base font-semibold cursor-pointer transition-colors ${
                                   hasError 
                                     ? 'text-red-300 hover:text-red-200' 
                                     : 'text-white hover:text-blue-400'
@@ -689,7 +689,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                               >
                                 {guide.title}
                               </h3>
-                              <span className={`px-2 py-1 text-xs rounded text-white ${
+                              <span className={`px-1.5 py-0.5 text-xs rounded text-white ${
                                 hasError ? 'bg-red-600' : 'bg-blue-600'
                               }`}>
                                 {guide.category}
@@ -698,28 +698,28 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                             
                             {/* 错误提示 */}
                             {hasError && (
-                              <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-3 mb-3">
+                              <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-2 mb-2">
                                 <div className="flex items-center gap-2">
                                   <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                                  <span className="text-red-200 text-sm">{hasError}</span>
+                                  <span className="text-red-200 text-xs">{hasError}</span>
                                 </div>
                               </div>
                             )}
                             
-                            <div className={`mb-3 line-clamp-2 ${
+                            <div className={`mb-2 line-clamp-2 ${
                               hasError ? 'text-red-300/70' : 'text-gray-400'
                             }`}>
-                              <MarkdownRenderer content={guide.content.substring(0, 150) + '...'} />
+                              <MarkdownRenderer content={guide.content.substring(0, 100) + '...'} />
                             </div>
-                            <div className={`flex items-center gap-4 text-sm mb-3 ${
+                            <div className={`flex items-center gap-3 text-xs mb-2 ${
                               hasError ? 'text-red-400/70' : 'text-gray-500'
                             }`}>
                               <span className="flex items-center gap-1">
-                                <User size={16} />
+                                <User size={12} />
                                 {guide.authorType === 'guest' ? '游客' : guide.author}
                               </span>
                               <span className="flex items-center gap-1">
-                                <Clock size={16} />
+                                <Clock size={12} />
                                 {formatDate(guide.createdAt)}
                               </span>
                               {guide.gameTitle && (
@@ -728,25 +728,25 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                               </span>
                               )}
                             </div>
-                            <div className={`flex items-center gap-4 text-sm ${
+                            <div className={`flex items-center gap-3 text-xs ${
                               hasError ? 'text-red-400/70' : 'text-gray-500'
                             }`}>
                               <span className="flex items-center gap-1">
-                                <Eye size={16} />
+                                <Eye size={12} />
                                 {guide.views} 次浏览
                               </span>
                               <span className="flex items-center gap-1">
-                                <Heart size={16} />
+                                <Heart size={12} />
                                 {guide.likes} 点赞
                               </span>
                               <span className="flex items-center gap-1">
-                                <MessageCircle size={16} />
+                                <MessageCircle size={12} />
                                 {guide.comments} 评论
                               </span>
                             </div>
-                            <div className="flex gap-1 mt-3">
+                            <div className="flex gap-1 mt-2">
                               {guide.tags.map(tag => (
-                                <span key={tag} className={`px-2 py-1 text-xs rounded ${
+                                <span key={tag} className={`px-1.5 py-0.5 text-xs rounded ${
                                   hasError 
                                     ? 'bg-red-600/50 text-red-200' 
                                     : 'bg-gray-600/50 text-gray-300'
@@ -844,33 +844,33 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
       </div>
 
       {/* 右侧排行榜 - 保持独立背景 */}
-      <div className="col-span-3 space-y-6">
+      <div className="col-span-3 space-y-4">
         {/* 热门游戏排行榜 */}
-        <div className="bg-gray-800 rounded-lg p-4">
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={20} className="text-red-500" />
-            <h3 className="font-semibold text-white">热门游戏</h3>
+        <div className="bg-gray-800 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-3">
+            <TrendingUp size={16} className="text-red-500" />
+            <h3 className="font-semibold text-white text-sm">热门游戏</h3>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {hotGames.map((game, index) => (
-              <div key={game.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 cursor-pointer">
-                <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-sm font-bold text-white">
+              <div key={game.id} className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-700 cursor-pointer">
+                <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
                   {index + 1}
                 </div>
                 <img
                   src={game.image}
                   alt={game.title}
-                  className="w-10 h-10 rounded object-cover"
+                  className="w-8 h-8 rounded object-cover"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = '/car-racing.webp';
                   }}
                 />
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-sm truncate text-white">{game.title}</div>
+                  <div className="font-medium text-xs truncate text-white">{game.title}</div>
                   <div className="text-xs text-gray-400">{game.category}</div>
                 </div>
                 <div className="flex items-center gap-1 text-xs text-yellow-400">
-                  <Star size={12} />
+                  <Star size={10} />
                   {((game.likes || 0) / 1000).toFixed(1)}k
                 </div>
               </div>
@@ -879,27 +879,27 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
         </div>
 
         {/* 最新游戏排行榜 */}
-        <div className="bg-gray-800 rounded-lg p-4">
-          <div className="flex items-center gap-2 mb-4">
-            <Clock size={20} className="text-green-500" />
-            <h3 className="font-semibold text-white">最新游戏</h3>
+        <div className="bg-gray-800 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-3">
+            <Clock size={16} className="text-green-500" />
+            <h3 className="font-semibold text-white text-sm">最新游戏</h3>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {newGames.map((game, index) => (
-              <div key={game.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 cursor-pointer">
-                <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-sm font-bold text-white">
+              <div key={game.id} className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-700 cursor-pointer">
+                <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
                   {index + 1}
                 </div>
                 <img
                   src={game.image}
                   alt={game.title}
-                  className="w-10 h-10 rounded object-cover"
+                  className="w-8 h-8 rounded object-cover"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = '/car-racing.webp';
                   }}
                 />
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-sm truncate text-white">{game.title}</div>
+                  <div className="font-medium text-xs truncate text-white">{game.title}</div>
                   <div className="text-xs text-gray-400">{game.category}</div>
                 </div>
                 <div className="text-xs text-gray-500">

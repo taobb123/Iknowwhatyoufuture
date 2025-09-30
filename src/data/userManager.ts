@@ -175,28 +175,28 @@ export const updateUser = (id: string, updates: Partial<User>): User | null => {
   const adminIndex = adminUsers.findIndex(user => user.id === id);
   
   if (adminIndex !== -1) {
-    // 检查用户名是否与其他用户冲突
-    if (updates.username) {
-      const existingUser = getUserByUsername(updates.username);
-      if (existingUser && existingUser.id !== id) {
-        throw new Error('用户名已存在');
-      }
+  // 检查用户名是否与其他用户冲突
+  if (updates.username) {
+    const existingUser = getUserByUsername(updates.username);
+    if (existingUser && existingUser.id !== id) {
+      throw new Error('用户名已存在');
     }
-    
-    // 检查邮箱是否与其他用户冲突
-    if (updates.email) {
-      const existingUser = getUserByEmail(updates.email);
-      if (existingUser && existingUser.id !== id) {
-        throw new Error('邮箱已存在');
-      }
+  }
+  
+  // 检查邮箱是否与其他用户冲突
+  if (updates.email) {
+    const existingUser = getUserByEmail(updates.email);
+    if (existingUser && existingUser.id !== id) {
+      throw new Error('邮箱已存在');
     }
-    
+  }
+  
     adminUsers[adminIndex] = {
       ...adminUsers[adminIndex],
-      ...updates,
-      updatedAt: new Date().toISOString(),
-    };
-    
+    ...updates,
+    updatedAt: new Date().toISOString(),
+  };
+  
     saveAllUsers(adminUsers);
     return adminUsers[adminIndex];
   }
@@ -281,7 +281,7 @@ export const deleteUser = (id: string): boolean => {
         localStorage.removeItem('simple_current_user');
       }
       
-      return true;
+  return true;
     }
   } catch (error) {
     console.error('删除简单用户失败:', error);

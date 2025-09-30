@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import AdBanner from '../components/AdBanner';
 import SEOHead from '../components/SEOHead';
 import UnifiedGameLayout from '../components/common/UnifiedGameLayout';
 import GameModal from '../components/common/GameModal';
@@ -54,19 +53,10 @@ function Home() {
         canonical="https://streetracer.online/"
       />
 
-      <div className="container mx-auto px-4 py-8 pt-24">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-yellow-400 mb-4">👾热门游戏中心</h1>
-          <p className="text-gray-300 text-lg">体验无忧无虑的游戏时光！精选最热门的免费在线游戏，让您享受轻松愉快的游戏体验！</p>
-        </div>
-
-        {/* 顶部横幅广告 */}
-        <div className="mb-8">
-          <AdBanner 
-            adSlot="1234567890" 
-            adFormat="horizontal"
-            className="w-full h-32 bg-gray-800 rounded-lg flex items-center justify-center text-gray-400"
-          />
+      <div className="container mx-auto px-4 py-4 pt-20">
+        <div className="text-center mb-4">
+          <h1 className="text-2xl font-bold text-yellow-400 mb-2">热门游戏中心</h1>
+          <p className="text-gray-300 text-sm">体验无忧无虑的游戏时光！精选最热门的免费在线游戏，让您享受轻松愉快的游戏体验！</p>
         </div>
 
         {/* 统一的游戏布局 */}

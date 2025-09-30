@@ -32,6 +32,7 @@ const CommunityHome = lazy(() => import('./pages/CommunityHome'));
 const BoardDetail = lazy(() => import('./pages/BoardDetail'));
 const TopicDetail = lazy(() => import('./pages/TopicDetail'));
 const SimpleRegister = lazy(() => import('./pages/SimpleRegister'));
+const PerformanceTest = lazy(() => import('./pages/PerformanceTest'));
 const GameDetail = lazy(() => import('./pages/GameDetail'));
 const GameCategory = lazy(() => import('./pages/GameCategory'));
 const GamesList = lazy(() => import('./pages/GamesList'));
@@ -97,6 +98,7 @@ const AppContent: React.FC = () => {
             <Route path="/board/:id" element={<BoardDetail />} />
             <Route path="/topic/:id" element={<TopicDetail />} />
             <Route path="/simple-register" element={<SimpleRegister />} />
+            <Route path="/performance-test" element={<PerformanceTest />} />
             <Route path="/games" element={<GamesList />} />
             <Route path="/games/:id" element={<GameDetail />} />
             <Route path="/games/category/:category" element={<GameCategory />} />
