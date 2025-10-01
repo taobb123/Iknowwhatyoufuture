@@ -58,6 +58,7 @@ function StyledNavbar({}: StyledNavbarProps) {
       }
       if (event.key === 'Escape') {
         setIsMobileMenuOpen(false);
+        setShowUserMenu(false);
       }
     };
 
@@ -66,6 +67,26 @@ function StyledNavbar({}: StyledNavbarProps) {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  // 监听点击外部区域关闭用户菜单
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showUserMenu) {
+        const target = event.target as Element;
+        const userMenuButton = target.closest('button[onClick*="setShowUserMenu"]');
+        const userMenuDropdown = target.closest('.user-menu-dropdown');
+        
+        if (!userMenuButton && !userMenuDropdown) {
+          setShowUserMenu(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showUserMenu]);
 
   const handleLogout = () => {
     logout();
@@ -284,7 +305,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                 
                 {showUserMenu && (
                   <div 
-                    className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-1 z-50"
+                    className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-1 z-50 user-menu-dropdown"
                     style={menuStyles}
                   >
                     <div className="px-4 py-2 text-sm border-b" style={{ color: currentTheme.colors.textSecondary, borderColor: currentTheme.colors.border }}>
@@ -366,6 +387,18 @@ function StyledNavbar({}: StyledNavbarProps) {
                           <Tag size={14} />
                           主题管理
                         </Link>
+                        {/* 主题系统管理 - 只有超级管理员可见 */}
+                        {isSuperAdmin() && (
+                          <Link
+                            to="/theme-management"
+                            className="block px-4 py-2 text-sm hover:bg-[var(--hover-bg)] flex items-center gap-2 transition-colors"
+                            onClick={() => setShowUserMenu(false)}
+                            style={menuItemStyles}
+                          >
+                            <Settings size={14} />
+                            主题系统管理
+                          </Link>
+                        )}
                       </>
                     )}
                     
@@ -607,3 +640,612 @@ function StyledNavbar({}: StyledNavbarProps) {
 }
 
 export default StyledNavbar;
+
+
+                        <UserPlus size={14} />
+
+                        注册账户
+
+                      </button>
+
+                    )}
+
+
+
+                    {/* 登录按钮 - 只有游客可见 */}
+
+                    {isGuest() && !simpleCurrentUser && (
+
+                      <button
+
+                        onClick={() => {
+
+                          setShowLogin(true);
+
+                          setShowUserMenu(false);
+
+                        }}
+
+                        className="block w-full text-left px-4 py-2 text-sm hover:bg-[var(--hover-bg)] flex items-center gap-2 transition-colors"
+
+                        style={menuItemStyles}
+
+                      >
+
+                        <LogIn size={14} />
+
+                        登录
+
+                      </button>
+
+                    )}
+
+
+
+                    {/* 管理功能 - 管理员可见 */}
+
+                    {state.isAuthenticated && (isAdmin() || isSuperAdmin()) && (
+
+                      <>
+
+                        <div className="px-4 py-2 text-xs border-b" style={{ color: currentTheme.colors.textSecondary, borderColor: currentTheme.colors.border }}>
+
+                          管理功能
+
+                        </div>
+
+                        <Link
+
+                          to="/user-management"
+
+                          className="block px-4 py-2 text-sm hover:bg-[var(--hover-bg)] flex items-center gap-2 transition-colors"
+
+                          onClick={() => setShowUserMenu(false)}
+
+                          style={menuItemStyles}
+
+                        >
+
+                          <Shield size={14} />
+
+                          用户管理
+
+                        </Link>
+
+                        <Link
+
+                          to="/article-management"
+
+                          className="block px-4 py-2 text-sm hover:bg-[var(--hover-bg)] flex items-center gap-2 transition-colors"
+
+                          onClick={() => setShowUserMenu(false)}
+
+                          style={menuItemStyles}
+
+                        >
+
+                          <Settings size={14} />
+
+                          文章管理
+
+                        </Link>
+
+                        <Link
+
+                          to="/board-management"
+
+                          className="block px-4 py-2 text-sm hover:bg-[var(--hover-bg)] flex items-center gap-2 transition-colors"
+
+                          onClick={() => setShowUserMenu(false)}
+
+                          style={menuItemStyles}
+
+                        >
+
+                          <Grid3X3 size={14} />
+
+                          板块管理
+
+                        </Link>
+
+                        <Link
+
+                          to="/topic-management"
+
+                          className="block px-4 py-2 text-sm hover:bg-[var(--hover-bg)] flex items-center gap-2 transition-colors"
+
+                          onClick={() => setShowUserMenu(false)}
+
+                          style={menuItemStyles}
+
+                        >
+
+                          <Tag size={14} />
+
+                          主题管理
+
+                        </Link>
+
+                      </>
+
+                    )}
+
+                    
+
+                    {/* 登出按钮 - 非游客用户可见 */}
+
+                    {(!isGuest() || simpleCurrentUser) && (
+
+                      <button
+
+                        onClick={simpleCurrentUser ? handleSimpleLogout : handleLogout}
+
+                        className="block w-full text-left px-4 py-2 text-sm hover:bg-[var(--hover-bg)] flex items-center gap-2 transition-colors"
+
+                        style={menuItemStyles}
+
+                      >
+
+                        <LogOut size={14} />
+
+                        退出
+
+                      </button>
+
+                    )}
+
+                  </div>
+
+                )}
+
+              </div>
+
+            ) : (
+
+              <Link
+
+                to="/login"
+
+                className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
+
+                style={linkStyles}
+
+              >
+
+                登录
+
+              </Link>
+
+            )}
+
+          </div>
+
+
+
+          {/* 移动端菜单按钮 */}
+
+          <div className="md:hidden">
+
+            <button
+
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+
+              className="p-2 transition-colors hover:text-[var(--hover-color)]"
+
+              style={linkStyles}
+
+            >
+
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        {/* 移动端菜单 */}
+
+        {isMobileMenuOpen && (
+
+          <div 
+
+            className="md:hidden border-t"
+
+            style={{ backgroundColor: currentTheme.colors.surface, borderColor: currentTheme.colors.border }}
+
+          >
+
+            <div className="px-2 pt-2 pb-3 space-y-1">
+
+              <div className="px-3 py-2">
+
+                <GameNavigation onClose={() => setIsMobileMenuOpen(false)} />
+
+              </div>
+
+              <Link
+
+                to="/"
+
+                className="block px-3 py-2 rounded-md text-base font-medium transition-colors hover:text-[var(--hover-color)]"
+
+                onClick={() => setIsMobileMenuOpen(false)}
+
+                style={linkStyles}
+
+              >
+
+                首页
+
+              </Link>
+
+              <Link
+
+                to="/games"
+
+                className="block px-3 py-2 rounded-md text-base font-medium transition-colors hover:text-[var(--hover-color)]"
+
+                onClick={() => setIsMobileMenuOpen(false)}
+
+                style={linkStyles}
+
+              >
+
+                所有游戏
+
+              </Link>
+
+              <Link
+
+                to="/game-hub"
+
+                className="block px-3 py-2 rounded-md text-base font-medium transition-colors hover:text-[var(--hover-color)]"
+
+                onClick={() => setIsMobileMenuOpen(false)}
+
+                style={linkStyles}
+
+              >
+
+                游戏中心
+
+              </Link>
+
+              
+
+              {/* 管理入口 - 只有管理员可见 */}
+
+              {state.isAuthenticated && isAdmin() && (
+
+                <Link
+
+                  to="/article-management"
+
+                  className="flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium transition-colors hover:text-[var(--hover-color)]"
+
+                  onClick={() => setIsMobileMenuOpen(false)}
+
+                  style={linkStyles}
+
+                >
+
+                  <Settings size={16} />
+
+                  管理
+
+                </Link>
+
+              )}
+
+
+
+              {/* 用户管理 - 只有超级管理员可见 */}
+
+              {state.isAuthenticated && isSuperAdmin() && (
+
+                <Link
+
+                  to="/user-management"
+
+                  className="flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium transition-colors hover:text-[var(--hover-color)]"
+
+                  onClick={() => setIsMobileMenuOpen(false)}
+
+                  style={linkStyles}
+
+                >
+
+                  <User size={16} />
+
+                  用户管理
+
+                </Link>
+
+              )}
+
+
+
+              {/* 用户信息 */}
+
+              {(state.isAuthenticated || simpleCurrentUser) ? (
+
+                <div className="px-3 py-2 border-t" style={{ borderColor: currentTheme.colors.border }}>
+
+                  <div className="text-sm" style={{ color: currentTheme.colors.textSecondary }}>
+
+                    {simpleCurrentUser ? simpleCurrentUser.username : state.user?.username} ({simpleCurrentUser ? '普通用户' : (state.user?.role === 'superAdmin' ? '超级管理员' : state.user?.role === 'admin' ? '管理员' : '普通用户')})
+
+                  </div>
+
+                  <button
+
+                    onClick={() => {
+
+                      if (simpleCurrentUser) {
+
+                        handleSimpleLogout();
+
+                      } else {
+
+                        handleLogout();
+
+                      }
+
+                      setIsMobileMenuOpen(false);
+
+                    }}
+
+                    className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm mt-2"
+
+                  >
+
+                    <LogOut size={14} />
+
+                    退出
+
+                  </button>
+
+                </div>
+
+              ) : (
+
+                <Link
+
+                  to="/login"
+
+                  className="block px-3 py-2 rounded-md text-base font-medium transition-colors hover:text-[var(--hover-color)]"
+
+                  onClick={() => setIsMobileMenuOpen(false)}
+
+                  style={linkStyles}
+
+                >
+
+                  登录
+
+                </Link>
+
+              )}
+
+            </div>
+
+          </div>
+
+        )}
+
+      </div>
+
+    </nav>
+
+
+
+    {/* 注册弹窗 */}
+
+    {showRegistration && (
+
+      <UserRegistration
+
+        onSuccess={handleRegistrationSuccess}
+
+        onCancel={() => setShowRegistration(false)}
+
+      />
+
+    )}
+
+
+
+    {/* 登录弹窗 */}
+
+    {showLogin && (
+
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+
+        <div 
+
+          className="rounded-lg p-6 w-full max-w-md mx-4 relative"
+
+          style={{ backgroundColor: currentTheme.colors.surface }}
+
+        >
+
+          <button
+
+            onClick={() => setShowLogin(false)}
+
+            className="absolute top-4 right-4 transition-colors hover:text-white"
+
+            style={{ color: currentTheme.colors.textSecondary }}
+
+          >
+
+            <X size={20} />
+
+          </button>
+
+          
+
+          <h2 className="text-xl font-bold mb-6 text-center" style={{ color: currentTheme.colors.text }}>
+
+            登录
+
+          </h2>
+
+          
+
+          <div className="space-y-4">
+
+            <div>
+
+              <label className="block text-sm font-medium mb-2" style={{ color: currentTheme.colors.textSecondary }}>
+
+                用户名
+
+              </label>
+
+              <input
+
+                type="text"
+
+                value={loginUsername}
+
+                onChange={(e) => setLoginUsername(e.target.value)}
+
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors"
+
+                style={{
+
+                  backgroundColor: currentTheme.colors.background,
+
+                  borderColor: currentTheme.colors.border,
+
+                  color: currentTheme.colors.text,
+
+                  '--focus-ring': currentTheme.colors.primary,
+
+                } as React.CSSProperties}
+
+                placeholder="请输入用户名"
+
+              />
+
+            </div>
+
+            
+
+            <div>
+
+              <label className="block text-sm font-medium mb-2" style={{ color: currentTheme.colors.textSecondary }}>
+
+                密码
+
+              </label>
+
+              <input
+
+                type="password"
+
+                value={loginPassword}
+
+                onChange={(e) => setLoginPassword(e.target.value)}
+
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors"
+
+                style={{
+
+                  backgroundColor: currentTheme.colors.background,
+
+                  borderColor: currentTheme.colors.border,
+
+                  color: currentTheme.colors.text,
+
+                  '--focus-ring': currentTheme.colors.primary,
+
+                } as React.CSSProperties}
+
+                placeholder="请输入密码"
+
+              />
+
+            </div>
+
+            
+
+            <div className="flex gap-3">
+
+              <button
+
+                onClick={handleLogin}
+
+                className="flex-1 py-3 px-4 text-white rounded-lg transition-colors"
+
+                style={{ backgroundColor: currentTheme.colors.primary }}
+
+                onMouseEnter={(e) => {
+
+                  e.currentTarget.style.backgroundColor = currentTheme.components.button.primary.hover;
+
+                }}
+
+                onMouseLeave={(e) => {
+
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+
+                }}
+
+              >
+
+                登录
+
+              </button>
+
+              <button
+
+                onClick={() => setShowLogin(false)}
+
+                className="flex-1 py-3 px-4 text-white rounded-lg transition-colors"
+
+                style={{ backgroundColor: currentTheme.colors.surface }}
+
+                onMouseEnter={(e) => {
+
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+
+                }}
+
+                onMouseLeave={(e) => {
+
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
+
+                }}
+
+              >
+
+                取消
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    )}
+
+    </>
+
+  );
+
+}
+
+
+
+export default StyledNavbar;
+
+

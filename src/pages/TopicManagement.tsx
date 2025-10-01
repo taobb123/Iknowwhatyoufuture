@@ -339,13 +339,13 @@ const TopicManagement: React.FC = () => {
                       {topic.articleCount} 篇文章
                     </span>
                     <StyledPrimaryButton 
-                      onClick={() => openEditModal(topic)}
+                        onClick={() => openEditModal(topic)}
                       className="px-3 py-1 text-sm"
                     >
                       编辑
                     </StyledPrimaryButton>
                     <StyledDangerButton 
-                      onClick={() => setShowDeleteConfirm(topic.id)}
+                        onClick={() => setShowDeleteConfirm(topic.id)}
                       className="px-3 py-1 text-sm"
                     >
                       删除

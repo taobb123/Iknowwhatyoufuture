@@ -282,13 +282,13 @@ const BoardManagement: React.FC = () => {
                       {board.topicCount} 个主题
                     </span>
                     <StyledPrimaryButton 
-                      onClick={() => openEditModal(board)}
+                        onClick={() => openEditModal(board)}
                       className="px-3 py-1 text-sm"
                     >
                       编辑
                     </StyledPrimaryButton>
                     <StyledDangerButton 
-                      onClick={() => setShowDeleteConfirm(board.id)}
+                        onClick={() => setShowDeleteConfirm(board.id)}
                       className="px-3 py-1 text-sm"
                     >
                       删除

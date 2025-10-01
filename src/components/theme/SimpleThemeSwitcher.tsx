@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Palette } from 'lucide-react';
 import { useTheme } from '../../themes/ThemeContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 const SimpleThemeSwitcher: React.FC = () => {
   const { currentTheme, availableThemes, setTheme, isLoading } = useTheme();
+  const { isSuperAdmin } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   console.log('SimpleThemeSwitcher render:', {
@@ -17,6 +19,11 @@ const SimpleThemeSwitcher: React.FC = () => {
     setTheme(themeId);
     setIsOpen(false);
   };
+
+  // 只有超级管理员才能使用悬浮主题按钮
+  if (!isSuperAdmin()) {
+    return null;
+  }
 
   if (isLoading) {
     return (

@@ -558,27 +558,50 @@ export const StyledStatusTag: React.FC<StyledStatusTagProps> = ({
 interface StyledModalProps {
   children: React.ReactNode;
   className?: string;
+  hasFixedFooter?: boolean;
 }
 
 export const StyledModal: React.FC<StyledModalProps> = ({ 
   children, 
-  className = '' 
+  className = '',
+  hasFixedFooter = false
 }) => {
   const { currentTheme } = useTheme();
+
+  const overlayStyles: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1000,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '1rem',
+  };
 
   const modalStyles: React.CSSProperties = {
     backgroundColor: currentTheme.colors.surface,
     borderColor: currentTheme.colors.border,
     border: '1px solid',
     boxShadow: currentTheme.shadows.xl,
+    maxWidth: '90vw',
+    maxHeight: '90vh',
+    width: '100%',
+    display: hasFixedFooter ? 'flex' : 'block',
+    flexDirection: hasFixedFooter ? 'column' : 'row',
   };
 
   return (
-    <div 
-      className={`rounded-lg p-6 w-full max-w-md ${className}`}
-      style={modalStyles}
-    >
-      {children}
+    <div style={overlayStyles}>
+      <div 
+        className={`rounded-lg overflow-hidden ${className}`}
+        style={modalStyles}
+      >
+        {children}
+      </div>
     </div>
   );
 };
@@ -756,6 +779,35 @@ export const StyledModalButtonGroup: React.FC<StyledModalButtonGroupProps> = ({
 }) => {
   return (
     <div className={`flex justify-end gap-2 mt-6 ${className}`}>
+      {children}
+    </div>
+  );
+};
+
+// 固定按钮区域样式
+interface StyledModalFixedFooterProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const StyledModalFixedFooter: React.FC<StyledModalFixedFooterProps> = ({ 
+  children, 
+  className = '' 
+}) => {
+  const { currentTheme } = useTheme();
+
+  const footerStyles: React.CSSProperties = {
+    backgroundColor: currentTheme.colors.surface,
+    borderTop: `1px solid ${currentTheme.colors.border}`,
+    padding: '1rem 1.5rem',
+    flexShrink: 0,
+  };
+
+  return (
+    <div 
+      className={`flex justify-end gap-3 ${className}`}
+      style={footerStyles}
+    >
       {children}
     </div>
   );

@@ -40,6 +40,7 @@ const GameDetail = lazy(() => import('./pages/GameDetail'));
 const GameCategory = lazy(() => import('./pages/GameCategory'));
 const GamesList = lazy(() => import('./pages/GamesList'));
 const ThemeTest = lazy(() => import('./pages/ThemeTest'));
+const ThemeManagement = lazy(() => import('./pages/ThemeManagement'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 import LoadingSpinner from './components/common/LoadingSpinner';
@@ -107,6 +108,7 @@ const AppContent: React.FC = () => {
             <Route path="/games/:id" element={<GameDetail />} />
             <Route path="/games/category/:category" element={<GameCategory />} />
             <Route path="/theme-test" element={<ThemeTest />} />
+            <Route path="/theme-management" element={<ThemeManagement />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
