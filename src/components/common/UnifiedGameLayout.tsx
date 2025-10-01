@@ -1,10 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import { Gamepad2, Star, TrendingUp, Target, Users, Heart } from 'lucide-react';
-import GameCard from '../GameCard';
+import StyledGameCard from '../styled/StyledGameCard';
 import { GameErrorBoundary } from '../ErrorBoundary';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorDisplay from './ErrorDisplay';
 import { Game } from '../../data/gamesData';
+import { useTheme } from '../../themes/ThemeContext';
 
 interface UnifiedGameLayoutProps {
   games: Game[];
@@ -99,6 +100,7 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
   className = '',
   emptyMessage = '暂无游戏'
 }) => {
+  const { currentTheme } = useTheme();
   // 直接使用外部传入的selectedCategory，避免重复状态管理
   const currentSelectedCategory = selectedCategory;
 
@@ -156,11 +158,24 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
   }
 
   return (
-    <div className={`bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl p-6 shadow-2xl ${className}`}>
+    <div 
+      className={`rounded-2xl p-6 shadow-2xl ${className}`}
+      style={{
+        background: `linear-gradient(135deg, ${currentTheme.colors.surface}, ${currentTheme.colors.background}, ${currentTheme.colors.surface})`,
+        borderRadius: currentTheme.borderRadius.xl,
+        boxShadow: currentTheme.shadows.xl
+      }}
+    >
       {/* 分类导航 */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
-          <Gamepad2 className="w-6 h-6 mr-2 text-yellow-400" />
+        <h2 
+          className="text-2xl font-bold mb-6 flex items-center"
+          style={{ color: currentTheme.colors.text }}
+        >
+          <Gamepad2 
+            className="w-6 h-6 mr-2" 
+            style={{ color: currentTheme.colors.secondary }}
+          />
           游戏分类
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -173,27 +188,59 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
               <button
                 key={category.id}
                 onClick={() => handleCategoryClick(category.id)}
-                className={`
-                  relative group p-4 rounded-xl transition-all duration-300 transform
-                  ${isSelected 
-                    ? `bg-gradient-to-r ${category.color} shadow-lg scale-105 hover:scale-110` 
-                    : `bg-gray-700/50 hover:bg-gray-600/50 ${category.hoverColor} hover:scale-105 hover:shadow-lg`
+                className="relative group p-4 rounded-xl transition-all duration-300 transform"
+                style={{
+                  backgroundColor: isSelected 
+                    ? currentTheme.colors.primary 
+                    : currentTheme.colors.surface,
+                  borderRadius: currentTheme.borderRadius.xl,
+                  border: `2px solid ${isSelected ? currentTheme.colors.accent : 'transparent'}`,
+                  transform: isSelected ? 'scale(1.05)' : 'scale(1)',
+                  boxShadow: isSelected ? currentTheme.shadows.lg : 'none'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isSelected) {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = currentTheme.shadows.lg;
+                    e.currentTarget.style.borderColor = currentTheme.colors.border;
                   }
-                  border-2 ${isSelected ? 'border-white/30' : 'border-transparent hover:border-white/20'}
-                `}
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSelected) {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.borderColor = 'transparent';
+                  }
+                }}
               >
                 <div className="flex flex-col items-center space-y-2">
-                  <div className={`
-                    p-3 rounded-lg transition-all duration-300
-                    ${isSelected ? 'bg-white/20' : 'bg-gray-600/50 group-hover:bg-white/10'}
-                  `}>
-                    <IconComponent className={`w-6 h-6 ${isSelected ? 'text-white' : 'text-gray-300 group-hover:text-white'}`} />
+                  <div 
+                    className="p-3 rounded-lg transition-all duration-300"
+                    style={{
+                      backgroundColor: isSelected 
+                        ? 'rgba(255, 255, 255, 0.2)' 
+                        : currentTheme.colors.hover,
+                      borderRadius: currentTheme.borderRadius.lg
+                    }}
+                  >
+                    <IconComponent 
+                      className="w-6 h-6" 
+                      style={{ color: currentTheme.colors.text }}
+                    />
                   </div>
                   <div className="text-center">
-                    <div className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-gray-300 group-hover:text-white'}`}>
+                    <div 
+                      className="text-sm font-semibold"
+                      style={{ color: currentTheme.colors.text }}
+                    >
                       {category.name}
                     </div>
-                    <div className={`text-xs ${isSelected ? 'text-white/80' : 'text-gray-400 group-hover:text-white/80'}`}>
+                    <div 
+                      className="text-xs"
+                      style={{ color: currentTheme.colors.textSecondary }}
+                    >
                       {category.count} 个游戏
                     </div>
                   </div>
@@ -201,7 +248,13 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
                 
                 {/* 选中指示器 */}
                 {isSelected && (
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                  <div 
+                    className="absolute -top-1 -right-1 w-3 h-3 rounded-full animate-pulse"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.secondary,
+                      borderRadius: currentTheme.borderRadius.full
+                    }}
+                  ></div>
                 )}
                 
               </button>
@@ -213,11 +266,22 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
       {/* 游戏网格 */}
       <div className="mt-8">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-white">
+          <h3 
+            className="text-xl font-semibold"
+            style={{ color: currentTheme.colors.text }}
+          >
             {currentSelectedCategory === 'all' ? '所有游戏' : gameCategories.find(c => c.id === currentSelectedCategory)?.name}
-            <span className="ml-2 text-gray-400 text-sm">({filteredGames.length} 个游戏)</span>
+            <span 
+              className="ml-2 text-sm"
+              style={{ color: currentTheme.colors.textSecondary }}
+            >
+              ({filteredGames.length} 个游戏)
+            </span>
           </h3>
-          <div className="flex items-center space-x-2 text-sm text-gray-400">
+          <div 
+            className="flex items-center space-x-2 text-sm"
+            style={{ color: currentTheme.colors.textSecondary }}
+          >
             <Heart className="w-4 h-4" />
             <span>点击收藏喜欢的游戏</span>
           </div>
@@ -227,16 +291,31 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
         {filteredGames.length === 0 ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
-              <div className="text-gray-400 text-6xl mb-4">🎮</div>
-              <p className="text-gray-400 text-lg">{emptyMessage}</p>
-              <p className="text-gray-500 text-sm mt-2">试试选择其他分类</p>
+              <div 
+                className="text-6xl mb-4"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
+                🎮
+              </div>
+              <p 
+                className="text-lg"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
+                {emptyMessage}
+              </p>
+              <p 
+                className="text-sm mt-2"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
+                试试选择其他分类
+              </p>
             </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredGames.map((game) => (
               <GameErrorBoundary key={game.id}>
-                <GameCard
+                <StyledGameCard
                   game={game}
                   variant="homepage"
                   onPlay={onPlay}

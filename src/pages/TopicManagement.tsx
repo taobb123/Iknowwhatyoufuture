@@ -1,11 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllTopics, addTopic, updateTopic, deleteTopic, getAllBoards } from '../data/communityManager';
-import { ArrowLeft, Plus, Edit, Trash2, Tag, Calendar, Check, X, Save, Filter } from 'lucide-react';
+import { ArrowLeft, Plus, Calendar } from 'lucide-react';
 import PermissionWrapper from '../components/PermissionWrapper';
+import { useTheme } from '../themes/ThemeContext';
+import {
+  StyledManagementContainer,
+  StyledPageContent,
+  StyledPageHeader,
+  StyledBackButton,
+  StyledPrimaryButton,
+  StyledSecondaryButton,
+  StyledDangerButton,
+  StyledPageTitle,
+  StyledStatCard,
+  StyledStatNumber,
+  StyledStatLabel,
+  StyledContentCard,
+  StyledCardTitle,
+  StyledListItem,
+  StyledItemTitle,
+  StyledItemDescription,
+  StyledItemMeta,
+  StyledStatusTag,
+  StyledModal,
+  StyledModalTitle,
+  StyledFormLabel,
+  StyledFormInput,
+  StyledFormTextarea,
+  StyledFormSelect,
+  StyledModalButtonGroup,
+  StyledEmptyState,
+  StyledEmptyText
+} from '../components/styled/StyledManagementPage';
 
 const TopicManagement: React.FC = () => {
   const navigate = useNavigate();
+  const { currentTheme } = useTheme();
   const [topics, setTopics] = useState<any[]>([]);
   const [boards, setBoards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -85,7 +116,12 @@ const TopicManagement: React.FC = () => {
     
     try {
       console.log('创建主题:', { ...formData, boardId: selectedBoard });
-      const newTopic = addTopic({ ...formData, boardId: selectedBoard });
+      const newTopic = addTopic({ 
+        ...formData, 
+        boardId: selectedBoard,
+        order: 0,
+        isActive: true
+      });
       setTopics([...topics, newTopic]);
       setShowAddModal(false);
       setFormData({ name: '', description: '', icon: '🌟', color: 'from-yellow-500 to-orange-500' });
@@ -101,15 +137,24 @@ const TopicManagement: React.FC = () => {
     
     try {
       console.log('更新主题:', editingTopic.id, formData);
-      const updatedTopic = updateTopic(editingTopic.id, { ...formData, boardId: selectedBoard });
+      const updatedTopic = updateTopic(editingTopic.id, { 
+        ...formData, 
+        boardId: selectedBoard,
+        order: editingTopic.order,
+        isActive: editingTopic.isActive
+      });
       setTopics(topics.map(t => t.id === editingTopic.id ? updatedTopic : t));
       setShowEditModal(false);
       setEditingTopic(null);
       setFormData({ name: '', description: '', icon: '🌟', color: 'from-yellow-500 to-orange-500' });
       setSelectedBoard('');
+      
+      // 显示成功提示
+      showToast('主题更新成功！', 'success');
       console.log('主题更新成功');
     } catch (error) {
       console.error('更新主题失败:', error);
+      showToast('主题更新失败，请重试', 'error');
     }
   };
 
@@ -119,9 +164,13 @@ const TopicManagement: React.FC = () => {
       deleteTopic(topicId);
       setTopics(topics.filter(t => t.id !== topicId));
       setShowDeleteConfirm(null);
+      
+      // 显示成功提示
+      showToast('主题删除成功！', 'success');
       console.log('主题删除成功');
     } catch (error) {
       console.error('删除主题失败:', error);
+      showToast('主题删除失败，请重试', 'error');
     }
   };
 
@@ -152,144 +201,185 @@ const TopicManagement: React.FC = () => {
     });
   };
 
+  const showToast = (message: string, type: 'success' | 'error') => {
+    const toast = document.createElement('div');
+    const bgColor = type === 'success' ? currentTheme.colors.success : currentTheme.colors.error;
+    const icon = type === 'success' ? '✅' : '❌';
+    
+    toast.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${bgColor};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        animation: slideIn 0.3s ease-out;
+        max-width: 300px;
+      ">
+        ${icon} ${message}
+      </div>
+      <style>
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+      </style>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 3000);
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div 
+        className="min-h-screen text-white flex items-center justify-center"
+        style={{ backgroundColor: currentTheme.colors.background }}
+      >
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p>加载中...</p>
+          <div 
+            className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4"
+            style={{ borderColor: currentTheme.colors.textSecondary }}
+          ></div>
+          <p style={{ color: currentTheme.colors.text }}>加载中...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <StyledManagementContainer>
+      <StyledPageContent>
         {/* 头部 */}
-        <div className="flex items-center justify-between mb-8">
+        <StyledPageHeader>
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
-            >
+            <StyledBackButton onClick={() => navigate(-1)}>
               <ArrowLeft size={16} />
               返回
-            </button>
-            <h1 className="text-3xl font-bold text-white">主题管理</h1>
+            </StyledBackButton>
+            <StyledPageTitle>主题管理</StyledPageTitle>
           </div>
           <PermissionWrapper permission="manage_topics">
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-            >
+            <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
               <Plus size={16} />
               创建主题
-            </button>
+            </StyledPrimaryButton>
           </PermissionWrapper>
-        </div>
+        </StyledPageHeader>
 
         {/* 统计信息 */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">{topics.length}</div>
-            <div className="text-gray-400">总主题数</div>
-          </div>
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">{topics.filter(t => t.isActive).length}</div>
-            <div className="text-gray-400">活跃主题</div>
-          </div>
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">{boards.length}</div>
-            <div className="text-gray-400">总板块数</div>
-          </div>
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">0</div>
-            <div className="text-gray-400">总文章数</div>
-          </div>
+          <StyledStatCard>
+            <StyledStatNumber>{topics.length}</StyledStatNumber>
+            <StyledStatLabel>总主题数</StyledStatLabel>
+          </StyledStatCard>
+          <StyledStatCard>
+            <StyledStatNumber>{topics.filter(t => t.isActive).length}</StyledStatNumber>
+            <StyledStatLabel>活跃主题</StyledStatLabel>
+          </StyledStatCard>
+          <StyledStatCard>
+            <StyledStatNumber>{boards.length}</StyledStatNumber>
+            <StyledStatLabel>总板块数</StyledStatLabel>
+          </StyledStatCard>
+          <StyledStatCard>
+            <StyledStatNumber>0</StyledStatNumber>
+            <StyledStatLabel>总文章数</StyledStatLabel>
+          </StyledStatCard>
         </div>
 
         {/* 主题列表 */}
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h2 className="text-xl font-bold text-white mb-4">主题列表</h2>
+        <StyledContentCard>
+          <StyledCardTitle>主题列表</StyledCardTitle>
           
           {topics.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-400 mb-4">暂无主题数据</p>
+            <StyledEmptyState>
+              <StyledEmptyText>暂无主题数据</StyledEmptyText>
               <PermissionWrapper permission="manage_topics">
-                <button
-                  onClick={() => setShowAddModal(true)}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                >
+                <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
                   创建第一个主题
-                </button>
+                </StyledPrimaryButton>
               </PermissionWrapper>
-            </div>
+            </StyledEmptyState>
           ) : (
             <div className="space-y-4">
               {topics.map((topic) => (
-                <div
-                  key={topic.id}
-                  className="bg-gray-700 rounded-lg p-4 flex items-center justify-between"
-                >
+                <StyledListItem key={topic.id}>
                   <div className="flex items-center gap-4">
                     <span className="text-2xl">{topic.icon}</span>
                     <div>
-                      <h3 className="text-lg font-semibold text-white">{topic.name}</h3>
-                      <p className="text-gray-400 text-sm">{topic.description}</p>
-                      <div className="flex items-center gap-4 text-xs text-gray-500 mt-1">
+                      <StyledItemTitle>{topic.name}</StyledItemTitle>
+                      <StyledItemDescription>{topic.description}</StyledItemDescription>
+                      <StyledItemMeta>
                         <span className="flex items-center gap-1">
                           <Calendar size={12} />
                           {formatDate(topic.createdAt)}
                         </span>
-                        <span className="text-gray-400">
-                          所属板块: {getBoardName(topic.boardId)}
-                        </span>
-                        <span className={`px-2 py-1 rounded text-xs ${
-                          topic.isActive ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                        }`}>
+                        <span>所属板块: {getBoardName(topic.boardId)}</span>
+                        <StyledStatusTag isActive={topic.isActive}>
                           {topic.isActive ? '活跃' : '已关闭'}
-                        </span>
-                      </div>
+                        </StyledStatusTag>
+                      </StyledItemMeta>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-400">
+                    <span 
+                      className="text-sm"
+                      style={{ color: currentTheme.colors.textSecondary }}
+                    >
                       {topic.articleCount} 篇文章
                     </span>
-                    <PermissionWrapper permission="manage_topics">
-                      <button
-                        onClick={() => openEditModal(topic)}
-                        className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-colors"
-                      >
-                        编辑
-                      </button>
-                      <button
-                        onClick={() => setShowDeleteConfirm(topic.id)}
-                        className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded transition-colors"
-                      >
-                        删除
-                      </button>
-                    </PermissionWrapper>
+                    <StyledPrimaryButton 
+                      onClick={() => openEditModal(topic)}
+                      className="px-3 py-1 text-sm"
+                    >
+                      编辑
+                    </StyledPrimaryButton>
+                    <StyledDangerButton 
+                      onClick={() => setShowDeleteConfirm(topic.id)}
+                      className="px-3 py-1 text-sm"
+                    >
+                      删除
+                    </StyledDangerButton>
                   </div>
-                </div>
+                </StyledListItem>
               ))}
             </div>
           )}
-        </div>
+        </StyledContentCard>
 
         {/* 添加主题模态框 */}
         {showAddModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md">
-              <h3 className="text-lg font-semibold text-white mb-4">创建主题</h3>
+            <StyledModal>
+              <StyledModalTitle>创建主题</StyledModalTitle>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">所属板块</label>
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    所属板块
+                  </label>
                   <select
                     value={selectedBoard}
                     onChange={(e) => setSelectedBoard(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                   >
                     <option value="">选择板块</option>
                     {boards.map(board => (
@@ -298,41 +388,85 @@ const TopicManagement: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">主题名称</label>
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    主题名称
+                  </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                     placeholder="输入主题名称"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">主题描述</label>
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    主题描述
+                  </label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                     rows={3}
                     placeholder="输入主题描述"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">图标</label>
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    图标
+                  </label>
                   <input
                     type="text"
                     value={formData.icon}
                     onChange={(e) => setFormData({...formData, icon: e.target.value})}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                     placeholder="选择图标"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">颜色</label>
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    颜色
+                  </label>
                   <select
                     value={formData.color}
                     onChange={(e) => setFormData({...formData, color: e.target.value})}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                   >
                     <option value="from-yellow-500 to-orange-500">黄色到橙色</option>
                     <option value="from-purple-500 to-pink-500">紫色到粉色</option>
@@ -344,33 +478,64 @@ const TopicManagement: React.FC = () => {
               <div className="flex justify-end gap-2 mt-6">
                 <button
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 rounded-lg transition-colors"
+                  style={{ 
+                    backgroundColor: currentTheme.colors.secondary,
+                    color: currentTheme.colors.text
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.secondary;
+                  }}
                 >
                   取消
                 </button>
                 <button
                   onClick={handleAddTopic}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 rounded-lg transition-colors"
+                  style={{ 
+                    backgroundColor: currentTheme.colors.primary,
+                    color: currentTheme.colors.text
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+                  }}
                 >
                   创建
                 </button>
               </div>
-            </div>
+            </StyledModal>
           </div>
         )}
 
         {/* 编辑主题模态框 */}
         {showEditModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md">
-              <h3 className="text-lg font-semibold text-white mb-4">编辑主题</h3>
+            <StyledModal>
+              <StyledModalTitle>编辑主题</StyledModalTitle>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">所属板块</label>
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    所属板块
+                  </label>
                   <select
                     value={selectedBoard}
                     onChange={(e) => setSelectedBoard(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                   >
                     <option value="">选择板块</option>
                     {boards.map(board => (
@@ -379,41 +544,85 @@ const TopicManagement: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">主题名称</label>
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    主题名称
+                  </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                     placeholder="输入主题名称"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">主题描述</label>
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    主题描述
+                  </label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                     rows={3}
                     placeholder="输入主题描述"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">图标</label>
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    图标
+                  </label>
                   <input
                     type="text"
                     value={formData.icon}
                     onChange={(e) => setFormData({...formData, icon: e.target.value})}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                     placeholder="选择图标"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">颜色</label>
+                  <label 
+                    className="block text-sm font-medium mb-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    颜色
+                  </label>
                   <select
                     value={formData.color}
                     onChange={(e) => setFormData({...formData, color: e.target.value})}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                   >
                     <option value="from-yellow-500 to-orange-500">黄色到橙色</option>
                     <option value="from-purple-500 to-pink-500">紫色到粉色</option>
@@ -425,37 +634,90 @@ const TopicManagement: React.FC = () => {
               <div className="flex justify-end gap-2 mt-6">
                 <button
                   onClick={() => setShowEditModal(false)}
-                  className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 rounded-lg transition-colors"
+                  style={{ 
+                    backgroundColor: currentTheme.colors.secondary,
+                    color: currentTheme.colors.text
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.secondary;
+                  }}
                 >
                   取消
                 </button>
                 <button
                   onClick={handleEditTopic}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 rounded-lg transition-colors"
+                  style={{ 
+                    backgroundColor: currentTheme.colors.primary,
+                    color: currentTheme.colors.text
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+                  }}
                 >
                   保存
                 </button>
               </div>
-            </div>
+            </StyledModal>
           </div>
         )}
 
         {/* 删除确认模态框 */}
         {showDeleteConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md">
-              <h3 className="text-lg font-semibold text-white mb-4">确认删除</h3>
-              <p className="text-gray-300 mb-6">确定要删除这个主题吗？此操作不可撤销。</p>
+            <div 
+              className="rounded-lg p-6 w-full max-w-md"
+              style={{ backgroundColor: currentTheme.colors.surface }}
+            >
+              <h3 
+                className="text-lg font-semibold mb-4"
+                style={{ color: currentTheme.colors.text }}
+              >
+                确认删除
+              </h3>
+              <p 
+                className="mb-6"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
+                确定要删除这个主题吗？此操作不可撤销。
+              </p>
               <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setShowDeleteConfirm(null)}
-                  className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 rounded-lg transition-colors"
+                  style={{ 
+                    backgroundColor: currentTheme.colors.secondary,
+                    color: currentTheme.colors.text
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.secondary;
+                  }}
                 >
                   取消
                 </button>
                 <button
                   onClick={() => handleDeleteTopic(showDeleteConfirm)}
-                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                  className="px-4 py-2 rounded-lg transition-colors"
+                  style={{ 
+                    backgroundColor: currentTheme.colors.error,
+                    color: currentTheme.colors.text
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.error;
+                  }}
                 >
                   删除
                 </button>
@@ -463,8 +725,8 @@ const TopicManagement: React.FC = () => {
             </div>
           </div>
         )}
-      </div>
-    </div>
+      </StyledPageContent>
+    </StyledManagementContainer>
   );
 };
 

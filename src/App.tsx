@@ -1,10 +1,13 @@
 import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import StyledNavbar from './components/styled/StyledNavbar';
+import StyledFooter from './components/styled/StyledFooter';
+import SimpleThemeSwitcher from './components/theme/SimpleThemeSwitcher';
+// import ThemeDebug from './components/theme/ThemeDebug';
 // import ErrorBoundary from './components/ErrorBoundary';
 import { GameProvider, useGameContext } from './contexts/GameContext.simple';
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './themes/ThemeContext';
 import { initGA, trackPageView } from './utils/analytics';
 import { games } from './data/gamesData';
 import { initializeDefaultAdmin } from './data/userManager';
@@ -26,8 +29,8 @@ const ArticleManagement = lazy(() => import('./pages/ArticleManagement'));
 const ArticleEdit = lazy(() => import('./pages/ArticleEdit'));
 const Login = lazy(() => import('./pages/Login'));
 const UserManagement = lazy(() => import('./pages/UserManagement'));
-const BoardManagement = lazy(() => import('./pages/BoardManagementSimple'));
-const TopicManagement = lazy(() => import('./pages/TopicManagementSimple'));
+const BoardManagement = lazy(() => import('./pages/BoardManagement'));
+const TopicManagement = lazy(() => import('./pages/TopicManagement'));
 const CommunityHome = lazy(() => import('./pages/CommunityHome'));
 const BoardDetail = lazy(() => import('./pages/BoardDetail'));
 const TopicDetail = lazy(() => import('./pages/TopicDetail'));
@@ -36,6 +39,7 @@ const PerformanceTest = lazy(() => import('./pages/PerformanceTest'));
 const GameDetail = lazy(() => import('./pages/GameDetail'));
 const GameCategory = lazy(() => import('./pages/GameCategory'));
 const GamesList = lazy(() => import('./pages/GamesList'));
+const ThemeTest = lazy(() => import('./pages/ThemeTest'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 import LoadingSpinner from './components/common/LoadingSpinner';
@@ -71,10 +75,10 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <StyledNavbar />
       <main className="flex-grow">
         <Suspense fallback={
-          <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+          <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-background)' }}>
             <LoadingSpinner text="正在加载..." />
           </div>
         }>
@@ -102,11 +106,20 @@ const AppContent: React.FC = () => {
             <Route path="/games" element={<GamesList />} />
             <Route path="/games/:id" element={<GameDetail />} />
             <Route path="/games/category/:category" element={<GameCategory />} />
+            <Route path="/theme-test" element={<ThemeTest />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>
-      <Footer />
+      <StyledFooter />
+      
+      {/* 主题切换器 - 固定在右下角 */}
+      <div className="fixed bottom-4 right-4 z-40">
+        <SimpleThemeSwitcher />
+      </div>
+      
+      {/* 调试信息 - 仅在开发环境显示 */}
+      {/* {process.env.NODE_ENV === 'development' && <ThemeDebug />} */}
     </div>
   );
 };
@@ -118,14 +131,16 @@ function App() {
   }, []);
 
   return (
-    <AuthProvider>
-      <GameProvider>
-        <Router>
-          <PageTracker />
-          <AppContent />
-        </Router>
-      </GameProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <GameProvider>
+          <Router>
+            <PageTracker />
+            <AppContent />
+          </Router>
+        </GameProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

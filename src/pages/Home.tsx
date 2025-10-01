@@ -4,6 +4,7 @@ import UnifiedGameLayout from '../components/common/UnifiedGameLayout';
 import GameModal from '../components/common/GameModal';
 import { useGameData, useGameActions } from '../hooks/useGameData';
 import { useGameModal } from '../hooks/useGameModal';
+import { useTheme } from '../themes/ThemeContext';
 
 
 
@@ -12,6 +13,7 @@ function Home() {
   const { games, filteredGames, isLoading, error, selectedCategory: contextSelectedCategory } = useGameData();
   const { toggleFavorite, setCategory } = useGameActions();
   const { selectedGame, isModalOpen, isGameLoading, openGame, closeGame, handleLoadComplete } = useGameModal();
+  const { currentTheme } = useTheme();
   
   
   
@@ -43,7 +45,10 @@ function Home() {
   }, [selectedCategory, setCategory]);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div 
+      className="min-h-screen text-white"
+      style={{ backgroundColor: currentTheme.colors.background }}
+    >
       {/* 添加顶部间距避免被导航栏遮挡 */}
       <div className="pt-16"></div>
       <SEOHead 
@@ -55,8 +60,18 @@ function Home() {
 
       <div className="container mx-auto px-4 py-4 pt-20">
         <div className="text-center mb-4">
-          <h1 className="text-2xl font-bold text-yellow-400 mb-2">热门游戏中心</h1>
-          <p className="text-gray-300 text-sm">体验无忧无虑的游戏时光！精选最热门的免费在线游戏，让您享受轻松愉快的游戏体验！</p>
+          <h1 
+            className="text-2xl font-bold mb-2"
+            style={{ color: currentTheme.colors.secondary }}
+          >
+            热门游戏中心
+          </h1>
+          <p 
+            className="text-sm"
+            style={{ color: currentTheme.colors.textSecondary }}
+          >
+            体验无忧无虑的游戏时光！精选最热门的免费在线游戏，让您享受轻松愉快的游戏体验！
+          </p>
         </div>
 
         {/* 统一的游戏布局 */}

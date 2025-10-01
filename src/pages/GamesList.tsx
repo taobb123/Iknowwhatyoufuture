@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Filter, SortAsc, Grid, List, Search, ChevronLeft, ChevronRight } from 'lucide-react';
-import GameCard from '../components/GameCard';
+import StyledGameCard from '../components/styled/StyledGameCard';
 import Breadcrumb from '../components/Breadcrumb';
 import ErrorBoundary, { GameErrorBoundary } from '../components/ErrorBoundary';
 import SEOHead from '../components/SEOHead';
 import { useGameData, useGameFilter, useGameSort, useGameActions } from '../hooks/useGameData';
+import { useTheme } from '../themes/ThemeContext';
 
 const GamesList: React.FC = () => {
   const navigate = useNavigate();
+  const { currentTheme } = useTheme();
   const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid');
   
   // 分页状态
@@ -90,7 +92,10 @@ const GamesList: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div 
+      className="min-h-screen text-white"
+      style={{ backgroundColor: currentTheme.colors.background }}
+    >
       {/* 添加顶部间距避免被导航栏遮挡 */}
       <div className="pt-16"></div>
       <SEOHead 
@@ -101,7 +106,13 @@ const GamesList: React.FC = () => {
       />
 
       {/* 面包屑导航 */}
-      <div className="bg-gray-800 border-b border-gray-700">
+      <div 
+        className="border-b"
+        style={{ 
+          backgroundColor: currentTheme.colors.surface,
+          borderColor: currentTheme.colors.border
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 py-3">
           <Breadcrumb 
             items={[
@@ -115,17 +126,35 @@ const GamesList: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* 页面头部 */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-4">所有游戏</h1>
-          <p className="text-gray-400 text-lg">发现最热门的免费在线游戏</p>
+          <h1 
+            className="text-3xl font-bold mb-4"
+            style={{ color: currentTheme.colors.text }}
+          >
+            所有游戏
+          </h1>
+          <p 
+            className="text-lg"
+            style={{ color: currentTheme.colors.textSecondary }}
+          >
+            发现最热门的免费在线游戏
+          </p>
           
-          <div className="flex items-center justify-between text-sm text-gray-400 mt-4">
+          <div 
+            className="flex items-center justify-between text-sm mt-4"
+            style={{ color: currentTheme.colors.textSecondary }}
+          >
             <span>找到 {filteredGames.length} 个游戏，当前显示第 {currentPage} 页，共 {totalPages} 页</span>
             <div className="flex items-center gap-4">
               <span>排序方式：</span>
               <select
                 value={currentSort}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="bg-gray-700 text-white px-3 py-1 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500"
+                className="px-3 py-1 rounded-lg border focus:outline-none"
+                style={{
+                  backgroundColor: currentTheme.colors.surface,
+                  color: currentTheme.colors.text,
+                  borderColor: currentTheme.colors.border
+                }}
               >
                 {sortOptions.map(option => (
                   <option key={option.value} value={option.value}>
@@ -147,22 +176,64 @@ const GamesList: React.FC = () => {
                 placeholder="搜索游戏..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:ring-1"
+                style={{
+                  backgroundColor: currentTheme.colors.surface,
+                  borderColor: currentTheme.colors.border,
+                  color: currentTheme.colors.text,
+                  border: `1px solid ${currentTheme.colors.border}`,
+                  '--placeholder-color': currentTheme.colors.textSecondary
+                }}
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search 
+                className="absolute left-3 top-1/2 transform -translate-y-1/2" 
+                size={20} 
+                style={{ color: currentTheme.colors.textSecondary }}
+              />
             </div>
 
             {/* 视图切换 */}
-            <div className="flex bg-gray-800 rounded-lg p-1">
+            <div 
+              className="flex rounded-lg p-1"
+              style={{ backgroundColor: currentTheme.colors.surface }}
+            >
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                className="p-2 rounded transition-colors"
+                style={{
+                  backgroundColor: viewMode === 'grid' ? currentTheme.colors.primary : 'transparent',
+                  color: viewMode === 'grid' ? currentTheme.colors.text : currentTheme.colors.textSecondary
+                }}
+                onMouseEnter={(e) => {
+                  if (viewMode !== 'grid') {
+                    e.currentTarget.style.color = currentTheme.colors.text;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (viewMode !== 'grid') {
+                    e.currentTarget.style.color = currentTheme.colors.textSecondary;
+                  }
+                }}
               >
                 <Grid size={20} />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                className="p-2 rounded transition-colors"
+                style={{
+                  backgroundColor: viewMode === 'list' ? currentTheme.colors.primary : 'transparent',
+                  color: viewMode === 'list' ? currentTheme.colors.text : currentTheme.colors.textSecondary
+                }}
+                onMouseEnter={(e) => {
+                  if (viewMode !== 'list') {
+                    e.currentTarget.style.color = currentTheme.colors.text;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (viewMode !== 'list') {
+                    e.currentTarget.style.color = currentTheme.colors.textSecondary;
+                  }
+                }}
               >
                 <List size={20} />
               </button>
@@ -172,15 +243,30 @@ const GamesList: React.FC = () => {
           {/* 活跃筛选器 */}
           {hasActiveFilters && (
             <div className="mt-4 flex items-center gap-2">
-              <span className="text-sm text-gray-400">当前筛选：</span>
+              <span 
+                className="text-sm"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
+                当前筛选：
+              </span>
               {searchQuery && (
-                <span className="px-2 py-1 bg-blue-600 text-white text-sm rounded">
+                <span 
+                  className="px-2 py-1 text-white text-sm rounded"
+                  style={{ backgroundColor: currentTheme.colors.primary }}
+                >
                   搜索: {searchQuery}
                 </span>
               )}
               <button
                 onClick={clearFilters}
-                className="px-2 py-1 bg-gray-600 hover:bg-gray-500 text-white text-sm rounded transition-colors"
+                className="px-2 py-1 text-white text-sm rounded transition-colors"
+                style={{ backgroundColor: currentTheme.colors.surface }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
+                }}
               >
                 清除所有
               </button>
@@ -190,29 +276,68 @@ const GamesList: React.FC = () => {
 
         {/* 游戏列表 */}
         {error && (
-          <div className="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-            <p className="text-red-400">加载游戏时出现错误: {error}</p>
+          <div 
+            className="mb-6 p-4 rounded-lg"
+            style={{ 
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              border: `1px solid ${currentTheme.colors.error}`
+            }}
+          >
+            <p style={{ color: currentTheme.colors.error }}>
+              加载游戏时出现错误: {error}
+            </p>
           </div>
         )}
 
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="flex flex-col items-center space-y-4">
-              <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
-              <p className="text-white/80 text-sm">正在加载游戏...</p>
+              <div 
+                className="w-12 h-12 border-4 rounded-full animate-spin"
+                style={{ 
+                  borderColor: `${currentTheme.colors.textSecondary}20`,
+                  borderTopColor: currentTheme.colors.text
+                }}
+              ></div>
+              <p 
+                className="text-sm"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
+                正在加载游戏...
+              </p>
             </div>
           </div>
         ) : paginatedGames.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">🎮</div>
-            <h3 className="text-xl font-semibold text-white mb-2">暂无游戏</h3>
-            <p className="text-gray-400 mb-6">
+            <div 
+              className="text-6xl mb-4"
+              style={{ color: currentTheme.colors.textSecondary }}
+            >
+              🎮
+            </div>
+            <h3 
+              className="text-xl font-semibold mb-2"
+              style={{ color: currentTheme.colors.text }}
+            >
+              暂无游戏
+            </h3>
+            <p 
+              className="mb-6"
+              style={{ color: currentTheme.colors.textSecondary }}
+            >
               {searchQuery ? '没有找到匹配的游戏' : '暂时没有游戏'}
             </p>
             {searchQuery && (
               <button
                 onClick={clearFilters}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
+                className="text-white px-6 py-2 rounded-lg transition-colors"
+                style={{ backgroundColor: currentTheme.colors.primary }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+                }}
               >
                 清除搜索
               </button>
@@ -226,7 +351,7 @@ const GamesList: React.FC = () => {
           }>
             {paginatedGames.map((game) => (
               <GameErrorBoundary key={game.id}>
-                <GameCard
+                <StyledGameCard
                   game={game}
                   variant={viewMode === 'list' ? 'detailed' : 'homepage'}
                   onPlay={handlePlayGame}
@@ -241,9 +366,15 @@ const GamesList: React.FC = () => {
 
         {/* 分页组件 */}
         {totalPages > 1 && (
-          <div className="mt-8 bg-gray-800 rounded-lg p-6">
+          <div 
+            className="mt-8 rounded-lg p-6"
+            style={{ backgroundColor: currentTheme.colors.surface }}
+          >
             <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-400">
+              <div 
+                className="text-sm"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
                 显示第 {((currentPage - 1) * itemsPerPage) + 1} - {Math.min(currentPage * itemsPerPage, filteredGames.length)} 个游戏，共 {filteredGames.length} 个游戏
               </div>
               
@@ -252,11 +383,23 @@ const GamesList: React.FC = () => {
                 <button
                   onClick={handlePrevPage}
                   disabled={currentPage === 1}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
-                    currentPage === 1
-                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                      : 'bg-gray-700 text-white hover:bg-gray-600'
-                  }`}
+                  className="px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                  style={{
+                    backgroundColor: currentPage === 1 ? currentTheme.colors.surface : currentTheme.colors.surface,
+                    color: currentPage === 1 ? currentTheme.colors.textSecondary : currentTheme.colors.text,
+                    cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+                    opacity: currentPage === 1 ? 0.5 : 1
+                  }}
+                  onMouseEnter={(e) => {
+                    if (currentPage !== 1) {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (currentPage !== 1) {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
+                    }
+                  }}
                 >
                   <ChevronLeft size={16} />
                   上一页
@@ -268,11 +411,21 @@ const GamesList: React.FC = () => {
                     <button
                       key={pageNum}
                       onClick={() => handlePageChange(pageNum)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        currentPage === pageNum
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-700 text-white hover:bg-gray-600'
-                      }`}
+                      className="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                      style={{
+                        backgroundColor: currentPage === pageNum ? currentTheme.colors.primary : currentTheme.colors.surface,
+                        color: currentTheme.colors.text
+                      }}
+                      onMouseEnter={(e) => {
+                        if (currentPage !== pageNum) {
+                          e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (currentPage !== pageNum) {
+                          e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
+                        }
+                      }}
                     >
                       {pageNum}
                     </button>
@@ -283,11 +436,23 @@ const GamesList: React.FC = () => {
                 <button
                   onClick={handleNextPage}
                   disabled={currentPage === totalPages}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
-                    currentPage === totalPages
-                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                      : 'bg-gray-700 text-white hover:bg-gray-600'
-                  }`}
+                  className="px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                  style={{
+                    backgroundColor: currentPage === totalPages ? currentTheme.colors.surface : currentTheme.colors.surface,
+                    color: currentPage === totalPages ? currentTheme.colors.textSecondary : currentTheme.colors.text,
+                    cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+                    opacity: currentPage === totalPages ? 0.5 : 1
+                  }}
+                  onMouseEnter={(e) => {
+                    if (currentPage !== totalPages) {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (currentPage !== totalPages) {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
+                    }
+                  }}
                 >
                   下一页
                   <ChevronRight size={16} />
@@ -296,12 +461,25 @@ const GamesList: React.FC = () => {
             </div>
 
             {/* 快速跳转 */}
-            <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-gray-700">
-              <span className="text-sm text-gray-400">快速跳转：</span>
+            <div 
+              className="flex items-center justify-center gap-2 mt-4 pt-4 border-t"
+              style={{ borderColor: currentTheme.colors.border }}
+            >
+              <span 
+                className="text-sm"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
+                快速跳转：
+              </span>
               <select
                 value={currentPage}
                 onChange={(e) => handlePageChange(Number(e.target.value))}
-                className="px-3 py-1 bg-gray-700 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-1 rounded text-sm focus:outline-none"
+                style={{
+                  backgroundColor: currentTheme.colors.surface,
+                  color: currentTheme.colors.text,
+                  border: `1px solid ${currentTheme.colors.border}`
+                }}
               >
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                   <option key={page} value={page}>

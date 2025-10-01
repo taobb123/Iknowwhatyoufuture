@@ -17,11 +17,13 @@ import ProtectedRoute from '../components/ProtectedRoute';
 import RichTextEditor from '../components/RichTextEditor';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import { ArrowLeft, Save, Trash2, Eye, EyeOff } from 'lucide-react';
+import { useTheme } from '../themes/ThemeContext';
 
 const ArticleEditContent: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { state: authState, getUserDisplayName } = useAuth();
+  const { currentTheme } = useTheme();
   const [article, setArticle] = useState<Article | null>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -248,10 +250,16 @@ const ArticleEditContent: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div 
+        className="min-h-screen text-white flex items-center justify-center"
+        style={{ backgroundColor: currentTheme.colors.background }}
+      >
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p>加载中...</p>
+          <div 
+            className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4"
+            style={{ borderColor: currentTheme.colors.primary }}
+          ></div>
+          <p style={{ color: currentTheme.colors.text }}>加载中...</p>
         </div>
       </div>
     );
@@ -260,23 +268,42 @@ const ArticleEditContent: React.FC = () => {
   // 如果文章不存在，显示创建新文章界面（不阻止渲染）
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div 
+      className="min-h-screen text-white"
+      style={{ backgroundColor: currentTheme.colors.background }}
+    >
       {/* 添加顶部间距避免被导航栏遮挡 */}
       <div className="pt-16"></div>
 
       {/* 顶部导航栏 */}
-      <div className="bg-gray-800 border-b border-gray-700 px-4 sm:px-6 py-4 sticky top-16 z-40">
+      <div 
+        className="border-b px-4 sm:px-6 py-4 sticky top-16 z-40"
+        style={{ 
+          backgroundColor: currentTheme.colors.surface,
+          borderColor: currentTheme.colors.border
+        }}
+      >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <button
               onClick={handleGoBack}
-              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-all duration-200 hover:scale-105"
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 text-white rounded-lg transition-all duration-200 hover:scale-105"
+              style={{ backgroundColor: currentTheme.colors.secondary }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = currentTheme.colors.secondary;
+              }}
             >
               <ArrowLeft size={18} />
               <span className="hidden sm:inline">返回</span>
             </button>
             <div className="flex items-center gap-3">
-              <h1 className="text-lg sm:text-xl font-semibold">
+              <h1 
+                className="text-lg sm:text-xl font-semibold"
+                style={{ color: currentTheme.colors.text }}
+              >
                 {id && article ? '编辑文章' : '创建文章'}
               </h1>
             </div>
@@ -286,11 +313,16 @@ const ArticleEditContent: React.FC = () => {
             {/* 预览/编辑切换按钮 */}
             <button
               onClick={() => setIsPreview(!isPreview)}
-              className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 ${
-                isPreview 
-                  ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                  : 'bg-gray-700 text-white hover:bg-gray-600'
-              }`}
+              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 text-white rounded-lg transition-all duration-200 hover:scale-105"
+              style={{ 
+                backgroundColor: isPreview ? currentTheme.colors.primary : currentTheme.colors.secondary
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = isPreview ? currentTheme.colors.primary : currentTheme.colors.secondary;
+              }}
             >
               {isPreview ? <EyeOff size={16} /> : <Eye size={16} />}
               <span className="hidden sm:inline">{isPreview ? '编辑' : '预览'}</span>
@@ -300,15 +332,29 @@ const ArticleEditContent: React.FC = () => {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className={`flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg ${
-                isSaving 
-                  ? 'bg-gray-600 text-gray-300 cursor-not-allowed' 
-                  : 'bg-green-600 text-white hover:bg-green-700 hover:shadow-green-500/25'
-              }`}
+              className="flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2 text-white rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
+              style={{ 
+                backgroundColor: isSaving ? currentTheme.colors.secondary : currentTheme.colors.success,
+                cursor: isSaving ? 'not-allowed' : 'pointer',
+                opacity: isSaving ? 0.7 : 1
+              }}
+              onMouseEnter={(e) => {
+                if (!isSaving) {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isSaving) {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.success;
+                }
+              }}
             >
               {isSaving ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <div 
+                    className="animate-spin rounded-full h-4 w-4 border-b-2"
+                    style={{ borderColor: currentTheme.colors.text }}
+                  ></div>
                   <span className="hidden sm:inline">保存中...</span>
                 </>
               ) : (
@@ -323,7 +369,14 @@ const ArticleEditContent: React.FC = () => {
             {id && article && (
               <button
                 onClick={() => setShowDeleteConfirm(true)}
-                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-red-500/25"
+                className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 text-white rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
+                style={{ backgroundColor: currentTheme.colors.error }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.error;
+                }}
               >
                 <Trash2 size={16} />
                 <span className="hidden sm:inline">删除</span>
@@ -336,31 +389,57 @@ const ArticleEditContent: React.FC = () => {
       <div className="container mx-auto px-6 py-8">
         <div className="max-w-5xl mx-auto">
           {/* 文章基本信息 */}
-          <div className="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg border border-gray-700">
+          <div 
+            className="rounded-lg p-6 mb-6 shadow-lg"
+            style={{ 
+              backgroundColor: currentTheme.colors.surface,
+              borderColor: currentTheme.colors.border,
+              border: '1px solid',
+              boxShadow: currentTheme.shadows.lg
+            }}
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* 标题 */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label 
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: currentTheme.colors.textSecondary }}
+                >
                   文章标题
                 </label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-lg text-white focus:outline-none"
+                  style={{ 
+                    backgroundColor: currentTheme.colors.background,
+                    borderColor: currentTheme.colors.border,
+                    border: '1px solid',
+                    color: currentTheme.colors.text
+                  }}
                   placeholder="请输入文章标题"
                 />
               </div>
 
               {/* 分类 */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label 
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: currentTheme.colors.textSecondary }}
+                >
                   分类
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-lg text-white focus:outline-none"
+                  style={{ 
+                    backgroundColor: currentTheme.colors.background,
+                    borderColor: currentTheme.colors.border,
+                    border: '1px solid',
+                    color: currentTheme.colors.text
+                  }}
                 >
                   <option value="">选择分类</option>
                   {categories.map((cat) => (
@@ -373,13 +452,22 @@ const ArticleEditContent: React.FC = () => {
 
               {/* 状态 */}
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label 
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: currentTheme.colors.textSecondary }}
+                >
                   状态
                 </label>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as 'draft' | 'published')}
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-lg focus:outline-none"
+                  style={{ 
+                    backgroundColor: currentTheme.colors.background,
+                    borderColor: currentTheme.colors.border,
+                    border: '1px solid',
+                    color: currentTheme.colors.text
+                  }}
                 >
                   <option value="draft">草稿</option>
                   <option value="published">已发布</option>
@@ -388,19 +476,27 @@ const ArticleEditContent: React.FC = () => {
 
               {/* 标签 */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label 
+                  className="block text-sm font-medium mb-2"
+                  style={{ color: currentTheme.colors.textSecondary }}
+                >
                   标签
                 </label>
                 <div className="flex flex-wrap gap-2 mb-3">
                   {tags.map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center gap-1 px-3 py-1 bg-blue-600/20 text-blue-400 text-sm rounded-full"
+                      className="inline-flex items-center gap-1 px-3 py-1 text-sm rounded-full"
+                      style={{ 
+                        backgroundColor: `${currentTheme.colors.primary}20`,
+                        color: currentTheme.colors.primary
+                      }}
                     >
                       {tag}
                       <button
                         onClick={() => handleRemoveTag(tag)}
-                        className="ml-1 text-blue-300 hover:text-blue-200"
+                        className="ml-1 hover:opacity-70 transition-opacity"
+                        style={{ color: currentTheme.colors.textSecondary }}
                       >
                         ×
                       </button>
@@ -413,12 +509,28 @@ const ArticleEditContent: React.FC = () => {
                     value={newTag}
                     onChange={(e) => setNewTag(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
-                    className="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-4 py-2 rounded-lg focus:outline-none"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.background,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                     placeholder="添加标签，按回车确认"
                   />
                   <button
                     onClick={handleAddTag}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="px-4 py-2 rounded-lg transition-colors"
+                    style={{ 
+                      backgroundColor: currentTheme.colors.primary,
+                      color: currentTheme.colors.text
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+                    }}
                   >
                     添加
                   </button>
@@ -428,15 +540,34 @@ const ArticleEditContent: React.FC = () => {
           </div>
 
           {/* 文章内容 */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <label className="block text-sm font-medium text-gray-300 mb-4">
+          <div 
+            className="rounded-lg p-6"
+            style={{ 
+              backgroundColor: currentTheme.colors.surface,
+              borderColor: currentTheme.colors.border,
+              border: '1px solid',
+              boxShadow: currentTheme.shadows.lg
+            }}
+          >
+            <label 
+              className="block text-sm font-medium mb-4"
+              style={{ color: currentTheme.colors.textSecondary }}
+            >
               文章内容
             </label>
             
             {isPreview ? (
-              <div className="min-h-[400px] p-4 bg-gray-700 rounded-lg">
+              <div 
+                className="min-h-[400px] p-4 rounded-lg"
+                style={{ backgroundColor: currentTheme.colors.background }}
+              >
                 <div className="prose prose-invert max-w-none">
-                  <h2 className="text-xl font-semibold mb-4">{title || '无标题'}</h2>
+                  <h2 
+                    className="text-xl font-semibold mb-4"
+                    style={{ color: currentTheme.colors.text }}
+                  >
+                    {title || '无标题'}
+                  </h2>
                   <MarkdownRenderer content={content || '暂无内容'} />
                 </div>
               </div>
@@ -456,26 +587,64 @@ const ArticleEditContent: React.FC = () => {
       {/* 删除确认对话框 */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 className="text-lg font-semibold mb-4 text-white">确认删除</h3>
-            <p className="text-gray-300 mb-6">
+          <div 
+            className="rounded-lg p-6 max-w-md w-full mx-4"
+            style={{ 
+              backgroundColor: currentTheme.colors.surface,
+              borderColor: currentTheme.colors.border,
+              border: '1px solid',
+              boxShadow: currentTheme.shadows.xl
+            }}
+          >
+            <h3 
+              className="text-lg font-semibold mb-4"
+              style={{ color: currentTheme.colors.text }}
+            >
+              确认删除
+            </h3>
+            <p 
+              className="mb-6"
+              style={{ color: currentTheme.colors.textSecondary }}
+            >
               确定要删除这篇文章吗？此操作无法撤销。
             </p>
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors"
+                className="px-4 py-2 rounded-lg transition-colors"
+                style={{ 
+                  backgroundColor: currentTheme.colors.secondary,
+                  color: currentTheme.colors.text
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.secondary;
+                }}
               >
                 取消
               </button>
               <button
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  isDeleting 
-                    ? 'bg-gray-600 text-gray-300 cursor-not-allowed' 
-                    : 'bg-red-600 text-white hover:bg-red-500'
-                }`}
+                className="px-4 py-2 rounded-lg transition-colors"
+                style={{ 
+                  backgroundColor: isDeleting ? currentTheme.colors.secondary : currentTheme.colors.error,
+                  color: currentTheme.colors.text,
+                  cursor: isDeleting ? 'not-allowed' : 'pointer',
+                  opacity: isDeleting ? 0.7 : 1
+                }}
+                onMouseEnter={(e) => {
+                  if (!isDeleting) {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isDeleting) {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.error;
+                  }
+                }}
               >
                 {isDeleting ? '删除中...' : '删除'}
               </button>

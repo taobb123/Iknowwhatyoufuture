@@ -4,12 +4,14 @@ import { Plus, User } from 'lucide-react';
 import { games, Game } from '../data/gamesData';
 import { Article, getPublishedArticles, initializeSampleArticles } from '../data/articleManager';
 import UnifiedGameHubLayout from '../components/common/UnifiedGameHubLayout';
+import { useTheme } from '../themes/ThemeContext';
 
 interface GameHubProps {}
 
 const GameHub: React.FC<GameHubProps> = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { currentTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('全部');
   const [sortBy, setSortBy] = useState<string>('最新');
@@ -172,23 +174,47 @@ const GameHub: React.FC<GameHubProps> = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+    <div 
+      className="min-h-screen text-white flex flex-col"
+      style={{ backgroundColor: currentTheme.colors.background }}
+    >
       {/* 添加顶部间距避免被导航栏遮挡 */}
       <div className="pt-16"></div>
       
       {/* 顶部导航栏 */}
-      <div className="bg-gray-800 p-2 border-b border-gray-700">
+      <div 
+        className="p-2 border-b"
+        style={{ 
+          backgroundColor: currentTheme.colors.surface,
+          borderColor: currentTheme.colors.border
+        }}
+      >
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <h1 className="text-lg sm:text-xl font-bold">🎮 游戏攻略社区</h1>
+          <h1 
+            className="text-lg sm:text-xl font-bold"
+            style={{ color: currentTheme.colors.text }}
+          >
+            🎮 游戏攻略社区
+          </h1>
           <div className="flex items-center gap-3">
             <button 
               onClick={handlePublishClick}
-              className="bg-blue-600 px-3 py-1.5 rounded-lg hover:bg-blue-700 flex items-center gap-1 transition-colors text-sm"
+              className="px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors text-sm"
+              style={{ backgroundColor: currentTheme.colors.primary }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+              }}
             >
               <Plus size={16} />
               <span className="hidden sm:inline">发布攻略</span>
             </button>
-            <div className="w-7 h-7 bg-gray-600 rounded-full flex items-center justify-center">
+            <div 
+              className="w-7 h-7 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: currentTheme.colors.secondary }}
+            >
               <User size={16} />
             </div>
           </div>

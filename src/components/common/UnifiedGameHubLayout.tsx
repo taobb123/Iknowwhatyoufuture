@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Search, Heart, MessageCircle, Share2, Eye, Clock, User, Gamepad2, Star, TrendingUp, Grid, Code, Server, Brain, Palette, Wrench, ArrowLeft, ArrowRight, Tag, Plus } from 'lucide-react';
-import { Article } from '../../data/articleManager';
+import { Article, getArticleById } from '../../data/articleManager';
 import MarkdownRenderer from '../MarkdownRenderer';
+import { useTheme } from '../../themes/ThemeContext';
 
 // 使用 Article 接口替代 Guide
 type Guide = Article;
@@ -85,6 +86,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
   onPublishClick,
   className = ''
 }) => {
+  const { currentTheme } = useTheme();
   // 文章查看状态
   const [currentArticleId, setCurrentArticleId] = useState<string | null>(null);
   const [isViewingArticle, setIsViewingArticle] = useState(false);
@@ -259,7 +261,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
     if (navigator.share) {
       navigator.share({
         title: currentArticle?.title,
-        text: currentArticle?.meta.description,
+        text: currentArticle?.content.substring(0, 100) + '...',
         url: window.location.href
       });
     } else {
@@ -357,40 +359,80 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
   return (
     <div className={`max-w-7xl mx-auto grid grid-cols-12 gap-4 p-4 w-full ${className}`}>
       {/* 合并的左侧和中间内容区域 - 使用统一背景 */}
-      <div className="col-span-9 bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-xl p-4 shadow-2xl">
+      <div 
+        className="col-span-9 rounded-xl p-4 shadow-2xl"
+        style={{ 
+          background: `linear-gradient(to bottom right, ${currentTheme.colors.surface}, ${currentTheme.colors.background})`,
+          boxShadow: currentTheme.shadows.xl
+        }}
+      >
         <div className="grid grid-cols-12 gap-4 h-full">
           {/* 左侧导航栏 */}
           <div className="col-span-3 space-y-4">
             {/* 用户信息卡片 */}
-            <div className="bg-gray-700/50 rounded-lg p-3 backdrop-blur-sm">
+            <div 
+              className="rounded-lg p-3 backdrop-blur-sm"
+              style={{ backgroundColor: `${currentTheme.colors.surface}80` }}
+            >
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                <div 
+                  className="w-8 h-8 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: currentTheme.colors.primary }}
+                >
                   <User size={16} />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white text-sm">{userInfo.name}</h3>
-                  <p className="text-xs text-gray-400">{userInfo.level}</p>
+                  <h3 
+                    className="font-semibold text-sm"
+                    style={{ color: currentTheme.colors.text }}
+                  >
+                    {userInfo.name}
+                  </h3>
+                  <p 
+                    className="text-xs"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    {userInfo.level}
+                  </p>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-1 text-center text-xs">
                 <div>
-                  <div className="font-semibold text-white">{userInfo.guides}</div>
-                  <div className="text-gray-400">攻略</div>
+                  <div 
+                    className="font-semibold"
+                    style={{ color: currentTheme.colors.text }}
+                  >
+                    {userInfo.guides}
+                  </div>
+                  <div style={{ color: currentTheme.colors.textSecondary }}>攻略</div>
                 </div>
                 <div>
-                  <div className="font-semibold text-white">{userInfo.likes}</div>
-                  <div className="text-gray-400">点赞</div>
+                  <div 
+                    className="font-semibold"
+                    style={{ color: currentTheme.colors.text }}
+                  >
+                    {userInfo.likes}
+                  </div>
+                  <div style={{ color: currentTheme.colors.textSecondary }}>点赞</div>
                 </div>
                 <div>
-                  <div className="font-semibold text-white">{userInfo.collections}</div>
-                  <div className="text-gray-400">收藏</div>
+                  <div 
+                    className="font-semibold"
+                    style={{ color: currentTheme.colors.text }}
+                  >
+                    {userInfo.collections}
+                  </div>
+                  <div style={{ color: currentTheme.colors.textSecondary }}>收藏</div>
                 </div>
               </div>
             </div>
 
             {/* 攻略分类导航 */}
             <div className="space-y-1">
-              <h4 className="text-xs font-semibold text-gray-400 mb-2 flex items-center">
+              <h4 
+                className="text-xs font-semibold mb-2 flex items-center"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
                 <Grid className="w-3 h-3 mr-1" />
                 攻略分类
               </h4>
@@ -402,21 +444,39 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                   <button
                     key={category.id}
                     onClick={() => onCategoryChange(category.id)}
-                    className={`
-                      w-full text-left px-2 py-2 rounded-lg transition-all duration-200 transform hover:scale-102 hover:shadow-md
-                      ${isSelected 
-                        ? `bg-gradient-to-r ${category.color} shadow-md scale-102 text-white` 
-                        : `bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 hover:text-white ${category.hoverColor}`
+                    className="w-full text-left px-2 py-2 rounded-lg transition-all duration-200 transform hover:scale-102 hover:shadow-md"
+                    style={{
+                      backgroundColor: isSelected ? currentTheme.colors.primary : `${currentTheme.colors.surface}80`,
+                      color: isSelected ? currentTheme.colors.text : currentTheme.colors.textSecondary,
+                      boxShadow: isSelected ? currentTheme.shadows.md : 'none',
+                      borderColor: isSelected ? currentTheme.colors.border : 'transparent',
+                      border: '1px solid'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSelected) {
+                        e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                        e.currentTarget.style.color = currentTheme.colors.text;
                       }
-                      border ${isSelected ? 'border-white/30' : 'border-transparent hover:border-white/20'}
-                    `}
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSelected) {
+                        e.currentTarget.style.backgroundColor = `${currentTheme.colors.surface}80`;
+                        e.currentTarget.style.color = currentTheme.colors.textSecondary;
+                      }
+                    }}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <IconComponent size={14} />
                         <span className="font-medium text-sm">{category.name}</span>
                       </div>
-                      <span className="text-xs bg-white/20 rounded-full px-1.5 py-0.5">
+                      <span 
+                        className="text-xs rounded-full px-1.5 py-0.5"
+                        style={{ 
+                          backgroundColor: `${currentTheme.colors.textSecondary}20`,
+                          color: currentTheme.colors.textSecondary
+                        }}
+                      >
                         {category.count}
                       </span>
                     </div>
@@ -427,13 +487,31 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
 
             {/* 热门话题 */}
             <div className="space-y-1">
-              <h4 className="text-xs font-semibold text-gray-400 mb-2 flex items-center">
+              <h4 
+                className="text-xs font-semibold mb-2 flex items-center"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
                 <TrendingUp className="w-3 h-3 mr-1" />
                 热门话题
               </h4>
               <div className="space-y-1">
                 {['React游戏开发', 'TypeScript技巧', 'Vue组件设计', 'Node.js服务器'].map(topic => (
-                  <div key={topic} className="text-xs text-gray-300 hover:text-white cursor-pointer hover:bg-gray-700/50 rounded px-2 py-1 transition-colors">
+                  <div 
+                    key={topic} 
+                    className="text-xs cursor-pointer rounded px-2 py-1 transition-colors"
+                    style={{ 
+                      color: currentTheme.colors.textSecondary,
+                      backgroundColor: 'transparent'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = currentTheme.colors.text;
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = currentTheme.colors.textSecondary;
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
+                  >
                     #{topic}
                   </div>
                 ))}
@@ -444,22 +522,41 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
           {/* 中间内容区域 */}
           <div className="col-span-9 flex flex-col">
             {/* 搜索和排序栏 */}
-            <div className="bg-gray-700/50 rounded-lg p-3 mb-4 backdrop-blur-sm">
+            <div 
+              className="rounded-lg p-3 mb-4 backdrop-blur-sm"
+              style={{ backgroundColor: `${currentTheme.colors.surface}80` }}
+            >
               <div className="flex items-center gap-3 mb-2">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+                  <Search 
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2" 
+                    size={16}
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  />
                   <input
                     type="text"
                     placeholder="搜索攻略、游戏、作者..."
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    className="w-full pl-8 pr-3 py-1.5 bg-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600 text-sm"
+                    className="w-full pl-8 pr-3 py-1.5 rounded-lg text-white focus:outline-none text-sm"
+                    style={{ 
+                      backgroundColor: `${currentTheme.colors.background}80`,
+                      borderColor: currentTheme.colors.border,
+                      border: '1px solid',
+                      color: currentTheme.colors.text
+                    }}
                   />
                 </div>
                 <select
                   value={sortBy}
                   onChange={(e) => onSortChange(e.target.value)}
-                  className="px-3 py-1.5 bg-gray-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600 text-sm"
+                  className="px-3 py-1.5 rounded-lg text-white focus:outline-none text-sm"
+                  style={{ 
+                    backgroundColor: `${currentTheme.colors.background}80`,
+                    borderColor: currentTheme.colors.border,
+                    border: '1px solid',
+                    color: currentTheme.colors.text
+                  }}
                 >
                   <option value="最新">最新</option>
                   <option value="热门">热门</option>
@@ -469,14 +566,24 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                 {onPublishClick && (
                   <button
                     onClick={onPublishClick}
-                    className="bg-blue-600 px-3 py-1.5 rounded-lg hover:bg-blue-700 flex items-center gap-1 transition-colors text-sm"
+                    className="px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors text-sm"
+                    style={{ backgroundColor: currentTheme.colors.primary }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+                    }}
                   >
                     <Plus size={16} />
                     发表
                   </button>
                 )}
               </div>
-              <div className="text-xs text-gray-400">
+              <div 
+                className="text-xs"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
                 找到 {filteredGuides.length} 篇攻略，当前显示第 {currentPage} 页，共 {totalPages} 页
               </div>
             </div>

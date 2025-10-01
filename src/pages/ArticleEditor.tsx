@@ -7,12 +7,14 @@ import { getSimpleCurrentUser } from '../data/simpleRegistration';
 import { isGuestAnonymousPostAllowed } from '../data/systemConfig';
 import RichTextEditor from '../components/RichTextEditor';
 import MarkdownRenderer from '../components/MarkdownRenderer';
+import { useTheme } from '../themes/ThemeContext';
 
 interface ArticleEditorProps {}
 
 const ArticleEditor: React.FC<ArticleEditorProps> = () => {
   const navigate = useNavigate();
   const { state: authState, getUserDisplayName } = useAuth();
+  const { currentTheme } = useTheme();
   
   // 文章状态
   const [title, setTitle] = useState('');
@@ -315,33 +317,67 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white relative">
+    <div 
+      className="min-h-screen relative"
+      style={{ 
+        backgroundColor: currentTheme.colors.background,
+        color: currentTheme.colors.text,
+        fontFamily: currentTheme.typography.fontFamily
+      }}
+    >
       {/* 添加顶部间距避免被导航栏遮挡 */}
       <div className="pt-16"></div>
       
       {/* 顶部导航栏 */}
-      <div className="bg-gray-800 p-4 border-b border-gray-700">
+      <div 
+        className="p-4 border-b"
+        style={{ 
+          backgroundColor: currentTheme.colors.surface,
+          borderColor: currentTheme.colors.border
+        }}
+      >
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <button
               onClick={handleGoBack}
-              className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
+              className="flex items-center gap-2 transition-colors"
+              style={{ color: currentTheme.colors.textSecondary }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = currentTheme.colors.text;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = currentTheme.colors.textSecondary;
+              }}
             >
               <ArrowLeft size={18} />
               <span className="hidden sm:inline">返回攻略社区</span>
             </button>
-            <div className="h-6 w-px bg-gray-600 hidden sm:block"></div>
-            <h1 className="text-lg sm:text-xl font-semibold">📝 撰写攻略</h1>
+            <div 
+              className="h-6 w-px hidden sm:block"
+              style={{ backgroundColor: currentTheme.colors.border }}
+            ></div>
+            <h1 
+              className="text-lg sm:text-xl font-semibold"
+              style={{ color: currentTheme.colors.text }}
+            >
+              📝 撰写攻略
+            </h1>
           </div>
           
           <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setIsPreview(!isPreview)}
-              className={`px-3 sm:px-4 py-2 rounded-lg flex items-center gap-1 sm:gap-2 transition-colors ${
-                isPreview 
-                  ? 'bg-blue-600 text-white' 
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              }`}
+              className="px-3 sm:px-4 py-2 rounded-lg flex items-center gap-1 sm:gap-2 transition-colors"
+              style={{ 
+                backgroundColor: isPreview ? currentTheme.colors.primary : currentTheme.colors.secondary,
+                color: currentTheme.colors.text
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = isPreview ? currentTheme.colors.primary : currentTheme.colors.secondary;
+              }}
             >
               <Eye size={16} />
               <span className="hidden sm:inline">{isPreview ? '编辑' : '预览'}</span>
@@ -349,7 +385,17 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
             
             <button
               onClick={handleSaveDraft}
-              className="px-3 sm:px-4 py-2 bg-gray-700 text-gray-300 hover:bg-gray-600 rounded-lg flex items-center gap-1 sm:gap-2 transition-colors"
+              className="px-3 sm:px-4 py-2 rounded-lg flex items-center gap-1 sm:gap-2 transition-colors"
+              style={{ 
+                backgroundColor: currentTheme.colors.secondary,
+                color: currentTheme.colors.text
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = currentTheme.colors.secondary;
+              }}
             >
               <Save size={16} />
               <span className="hidden sm:inline">保存草稿</span>
@@ -363,7 +409,15 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
         <div className="grid grid-cols-12 gap-6">
           {/* 左侧编辑区域 */}
           <div className="col-span-8">
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div 
+              className="rounded-lg p-6"
+              style={{ 
+                backgroundColor: currentTheme.colors.surface,
+                borderColor: currentTheme.colors.border,
+                border: '1px solid',
+                boxShadow: currentTheme.shadows.lg
+              }}
+            >
               {/* 标题输入 */}
               <div className="mb-6">
                 <input
@@ -371,7 +425,11 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                   placeholder="输入攻略标题..."
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full text-2xl font-bold bg-transparent border-none outline-none placeholder-gray-500"
+                  className="w-full text-2xl font-bold bg-transparent border-none outline-none"
+                  style={{ 
+                    color: currentTheme.colors.text,
+                    fontFamily: currentTheme.typography.fontFamily
+                  }}
                   onKeyDown={handleKeyPress}
                 />
               </div>
@@ -379,9 +437,17 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
               {/* 内容编辑区域 */}
               <div className="mb-6">
                 {isPreview ? (
-                  <div className="min-h-[400px] p-4 bg-gray-700 rounded-lg">
+                  <div 
+                    className="min-h-[400px] p-4 rounded-lg"
+                    style={{ backgroundColor: currentTheme.colors.background }}
+                  >
                     <div className="prose prose-invert max-w-none">
-                      <h2 className="text-xl font-semibold mb-4">{title || '无标题'}</h2>
+                      <h2 
+                        className="text-xl font-semibold mb-4"
+                        style={{ color: currentTheme.colors.text }}
+                      >
+                        {title || '无标题'}
+                      </h2>
                       <MarkdownRenderer content={content || '暂无内容'} />
                     </div>
                   </div>
@@ -396,7 +462,10 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
               </div>
 
               {/* 快捷提示 */}
-              <div className="text-sm text-gray-400">
+              <div 
+                className="text-sm"
+                style={{ color: currentTheme.colors.textSecondary }}
+              >
                 💡 提示：按 Ctrl + Enter 快速发表文章 | 使用工具栏快速格式化文本
               </div>
             </div>
@@ -406,8 +475,19 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
           <div className="col-span-4">
             <div className="space-y-6">
               {/* 文章信息 */}
-              <div className="bg-gray-800 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <div 
+                className="rounded-lg p-6"
+                style={{ 
+                  backgroundColor: currentTheme.colors.surface,
+                  borderColor: currentTheme.colors.border,
+                  border: '1px solid',
+                  boxShadow: currentTheme.shadows.lg
+                }}
+              >
+                <h3 
+                  className="text-lg font-semibold mb-4 flex items-center gap-2"
+                  style={{ color: currentTheme.colors.text }}
+                >
                   <FileText size={20} />
                   文章信息
                 </h3>
@@ -415,13 +495,22 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                 <div className="space-y-4">
                   {/* 分类选择 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label 
+                      className="block text-sm font-medium mb-2"
+                      style={{ color: currentTheme.colors.textSecondary }}
+                    >
                       分类
                     </label>
                     <select
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
-                      className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none"
+                      className="w-full p-3 rounded-lg focus:outline-none"
+                      style={{ 
+                        backgroundColor: currentTheme.colors.background,
+                        borderColor: currentTheme.colors.border,
+                        border: '1px solid',
+                        color: currentTheme.colors.text
+                      }}
                     >
                       {categories.map(cat => (
                         <option key={cat} value={cat}>{cat}</option>
@@ -431,7 +520,10 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
 
                   {/* 标签管理 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label 
+                      className="block text-sm font-medium mb-2"
+                      style={{ color: currentTheme.colors.textSecondary }}
+                    >
                       标签
                     </label>
                     <div className="flex gap-2 mb-2">
@@ -441,11 +533,27 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                         value={newTag}
                         onChange={(e) => setNewTag(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
-                        className="flex-1 p-2 bg-gray-700 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none text-sm"
+                        className="flex-1 p-2 rounded-lg focus:outline-none text-sm"
+                        style={{ 
+                          backgroundColor: currentTheme.colors.background,
+                          borderColor: currentTheme.colors.border,
+                          border: '1px solid',
+                          color: currentTheme.colors.text
+                        }}
                       />
                       <button
                         onClick={handleAddTag}
-                        className="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm transition-colors"
+                        className="px-3 py-2 rounded-lg text-sm transition-colors"
+                        style={{ 
+                          backgroundColor: currentTheme.colors.primary,
+                          color: currentTheme.colors.text
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+                        }}
                       >
                         添加
                       </button>
@@ -454,13 +562,18 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                       {tags.map(tag => (
                         <span
                           key={tag}
-                          className="px-2 py-1 bg-gray-600 text-gray-300 text-sm rounded-full flex items-center gap-1"
+                          className="px-2 py-1 text-sm rounded-full flex items-center gap-1"
+                          style={{ 
+                            backgroundColor: currentTheme.colors.secondary,
+                            color: currentTheme.colors.text
+                          }}
                         >
                           <Tag size={12} />
                           {tag}
                           <button
                             onClick={() => handleRemoveTag(tag)}
-                            className="ml-1 text-gray-400 hover:text-white"
+                            className="ml-1 hover:opacity-70 transition-opacity"
+                            style={{ color: currentTheme.colors.textSecondary }}
                           >
                             ×
                           </button>
@@ -470,12 +583,18 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                   </div>
 
                   {/* 作者信息 */}
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <div 
+                    className="flex items-center gap-2 text-sm"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
                     <User size={16} />
                     <span>作者：{getUserDisplayName()}</span>
                   </div>
                   
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <div 
+                    className="flex items-center gap-2 text-sm"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
                     <Calendar size={16} />
                     <span>发布时间：{new Date().toLocaleDateString('zh-CN')}</span>
                   </div>
@@ -483,9 +602,25 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
               </div>
 
               {/* 发布统计 */}
-              <div className="bg-gray-800 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-4">发布统计</h3>
-                <div className="space-y-2 text-sm text-gray-400">
+              <div 
+                className="rounded-lg p-6"
+                style={{ 
+                  backgroundColor: currentTheme.colors.surface,
+                  borderColor: currentTheme.colors.border,
+                  border: '1px solid',
+                  boxShadow: currentTheme.shadows.lg
+                }}
+              >
+                <h3 
+                  className="text-lg font-semibold mb-4"
+                  style={{ color: currentTheme.colors.text }}
+                >
+                  发布统计
+                </h3>
+                <div 
+                  className="space-y-2 text-sm"
+                  style={{ color: currentTheme.colors.textSecondary }}
+                >
                   <div>字数：{content.length}</div>
                   <div>标签：{tags.length} 个</div>
                   <div>分类：{category}</div>
@@ -505,14 +640,29 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
               onClick={handleGoBack}
               onMouseEnter={() => showTooltipHandler('back')}
               onMouseLeave={() => hideTooltipHandler('back')}
-              className="w-14 h-14 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110"
+              className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110"
+              style={{ 
+                backgroundColor: currentTheme.colors.secondary,
+                color: currentTheme.colors.text
+              }}
             >
-              <ArrowLeft size={24} className="text-white" />
+              <ArrowLeft size={24} />
             </button>
             {showTooltip.back && (
-              <div className="absolute right-16 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap shadow-lg">
+              <div 
+                className="absolute right-16 top-1/2 transform -translate-y-1/2 px-3 py-2 rounded-lg text-sm whitespace-nowrap shadow-lg"
+                style={{ 
+                  backgroundColor: currentTheme.colors.surface,
+                  color: currentTheme.colors.text,
+                  borderColor: currentTheme.colors.border,
+                  border: '1px solid'
+                }}
+              >
                 返回攻略社区
-                <div className="absolute left-full top-1/2 transform -translate-y-1/2 w-0 h-0 border-l-4 border-l-gray-800 border-t-4 border-t-transparent border-b-4 border-b-transparent"></div>
+                <div 
+                  className="absolute left-full top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-4 border-t-transparent border-b-4 border-b-transparent"
+                  style={{ borderLeftColor: currentTheme.colors.surface }}
+                ></div>
               </div>
             )}
           </div>
@@ -523,14 +673,29 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
               onClick={handlePublish}
               onMouseEnter={() => showTooltipHandler('publish')}
               onMouseLeave={() => hideTooltipHandler('publish')}
-              className="w-14 h-14 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110"
+              className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110"
+              style={{ 
+                backgroundColor: currentTheme.colors.primary,
+                color: currentTheme.colors.text
+              }}
             >
-              <Send size={24} className="text-white" />
+              <Send size={24} />
             </button>
             {showTooltip.publish && (
-              <div className="absolute right-16 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap shadow-lg">
+              <div 
+                className="absolute right-16 top-1/2 transform -translate-y-1/2 px-3 py-2 rounded-lg text-sm whitespace-nowrap shadow-lg"
+                style={{ 
+                  backgroundColor: currentTheme.colors.surface,
+                  color: currentTheme.colors.text,
+                  borderColor: currentTheme.colors.border,
+                  border: '1px solid'
+                }}
+              >
                 发表到攻略列表
-                <div className="absolute left-full top-1/2 transform -translate-y-1/2 w-0 h-0 border-l-4 border-l-gray-800 border-t-4 border-t-transparent border-b-4 border-b-transparent"></div>
+                <div 
+                  className="absolute left-full top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-4 border-t-transparent border-b-4 border-b-transparent"
+                  style={{ borderLeftColor: currentTheme.colors.surface }}
+                ></div>
               </div>
             )}
           </div>

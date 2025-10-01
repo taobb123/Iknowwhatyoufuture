@@ -29,9 +29,11 @@ import {
   ToggleLeft,
   ToggleRight
 } from 'lucide-react';
+import { useTheme } from '../themes/ThemeContext';
 
 const UserManagement: React.FC = () => {
   const { state, isSuperAdmin } = useAuth();
+  const { currentTheme } = useTheme();
   const [users, setUsers] = useState<User[]>([]);
   const [stats, setStats] = useState(getUserStats());
   const [showAddModal, setShowAddModal] = useState(false);
@@ -266,63 +268,145 @@ const UserManagement: React.FC = () => {
   // 只有超级管理员可以访问
   if (!isSuperAdmin()) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div 
+        className="min-h-screen text-white flex items-center justify-center"
+        style={{ backgroundColor: currentTheme.colors.background }}
+      >
         <div className="text-center">
-          <div className="text-red-400 text-xl mb-4">权限不足</div>
-          <p className="text-gray-400">只有超级管理员可以访问用户管理页面</p>
+          <div 
+            className="text-xl mb-4"
+            style={{ color: currentTheme.colors.error }}
+          >
+            权限不足
+          </div>
+          <p style={{ color: currentTheme.colors.textSecondary }}>
+            只有超级管理员可以访问用户管理页面
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div 
+      className="min-h-screen text-white"
+      style={{ backgroundColor: currentTheme.colors.background }}
+    >
       {/* 添加顶部间距避免被导航栏遮挡 */}
       <div className="pt-16"></div>
       
       <div className="container mx-auto px-4 py-8">
         {/* 页面标题和统计 */}
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-6">用户管理</h1>
+          <h1 
+            className="text-2xl sm:text-3xl font-bold mb-6"
+            style={{ color: currentTheme.colors.text }}
+          >
+            用户管理
+          </h1>
           
           {/* 统计卡片 */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div 
+              className="rounded-lg p-6"
+              style={{ backgroundColor: currentTheme.colors.surface }}
+            >
               <div className="flex items-center">
-                <UserIcon className="h-8 w-8 text-blue-400" />
+                <UserIcon 
+                  className="h-8 w-8" 
+                  style={{ color: currentTheme.colors.primary }}
+                />
                 <div className="ml-4">
-                  <p className="text-sm text-gray-400">总用户数</p>
-                  <p className="text-2xl font-bold">{stats.total}</p>
+                  <p 
+                    className="text-sm"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    总用户数
+                  </p>
+                  <p 
+                    className="text-2xl font-bold"
+                    style={{ color: currentTheme.colors.text }}
+                  >
+                    {stats.total}
+                  </p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div 
+              className="rounded-lg p-6"
+              style={{ backgroundColor: currentTheme.colors.surface }}
+            >
               <div className="flex items-center">
-                <Check className="h-8 w-8 text-green-400" />
+                <Check 
+                  className="h-8 w-8" 
+                  style={{ color: currentTheme.colors.success }}
+                />
                 <div className="ml-4">
-                  <p className="text-sm text-gray-400">活跃用户</p>
-                  <p className="text-2xl font-bold">{stats.active}</p>
+                  <p 
+                    className="text-sm"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    活跃用户
+                  </p>
+                  <p 
+                    className="text-2xl font-bold"
+                    style={{ color: currentTheme.colors.text }}
+                  >
+                    {stats.active}
+                  </p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div 
+              className="rounded-lg p-6"
+              style={{ backgroundColor: currentTheme.colors.surface }}
+            >
               <div className="flex items-center">
-                <Shield className="h-8 w-8 text-blue-400" />
+                <Shield 
+                  className="h-8 w-8" 
+                  style={{ color: currentTheme.colors.primary }}
+                />
                 <div className="ml-4">
-                  <p className="text-sm text-gray-400">管理员</p>
-                  <p className="text-2xl font-bold">{stats.admins}</p>
+                  <p 
+                    className="text-sm"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    管理员
+                  </p>
+                  <p 
+                    className="text-2xl font-bold"
+                    style={{ color: currentTheme.colors.text }}
+                  >
+                    {stats.admins}
+                  </p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div 
+              className="rounded-lg p-6"
+              style={{ backgroundColor: currentTheme.colors.surface }}
+            >
               <div className="flex items-center">
-                <Crown className="h-8 w-8 text-yellow-400" />
+                <Crown 
+                  className="h-8 w-8" 
+                  style={{ color: currentTheme.colors.warning }}
+                />
                 <div className="ml-4">
-                  <p className="text-sm text-gray-400">超级管理员</p>
-                  <p className="text-2xl font-bold">{stats.superAdmins}</p>
+                  <p 
+                    className="text-sm"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    超级管理员
+                  </p>
+                  <p 
+                    className="text-2xl font-bold"
+                    style={{ color: currentTheme.colors.text }}
+                  >
+                    {stats.superAdmins}
+                  </p>
                 </div>
               </div>
             </div>
@@ -331,10 +415,21 @@ const UserManagement: React.FC = () => {
 
         {/* 系统配置区域 */}
         <div className="mb-8">
-          <div className="bg-gray-800 rounded-lg p-6">
+          <div 
+            className="rounded-lg p-6"
+            style={{ backgroundColor: currentTheme.colors.surface }}
+          >
             <div className="flex items-center mb-4">
-              <Settings className="h-6 w-6 text-yellow-400 mr-3" />
-              <h2 className="text-xl font-bold text-white">系统配置</h2>
+              <Settings 
+                className="h-6 w-6 mr-3" 
+                style={{ color: currentTheme.colors.warning }}
+              />
+              <h2 
+                className="text-xl font-bold"
+                style={{ color: currentTheme.colors.text }}
+              >
+                系统配置
+              </h2>
             </div>
             
             <div className="space-y-4">
@@ -390,7 +485,14 @@ const UserManagement: React.FC = () => {
               resetForm();
               setShowAddModal(true);
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors"
+            style={{ backgroundColor: currentTheme.colors.primary }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+            }}
           >
             <Plus size={18} />
             <span className="hidden sm:inline">添加用户</span>
@@ -398,35 +500,70 @@ const UserManagement: React.FC = () => {
         </div>
 
         {/* 用户列表 */}
-        <div className="bg-gray-800 rounded-lg overflow-hidden">
+        <div 
+          className="rounded-lg overflow-hidden"
+          style={{ backgroundColor: currentTheme.colors.surface }}
+        >
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-700">
-              <thead className="bg-gray-700">
+            <table className="min-w-full divide-y" style={{ borderColor: currentTheme.colors.border }}>
+              <thead style={{ backgroundColor: currentTheme.colors.hover }}>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
                     用户信息
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
                     角色
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
                     状态
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
                     创建时间
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
                     操作
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-gray-800 divide-y divide-gray-700">
+              <tbody className="divide-y" style={{ borderColor: currentTheme.colors.border }}>
                 {users.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-700">
+                  <tr 
+                    key={user.id} 
+                    className="transition-colors"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
+                  >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-white">{user.username}</div>
-                        <div className="text-sm text-gray-400 flex items-center gap-1">
+                        <div 
+                          className="text-sm font-medium"
+                          style={{ color: currentTheme.colors.text }}
+                        >
+                          {user.username}
+                        </div>
+                        <div 
+                          className="text-sm flex items-center gap-1"
+                          style={{ color: currentTheme.colors.textSecondary }}
+                        >
                           <Mail className="h-3 w-3" />
                           {user.email || '无邮箱'}
                         </div>
@@ -435,19 +572,33 @@ const UserManagement: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         {getRoleIcon(user.role)}
-                        <span className="text-sm text-gray-300">{getRoleText(user.role)}</span>
+                        <span 
+                          className="text-sm"
+                          style={{ color: currentTheme.colors.textSecondary }}
+                        >
+                          {getRoleText(user.role)}
+                        </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        user.isActive 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-red-100 text-red-800'
-                      }`}>
+                      <span 
+                        className="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                        style={{
+                          backgroundColor: user.isActive 
+                            ? `${currentTheme.colors.success}20`
+                            : `${currentTheme.colors.error}20`,
+                          color: user.isActive 
+                            ? currentTheme.colors.success
+                            : currentTheme.colors.error
+                        }}
+                      >
                         {user.isActive ? '活跃' : '禁用'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                    <td 
+                      className="px-6 py-4 whitespace-nowrap text-sm"
+                      style={{ color: currentTheme.colors.textSecondary }}
+                    >
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         {formatDate(user.createdAt)}
@@ -457,14 +608,28 @@ const UserManagement: React.FC = () => {
                       <div className="flex gap-2">
                         <button
                           onClick={() => openEditModal(user)}
-                          className="text-blue-400 hover:text-blue-300 p-1"
+                          className="p-1 transition-colors"
+                          style={{ color: currentTheme.colors.primary }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = currentTheme.colors.hover;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = currentTheme.colors.primary;
+                          }}
                           title="编辑用户"
                         >
                           <Edit size={16} />
                         </button>
                         <button
                           onClick={() => setShowDeleteConfirm(user.id)}
-                          className="text-red-400 hover:text-red-300 p-1"
+                          className="p-1 transition-colors"
+                          style={{ color: currentTheme.colors.error }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = currentTheme.colors.hover;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = currentTheme.colors.error;
+                          }}
                           title="删除用户"
                         >
                           <Trash2 size={16} />

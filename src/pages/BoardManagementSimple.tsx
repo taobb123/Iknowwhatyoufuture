@@ -1,9 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Edit, Trash2, Calendar } from 'lucide-react';
+import { useTheme } from '../themes/ThemeContext';
+import {
+  StyledManagementContainer,
+  StyledPageContent,
+  StyledPageHeader,
+  StyledBackButton,
+  StyledPrimaryButton,
+  StyledSecondaryButton,
+  StyledDangerButton,
+  StyledPageTitle,
+  StyledStatCard,
+  StyledStatNumber,
+  StyledStatLabel,
+  StyledContentCard,
+  StyledCardTitle,
+  StyledListItem,
+  StyledItemTitle,
+  StyledItemDescription,
+  StyledItemMeta,
+  StyledStatusTag,
+  StyledModal,
+  StyledModalTitle,
+  StyledFormLabel,
+  StyledFormInput,
+  StyledFormTextarea,
+  StyledFormSelect,
+  StyledModalButtonGroup,
+  StyledEmptyState,
+  StyledEmptyText
+} from '../components/styled/StyledManagementPage';
 
 const BoardManagementSimple: React.FC = () => {
   const navigate = useNavigate();
+  const { currentTheme } = useTheme();
   const [boards, setBoards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -131,141 +162,125 @@ const BoardManagementSimple: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ 
+          backgroundColor: currentTheme.colors.background,
+          color: currentTheme.colors.text
+        }}
+      >
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p>加载中...</p>
+          <div 
+            className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4"
+            style={{ borderColor: currentTheme.colors.textSecondary }}
+          ></div>
+          <p style={{ color: currentTheme.colors.text }}>加载中...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <StyledManagementContainer>
+      <StyledPageContent>
         {/* 头部 */}
-        <div className="flex items-center justify-between mb-8">
+        <StyledPageHeader>
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
-            >
+            <StyledBackButton onClick={() => navigate(-1)}>
               <ArrowLeft size={16} />
               返回
-            </button>
-            <h1 className="text-3xl font-bold text-white">板块管理（简化版）</h1>
+            </StyledBackButton>
+            <StyledPageTitle>板块管理（简化版）</StyledPageTitle>
           </div>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-          >
+          <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
             <Plus size={16} />
             创建板块
-          </button>
-        </div>
+          </StyledPrimaryButton>
+        </StyledPageHeader>
 
-        {/* 调试信息区域 */}
-        <div className="bg-gray-800 rounded-lg p-4 mb-6">
-          <details className="text-sm">
-            <summary className="cursor-pointer text-blue-400 hover:text-blue-300 font-medium">
-              🔧 调试信息 (点击展开)
-            </summary>
-            <div className="mt-3 space-y-1 text-gray-300">
-              <p>编辑模态框: {showEditModal ? '显示' : '隐藏'}</p>
-              <p>删除确认: {showDeleteConfirm ? '显示' : '隐藏'}</p>
-              <p>正在编辑: {editingBoard?.name || '无'}</p>
-              <p>板块数量: {boards.length}</p>
-            </div>
-          </details>
-        </div>
 
         {/* 统计信息 */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">{boards.length}</div>
-            <div className="text-gray-400">总板块数</div>
-          </div>
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">{boards.filter(b => b.isActive).length}</div>
-            <div className="text-gray-400">活跃板块</div>
-          </div>
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">0</div>
-            <div className="text-gray-400">总主题数</div>
-          </div>
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">0</div>
-            <div className="text-gray-400">总文章数</div>
-          </div>
+          <StyledStatCard>
+            <StyledStatNumber>{boards.length}</StyledStatNumber>
+            <StyledStatLabel>总板块数</StyledStatLabel>
+          </StyledStatCard>
+          <StyledStatCard>
+            <StyledStatNumber>{boards.filter(b => b.isActive).length}</StyledStatNumber>
+            <StyledStatLabel>活跃板块</StyledStatLabel>
+          </StyledStatCard>
+          <StyledStatCard>
+            <StyledStatNumber>0</StyledStatNumber>
+            <StyledStatLabel>总主题数</StyledStatLabel>
+          </StyledStatCard>
+          <StyledStatCard>
+            <StyledStatNumber>0</StyledStatNumber>
+            <StyledStatLabel>总文章数</StyledStatLabel>
+          </StyledStatCard>
         </div>
 
         {/* 板块列表 */}
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h2 className="text-xl font-bold text-white mb-4">板块列表</h2>
+        <StyledContentCard>
+          <StyledCardTitle>板块列表</StyledCardTitle>
           
           {boards.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-400 mb-4">暂无板块数据</p>
-              <button
-                onClick={() => setShowAddModal(true)}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-              >
+            <StyledEmptyState>
+              <StyledEmptyText>暂无板块数据</StyledEmptyText>
+              <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
                 创建第一个板块
-              </button>
-            </div>
+              </StyledPrimaryButton>
+            </StyledEmptyState>
           ) : (
             <div className="space-y-4">
               {boards.map((board) => (
-                <div
-                  key={board.id}
-                  className="bg-gray-700 rounded-lg p-4 flex items-center justify-between"
-                >
+                <StyledListItem key={board.id}>
                   <div className="flex items-center gap-4">
                     <span className="text-2xl">{board.icon}</span>
                     <div>
-                      <h3 className="text-lg font-semibold text-white">{board.name}</h3>
-                      <p className="text-gray-400 text-sm">{board.description}</p>
-                      <div className="flex items-center gap-4 text-xs text-gray-500 mt-1">
+                      <StyledItemTitle>{board.name}</StyledItemTitle>
+                      <StyledItemDescription>{board.description}</StyledItemDescription>
+                      <StyledItemMeta>
                         <span className="flex items-center gap-1">
                           <Calendar size={12} />
                           {formatDate(board.createdAt)}
                         </span>
-                        <span className={`px-2 py-1 rounded text-xs ${
-                          board.isActive ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                        }`}>
+                        <StyledStatusTag isActive={board.isActive}>
                           {board.isActive ? '活跃' : '已关闭'}
-                        </span>
-                      </div>
+                        </StyledStatusTag>
+                      </StyledItemMeta>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-400">
+                    <span 
+                      className="text-sm"
+                      style={{ color: currentTheme.colors.textSecondary }}
+                    >
                       {board.topicCount} 个主题
                     </span>
-                    <button
+                    <StyledPrimaryButton 
                       onClick={() => openEditModal(board)}
-                      className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition-colors"
+                      className="px-3 py-1 text-sm"
                     >
                       编辑
-                    </button>
-                    <button
+                    </StyledPrimaryButton>
+                    <StyledDangerButton 
                       onClick={() => setShowDeleteConfirm(board.id)}
-                      className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded transition-colors"
+                      className="px-3 py-1 text-sm"
                     >
                       删除
-                    </button>
+                    </StyledDangerButton>
                   </div>
-                </div>
+                </StyledListItem>
               ))}
             </div>
           )}
-        </div>
+        </StyledContentCard>
 
         {/* 添加板块模态框 */}
         {showAddModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 w-full max-w-md">
-              <h3 className="text-lg font-semibold text-white mb-4">创建板块</h3>
+            <StyledModal>
+              <StyledModalTitle>创建板块</StyledModalTitle>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">板块名称</label>
@@ -420,8 +435,8 @@ const BoardManagementSimple: React.FC = () => {
             </div>
           </div>
         )}
-      </div>
-    </div>
+      </StyledPageContent>
+    </StyledManagementContainer>
   );
 };
 

@@ -3,10 +3,12 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getAllBoards, getAllTopics } from '../data/communityManager';
 import { getAllArticlesSortedByTime } from '../data/articleManager';
 import { ArrowLeft, Plus, MessageSquare, Calendar, User, Eye, ThumbsUp } from 'lucide-react';
+import { useTheme } from '../themes/ThemeContext';
 
 const TopicDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { currentTheme } = useTheme();
   const [topic, setTopic] = useState<any>(null);
   const [board, setBoard] = useState<any>(null);
   const [articles, setArticles] = useState<any[]>([]);
@@ -52,10 +54,16 @@ const TopicDetail: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div 
+        className="min-h-screen text-white flex items-center justify-center"
+        style={{ backgroundColor: currentTheme.colors.background }}
+      >
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p>加载中...</p>
+          <div 
+            className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4"
+            style={{ borderColor: currentTheme.colors.textSecondary }}
+          ></div>
+          <p style={{ color: currentTheme.colors.text }}>加载中...</p>
         </div>
       </div>
     );
@@ -63,12 +71,27 @@ const TopicDetail: React.FC = () => {
 
   if (!topic) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div 
+        className="min-h-screen text-white flex items-center justify-center"
+        style={{ backgroundColor: currentTheme.colors.background }}
+      >
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">主题不存在</h1>
+          <h1 
+            className="text-2xl font-bold mb-4"
+            style={{ color: currentTheme.colors.text }}
+          >
+            主题不存在
+          </h1>
           <Link
             to="/community"
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            className="px-4 py-2 text-white rounded-lg transition-colors"
+            style={{ backgroundColor: currentTheme.colors.primary }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+            }}
           >
             返回社区首页
           </Link>
@@ -78,31 +101,63 @@ const TopicDetail: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white pt-20">
+    <div 
+      className="min-h-screen text-white pt-20"
+      style={{ backgroundColor: currentTheme.colors.background }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 面包屑导航 */}
-        <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
-          <Link to="/community" className="hover:text-white transition-colors">社区首页</Link>
+        <div 
+          className="flex items-center gap-2 text-sm mb-6"
+          style={{ color: currentTheme.colors.textSecondary }}
+        >
+          <Link 
+            to="/community" 
+            className="transition-colors"
+            style={{ color: currentTheme.colors.textSecondary }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = currentTheme.colors.text;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = currentTheme.colors.textSecondary;
+            }}
+          >
+            社区首页
+          </Link>
           <span>›</span>
           {board && (
             <>
               <Link 
                 to={`/board/${board.id}`} 
-                className="hover:text-white transition-colors"
+                className="transition-colors"
+                style={{ color: currentTheme.colors.textSecondary }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = currentTheme.colors.text;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = currentTheme.colors.textSecondary;
+                }}
               >
                 {board.name}
               </Link>
               <span>›</span>
             </>
           )}
-          <span className="text-white">{topic.name}</span>
+          <span style={{ color: currentTheme.colors.text }}>{topic.name}</span>
         </div>
 
         {/* 头部 */}
         <div className="flex items-center gap-4 mb-8">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors"
+            style={{ backgroundColor: currentTheme.colors.surface }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
+            }}
           >
             <ArrowLeft size={16} />
             返回
@@ -110,29 +165,68 @@ const TopicDetail: React.FC = () => {
           <div className="flex items-center gap-4">
             <span className="text-4xl">{topic.icon}</span>
             <div>
-              <h1 className="text-3xl font-bold text-white">{topic.name}</h1>
-              <p className="text-gray-400">{topic.description}</p>
+              <h1 
+                className="text-3xl font-bold"
+                style={{ color: currentTheme.colors.text }}
+              >
+                {topic.name}
+              </h1>
+              <p style={{ color: currentTheme.colors.textSecondary }}>
+                {topic.description}
+              </p>
             </div>
           </div>
         </div>
 
         {/* 统计信息 */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">{articles.length}</div>
-            <div className="text-gray-400">文章数量</div>
+          <div 
+            className="rounded-lg p-6"
+            style={{ backgroundColor: currentTheme.colors.surface }}
+          >
+            <div 
+              className="text-2xl font-bold"
+              style={{ color: currentTheme.colors.text }}
+            >
+              {articles.length}
+            </div>
+            <div style={{ color: currentTheme.colors.textSecondary }}>文章数量</div>
           </div>
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">0</div>
-            <div className="text-gray-400">今日新增</div>
+          <div 
+            className="rounded-lg p-6"
+            style={{ backgroundColor: currentTheme.colors.surface }}
+          >
+            <div 
+              className="text-2xl font-bold"
+              style={{ color: currentTheme.colors.text }}
+            >
+              0
+            </div>
+            <div style={{ color: currentTheme.colors.textSecondary }}>今日新增</div>
           </div>
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">0</div>
-            <div className="text-gray-400">总浏览</div>
+          <div 
+            className="rounded-lg p-6"
+            style={{ backgroundColor: currentTheme.colors.surface }}
+          >
+            <div 
+              className="text-2xl font-bold"
+              style={{ color: currentTheme.colors.text }}
+            >
+              0
+            </div>
+            <div style={{ color: currentTheme.colors.textSecondary }}>总浏览</div>
           </div>
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div className="text-2xl font-bold text-white">0</div>
-            <div className="text-gray-400">总点赞</div>
+          <div 
+            className="rounded-lg p-6"
+            style={{ backgroundColor: currentTheme.colors.surface }}
+          >
+            <div 
+              className="text-2xl font-bold"
+              style={{ color: currentTheme.colors.text }}
+            >
+              0
+            </div>
+            <div style={{ color: currentTheme.colors.textSecondary }}>总点赞</div>
           </div>
         </div>
 
@@ -140,17 +234,48 @@ const TopicDetail: React.FC = () => {
           {/* 文章列表 */}
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">文章列表</h2>
-              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+              <h2 
+                className="text-2xl font-bold"
+                style={{ color: currentTheme.colors.text }}
+              >
+                文章列表
+              </h2>
+              <button 
+                className="flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors"
+                style={{ backgroundColor: currentTheme.colors.primary }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+                }}
+              >
                 <Plus size={16} />
                 发布文章
               </button>
             </div>
 
             {articles.length === 0 ? (
-              <div className="bg-gray-800 rounded-lg p-8 text-center">
-                <p className="text-gray-400 mb-4">暂无文章</p>
-                <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+              <div 
+                className="rounded-lg p-8 text-center"
+                style={{ backgroundColor: currentTheme.colors.surface }}
+              >
+                <p 
+                  className="mb-4"
+                  style={{ color: currentTheme.colors.textSecondary }}
+                >
+                  暂无文章
+                </p>
+                <button 
+                  className="px-4 py-2 text-white rounded-lg transition-colors"
+                  style={{ backgroundColor: currentTheme.colors.primary }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
+                  }}
+                >
                   发布第一篇文章
                 </button>
               </div>
@@ -159,22 +284,45 @@ const TopicDetail: React.FC = () => {
                 {articles.map((article) => (
                   <div
                     key={article.id}
-                    className="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-colors"
+                    className="rounded-lg p-6 transition-colors"
+                    style={{ backgroundColor: currentTheme.colors.surface }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
+                    }}
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-white mb-2">
+                        <h3 
+                          className="text-lg font-semibold mb-2"
+                          style={{ color: currentTheme.colors.text }}
+                        >
                           <Link
                             to={`/article/${article.id}`}
-                            className="hover:text-blue-400 transition-colors"
+                            className="transition-colors"
+                            style={{ color: currentTheme.colors.text }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.color = currentTheme.colors.primary;
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.color = currentTheme.colors.text;
+                            }}
                           >
                             {article.title}
                           </Link>
                         </h3>
-                        <p className="text-gray-400 text-sm mb-3 line-clamp-2">
+                        <p 
+                          className="text-sm mb-3 line-clamp-2"
+                          style={{ color: currentTheme.colors.textSecondary }}
+                        >
                           {article.content.substring(0, 150)}...
                         </p>
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                        <div 
+                          className="flex items-center gap-4 text-sm"
+                          style={{ color: currentTheme.colors.textSecondary }}
+                        >
                           <span className="flex items-center gap-1">
                             <User size={14} />
                             {article.author}
@@ -203,16 +351,31 @@ const TopicDetail: React.FC = () => {
           {/* 侧边栏 */}
           <div className="space-y-6">
             {/* 主题信息 */}
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">主题信息</h3>
+            <div 
+              className="rounded-lg p-6"
+              style={{ backgroundColor: currentTheme.colors.surface }}
+            >
+              <h3 
+                className="text-lg font-semibold mb-4"
+                style={{ color: currentTheme.colors.text }}
+              >
+                主题信息
+              </h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">所属板块</span>
-                  <span className="text-white">
+                  <span style={{ color: currentTheme.colors.textSecondary }}>所属板块</span>
+                  <span style={{ color: currentTheme.colors.text }}>
                     {board ? (
                       <Link
                         to={`/board/${board.id}`}
-                        className="hover:text-blue-400 transition-colors"
+                        className="transition-colors"
+                        style={{ color: currentTheme.colors.text }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = currentTheme.colors.primary;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = currentTheme.colors.text;
+                        }}
                       >
                         {board.name}
                       </Link>
@@ -220,18 +383,26 @@ const TopicDetail: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">创建时间</span>
-                  <span className="text-white">{new Date(topic.createdAt).toLocaleDateString()}</span>
+                  <span style={{ color: currentTheme.colors.textSecondary }}>创建时间</span>
+                  <span style={{ color: currentTheme.colors.text }}>{new Date(topic.createdAt).toLocaleDateString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">文章数量</span>
-                  <span className="text-white">{articles.length}</span>
+                  <span style={{ color: currentTheme.colors.textSecondary }}>文章数量</span>
+                  <span style={{ color: currentTheme.colors.text }}>{articles.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">状态</span>
-                  <span className={`px-2 py-1 rounded text-xs ${
-                    topic.isActive ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                  }`}>
+                  <span style={{ color: currentTheme.colors.textSecondary }}>状态</span>
+                  <span 
+                    className="px-2 py-1 rounded text-xs"
+                    style={{ 
+                      backgroundColor: topic.isActive 
+                        ? `${currentTheme.colors.success}40` 
+                        : `${currentTheme.colors.error}40`,
+                      color: topic.isActive 
+                        ? currentTheme.colors.success 
+                        : currentTheme.colors.error
+                    }}
+                  >
                     {topic.isActive ? '活跃' : '已关闭'}
                   </span>
                 </div>
@@ -240,12 +411,27 @@ const TopicDetail: React.FC = () => {
 
             {/* 相关主题 */}
             {board && (
-              <div className="bg-gray-800 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-white mb-4">相关主题</h3>
+              <div 
+                className="rounded-lg p-6"
+                style={{ backgroundColor: currentTheme.colors.surface }}
+              >
+                <h3 
+                  className="text-lg font-semibold mb-4"
+                  style={{ color: currentTheme.colors.text }}
+                >
+                  相关主题
+                </h3>
                 <div className="space-y-2">
                   <Link
                     to={`/board/${board.id}`}
-                    className="block text-sm text-gray-400 hover:text-white transition-colors"
+                    className="block text-sm transition-colors"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = currentTheme.colors.text;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = currentTheme.colors.textSecondary;
+                    }}
                   >
                     查看 {board.name} 的所有主题
                   </Link>

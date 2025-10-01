@@ -1,0 +1,153 @@
+{
+  "id": "gaming",
+  "name": "游戏主题",
+  "description": "炫酷的游戏风格主题，充满科技感和未来感",
+  "version": "1.0.0",
+  "author": "Iknowwhatyoufuture Team",
+  "colors": {
+    "primary": "#00D4FF",
+    "secondary": "#FF6B35",
+    "background": "#0A0A0A",
+    "surface": "#1A1A1A",
+    "text": "#FFFFFF",
+    "textSecondary": "#B0B0B0",
+    "accent": "#00FF88",
+    "error": "#FF3366",
+    "warning": "#FFB800",
+    "success": "#00FF88",
+    "border": "#333333",
+    "hover": "#2A2A2A"
+  },
+  "typography": {
+    "fontFamily": "'Orbitron', 'Roboto Mono', monospace",
+    "fontSize": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem"
+    },
+    "fontWeight": {
+      "normal": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "lineHeight": {
+      "tight": "1.25",
+      "normal": "1.5",
+      "relaxed": "1.75"
+    }
+  },
+  "spacing": {
+    "xs": "0.25rem",
+    "sm": "0.5rem",
+    "md": "1rem",
+    "lg": "1.5rem",
+    "xl": "2rem",
+    "2xl": "3rem"
+  },
+  "borderRadius": {
+    "sm": "0.125rem",
+    "md": "0.375rem",
+    "lg": "0.5rem",
+    "xl": "0.75rem",
+    "full": "9999px"
+  },
+  "shadows": {
+    "sm": "0 0 10px rgba(0, 212, 255, 0.1)",
+    "md": "0 0 20px rgba(0, 212, 255, 0.2)",
+    "lg": "0 0 30px rgba(0, 212, 255, 0.3)",
+    "xl": "0 0 40px rgba(0, 212, 255, 0.4)"
+  },
+  "components": {
+    "navbar": {
+      "background": "#1A1A1A",
+      "text": "#FFFFFF",
+      "hover": "#00D4FF",
+      "border": "#333333",
+      "logo": {
+        "color": "#00D4FF",
+        "fontSize": "1.25rem"
+      },
+      "menu": {
+        "background": "#2A2A2A",
+        "text": "#B0B0B0",
+        "hover": "#333333",
+        "active": "#00D4FF"
+      }
+    },
+    "footer": {
+      "background": "#1A1A1A",
+      "text": "#B0B0B0",
+      "textSecondary": "#666666",
+      "border": "#333333",
+      "link": {
+        "color": "#B0B0B0",
+        "hover": "#00D4FF"
+      },
+      "brand": {
+        "color": "#00D4FF",
+        "fontSize": "1.25rem"
+      }
+    },
+    "button": {
+      "primary": {
+        "background": "#00D4FF",
+        "text": "#0A0A0A",
+        "hover": "#00B8E6",
+        "border": "#00D4FF"
+      },
+      "secondary": {
+        "background": "#333333",
+        "text": "#FFFFFF",
+        "hover": "#404040",
+        "border": "#333333"
+      },
+      "danger": {
+        "background": "#FF3366",
+        "text": "#FFFFFF",
+        "hover": "#E62E5C",
+        "border": "#FF3366"
+      }
+    },
+    "card": {
+      "background": "#1A1A1A",
+      "border": "#333333",
+      "shadow": "0 0 20px rgba(0, 212, 255, 0.1)",
+      "hover": {
+        "shadow": "0 0 30px rgba(0, 212, 255, 0.2)",
+        "transform": "translateY(-2px)"
+      },
+      "header": {
+        "background": "#2A2A2A",
+        "text": "#FFFFFF",
+        "border": "#333333"
+      }
+    },
+    "gameCard": {
+      "background": "#1A1A1A",
+      "border": "#333333",
+      "shadow": "0 0 20px rgba(0, 212, 255, 0.1)",
+      "hover": {
+        "shadow": "0 0 30px rgba(0, 212, 255, 0.2)",
+        "transform": "translateY(-2px)"
+      },
+      "title": {
+        "color": "#FFFFFF",
+        "fontSize": "1.125rem"
+      },
+      "description": {
+        "color": "#B0B0B0",
+        "fontSize": "0.875rem"
+      },
+      "category": {
+        "background": "#00D4FF",
+        "text": "#0A0A0A"
+      }
+    }
+  }
+}
+
