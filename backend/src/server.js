@@ -25,16 +25,21 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// 请求限制
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15分钟
-  max: 100, // 限制每个IP 15分钟内最多100个请求
-  message: {
-    success: false,
-    error: '请求过于频繁，请稍后再试'
-  }
-});
-app.use(limiter);
+// 请求限制 - 开发环境完全禁用
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15分钟
+//   max: 10000, // 开发环境：大幅放宽限制
+//   message: {
+//     success: false,
+//     error: '请求过于频繁，请稍后再试'
+//   },
+//   // 开发环境跳过限制
+//   skip: (req) => {
+//     // 在开发环境中跳过所有限制
+//     return true;
+//   }
+// });
+// app.use(limiter);
 
 // 解析JSON请求体
 app.use(express.json({ limit: '10mb' }));

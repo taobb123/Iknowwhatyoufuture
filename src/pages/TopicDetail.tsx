@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getAllBoards, getAllTopics } from '../data/communityManager';
-import { getAllArticlesSortedByTime } from '../data/articleManager';
+import { getAllArticlesSortedByTime } from '../data/databaseArticleManager';
 import { ArrowLeft, Plus, MessageSquare, Calendar, User, Eye, ThumbsUp } from 'lucide-react';
 import { useTheme } from '../themes/ThemeContext';
 

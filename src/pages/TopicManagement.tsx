@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllTopics, addTopic, updateTopic, deleteTopic, getAllBoards } from '../data/communityManager';
+import { getAllTopics, addTopic, updateTopic, deleteTopic } from '../data/databaseTopicManager';
+import { getAllBoards } from '../data/databaseBoardManager';
 import { ArrowLeft, Plus, Calendar } from 'lucide-react';
-import PermissionWrapper from '../components/PermissionWrapper';
 import { useTheme } from '../themes/ThemeContext';
 import {
   StyledManagementContainer,
@@ -56,16 +56,16 @@ const TopicManagement: React.FC = () => {
     loadData();
   }, []);
 
-  const loadData = () => {
+  const loadData = async () => {
     try {
       console.log('加载主题和板块数据...');
       
       // 加载板块数据
-      const boardsList = getAllBoards();
+      const boardsList = await getAllBoards();
       setBoards(boardsList);
       
       // 加载主题数据
-      const topicsList = getAllTopics();
+      const topicsList = await getAllTopics();
       setTopics(topicsList);
       
       console.log('加载的数据:', { boards: boardsList.length, topics: topicsList.length });
@@ -76,7 +76,7 @@ const TopicManagement: React.FC = () => {
     }
   };
 
-  const handleAddTopic = () => {
+  const handleAddTopic = async () => {
     if (!selectedBoard) {
       // 显示友好的toast提示
       const toast = document.createElement('div');
@@ -116,7 +116,7 @@ const TopicManagement: React.FC = () => {
     
     try {
       console.log('创建主题:', { ...formData, boardId: selectedBoard });
-      const newTopic = addTopic({ 
+      const newTopic = await addTopic({ 
         ...formData, 
         boardId: selectedBoard,
         order: 0,
@@ -132,12 +132,12 @@ const TopicManagement: React.FC = () => {
     }
   };
 
-  const handleEditTopic = () => {
+  const handleEditTopic = async () => {
     if (!editingTopic) return;
     
     try {
       console.log('更新主题:', editingTopic.id, formData);
-      const updatedTopic = updateTopic(editingTopic.id, { 
+      const updatedTopic = await updateTopic(editingTopic.id, { 
         ...formData, 
         boardId: selectedBoard,
         order: editingTopic.order,
@@ -158,16 +158,18 @@ const TopicManagement: React.FC = () => {
     }
   };
 
-  const handleDeleteTopic = (topicId: string) => {
+  const handleDeleteTopic = async (topicId: string) => {
     try {
       console.log('删除主题:', topicId);
-      deleteTopic(topicId);
-      setTopics(topics.filter(t => t.id !== topicId));
-      setShowDeleteConfirm(null);
-      
-      // 显示成功提示
-      showToast('主题删除成功！', 'success');
-      console.log('主题删除成功');
+      const success = await deleteTopic(topicId);
+      if (success) {
+        setTopics(topics.filter(t => t.id !== topicId));
+        setShowDeleteConfirm(null);
+        
+        // 显示成功提示
+        showToast('主题删除成功！', 'success');
+        console.log('主题删除成功');
+      }
     } catch (error) {
       console.error('删除主题失败:', error);
       showToast('主题删除失败，请重试', 'error');
@@ -269,12 +271,10 @@ const TopicManagement: React.FC = () => {
             </StyledBackButton>
             <StyledPageTitle>主题管理</StyledPageTitle>
           </div>
-          <PermissionWrapper permission="manage_topics">
-            <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
-              <Plus size={16} />
-              创建主题
-            </StyledPrimaryButton>
-          </PermissionWrapper>
+          <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
+            <Plus size={16} />
+            创建主题
+          </StyledPrimaryButton>
         </StyledPageHeader>
 
         {/* 统计信息 */}
@@ -304,11 +304,9 @@ const TopicManagement: React.FC = () => {
           {topics.length === 0 ? (
             <StyledEmptyState>
               <StyledEmptyText>暂无主题数据</StyledEmptyText>
-              <PermissionWrapper permission="manage_topics">
-                <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
-                  创建第一个主题
-                </StyledPrimaryButton>
-              </PermissionWrapper>
+              <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
+                创建第一个主题
+              </StyledPrimaryButton>
             </StyledEmptyState>
           ) : (
             <div className="space-y-4">

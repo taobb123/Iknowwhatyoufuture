@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Plus, User } from 'lucide-react';
 import { games, Game } from '../data/gamesData';
-import { Article, getPublishedArticles, initializeSampleArticles } from '../data/articleManager';
+import { Article, getAllArticlesSortedByTime, initializeSampleArticles } from '../data/databaseArticleManager';
 import UnifiedGameHubLayout from '../components/common/UnifiedGameHubLayout';
 import { useTheme } from '../themes/ThemeContext';
 
@@ -44,14 +44,24 @@ const GameHub: React.FC<GameHubProps> = () => {
 
   // 初始化数据
   useEffect(() => {
-    // 初始化文章数据
-    initializeSampleArticles();
-    // 延迟一点时间确保数据已经保存
-    setTimeout(() => {
-      const allArticles = getPublishedArticles();
-      setArticles(allArticles);
-      setFilteredArticles(allArticles);
-    }, 100);
+    const loadData = async () => {
+      try {
+        // 初始化文章数据
+        await initializeSampleArticles();
+        // 延迟一点时间确保数据已经保存
+        setTimeout(async () => {
+          const allArticles = await getAllArticlesSortedByTime();
+          // 只显示已发布的文章
+          const publishedArticles = allArticles.filter(article => article.status === 'published');
+          setArticles(publishedArticles);
+          setFilteredArticles(publishedArticles);
+        }, 100);
+      } catch (error) {
+        console.error('加载文章数据失败:', error);
+      }
+    };
+
+    loadData();
 
     // 初始化游戏排行榜数据
     const gameData: Game[] = games.map(game => ({

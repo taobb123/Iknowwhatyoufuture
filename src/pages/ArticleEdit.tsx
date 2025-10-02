@@ -4,12 +4,11 @@ import {
   getArticleById, 
   updateArticle, 
   deleteArticle,
-  addArticle,
+  createArticle,
   getAllCategories,
   initializeSampleArticles,
-  getArticleAuthorDisplayName,
   type Article 
-} from '../data/articleManager';
+} from '../data/databaseArticleManager';
 import { useAuth } from '../contexts/AuthContext';
 import { getSimpleCurrentUser } from '../data/simpleRegistration';
 import { isGuestAnonymousPostAllowed } from '../data/systemConfig';
@@ -24,60 +23,101 @@ const ArticleEditContent: React.FC = () => {
   const navigate = useNavigate();
   const { state: authState, getUserDisplayName } = useAuth();
   const { currentTheme } = useTheme();
+  
+  // 简化状态管理 - 只保留必要的状态
   const [article, setArticle] = useState<Article | null>(null);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [category, setCategory] = useState('前端开发');
-  const [tags, setTags] = useState<string[]>([]);
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    category: '前端开发',
+    tags: [] as string[],
+    status: 'draft' as 'draft' | 'published'
+  });
   const [newTag, setNewTag] = useState('');
-  const [status, setStatus] = useState<'draft' | 'published'>('draft');
   const [isPreview, setIsPreview] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [categories, setCategories] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
   useEffect(() => {
-    // 确保数据已初始化
-    initializeSampleArticles();
-    
-    if (id) {
-      // 延迟一点时间确保数据已经保存
-      setTimeout(() => {
-        loadArticle();
-        loadCategories();
-      }, 100);
-    } else {
-      // 如果没有ID，直接加载分类并设置为创建模式
-      loadCategories();
-      setIsLoading(false);
-    }
+    const initializeData = async () => {
+      try {
+        // 确保数据已初始化
+        await initializeSampleArticles();
+        
+        if (id) {
+          // 延迟一点时间确保数据已经保存
+          setTimeout(async () => {
+            try {
+              await loadArticle();
+              await loadCategories();
+            } catch (error) {
+              console.error('加载文章和分类失败:', error);
+              setIsLoading(false);
+            }
+          }, 100);
+        } else {
+          // 如果没有ID，直接加载分类并设置为创建模式
+          try {
+            await loadCategories();
+            setIsLoading(false);
+          } catch (error) {
+            console.error('加载分类失败:', error);
+            setIsLoading(false);
+          }
+        }
+      } catch (error) {
+        console.error('初始化数据失败:', error);
+        setIsLoading(false);
+      }
+    };
+
+    initializeData();
   }, [id]);
 
-  const loadArticle = () => {
+  const loadArticle = async () => {
     if (!id) return;
     
-    const articleData = getArticleById(id);
-    if (articleData) {
-      setArticle(articleData);
-      setTitle(articleData.title);
-      setContent(articleData.content);
-      setCategory(articleData.category);
-      setTags(articleData.tags);
-      setStatus(articleData.status);
-    } else {
-      // 不直接导航，让组件处理文章不存在的情况
+    try {
+      const articleData = await getArticleById(id);
+      if (articleData) {
+        setArticle(articleData);
+        setFormData({
+          title: articleData.title,
+          content: articleData.content,
+          category: articleData.category,
+          tags: articleData.tags,
+          status: articleData.status
+        });
+      } else {
+        // 文章不存在，显示错误信息
+        console.error('文章不存在:', id);
+        showToast('文章不存在', 'error');
+        navigate('/article-management');
+      }
+    } catch (error) {
+      console.error('加载文章失败:', error);
+      showToast('加载文章失败', 'error');
+      navigate('/article-management');
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
-  const loadCategories = () => {
-    const cats = getAllCategories();
-    setCategories(cats);
+  const loadCategories = async () => {
+    try {
+      const cats = await getAllCategories();
+      setCategories(cats);
+    } catch (error) {
+      console.error('加载分类失败:', error);
+      setCategories(['前端开发', '后端开发', '游戏攻略', '技术讨论']); // 默认分类
+    }
   };
 
   const handleSave = async () => {
-    if (!title.trim() || !content.trim()) {
+    // 验证表单数据
+    if (!formData.title.trim() || !formData.content.trim()) {
       showToast('请填写标题和内容！', 'error');
       return;
     }
@@ -100,27 +140,24 @@ const ArticleEditContent: React.FC = () => {
 
       if (id && article) {
         // 更新现有文章
-        savedArticle = updateArticle(id, {
-          title: title.trim(),
-          content: content.trim(),
-          category,
-          tags,
-          status
-        });
+        console.log('更新文章:', id, formData);
+        savedArticle = await updateArticle(id, formData);
+        console.log('更新结果:', savedArticle);
       } else {
         // 创建新文章
         const authorDisplayName = getUserDisplayName();
         const simpleUser = getSimpleCurrentUser();
-        savedArticle = addArticle({
-          title: title.trim(),
-          content: content.trim(),
+        console.log('创建文章:', { ...formData, author: authorDisplayName });
+        savedArticle = await createArticle({
+          ...formData,
           author: authorDisplayName,
           authorId: simpleUser ? simpleUser.id : authState.user?.id,
           authorType: simpleUser ? 'regular' : (authState.user?.userType || 'guest'),
-          category,
-          tags,
-          status
+          likes: 0,
+          views: 0,
+          comments: 0
         });
+        console.log('创建结果:', savedArticle);
       }
 
       if (savedArticle) {
@@ -132,17 +169,17 @@ const ArticleEditContent: React.FC = () => {
           const isAdmin = authState.user?.role === 'admin' || authState.user?.role === 'superAdmin';
           
           if (simpleUser || !isAdmin) {
-            // 普通用户和游客重定向到游戏中心
             navigate('/game-hub');
           } else {
-            // 管理员重定向到文章管理
             navigate('/article-management');
           }
         }, 2000);
       } else {
+        console.error('保存失败：savedArticle为null或undefined');
         showToast('保存失败，请重试！', 'error');
       }
     } catch (error) {
+      console.error('保存文章时发生错误:', error);
       showToast('保存失败，请重试！', 'error');
     } finally {
       setIsSaving(false);
@@ -155,7 +192,7 @@ const ArticleEditContent: React.FC = () => {
     setIsDeleting(true);
 
     try {
-      const success = deleteArticle(id);
+      const success = await deleteArticle(id);
       if (success) {
         showToast('文章删除成功！', 'success');
         // 2秒后根据用户类型自动重定向
@@ -183,22 +220,28 @@ const ArticleEditContent: React.FC = () => {
   };
 
   const handleAddTag = () => {
-    if (newTag.trim() && !tags.includes(newTag.trim())) {
-      setTags([...tags, newTag.trim()]);
+    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        tags: [...prev.tags, newTag.trim()]
+      }));
       setNewTag('');
     }
   };
 
   const handleRemoveTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
+    setFormData(prev => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
+    }));
   };
 
   const handleGoBack = () => {
     // 检查是否有未保存的更改
-    if (title.trim() || content.trim()) {
+    if (formData.title.trim() || formData.content.trim()) {
       const hasChanges = (id && article) ? 
-        (title !== article.title || content !== article.content || category !== article.category) :
-        (title.trim() !== '' || content.trim() !== '');
+        (formData.title !== article.title || formData.content !== article.content || formData.category !== article.category) :
+        (formData.title.trim() !== '' || formData.content.trim() !== '');
       
       if (hasChanges) {
         const confirmLeave = window.confirm('您有未保存的更改，确定要离开吗？');
@@ -409,8 +452,8 @@ const ArticleEditContent: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  value={formData.title}
+                  onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                   className="w-full px-4 py-3 rounded-lg text-white focus:outline-none"
                   style={{ 
                     backgroundColor: currentTheme.colors.background,
@@ -431,8 +474,8 @@ const ArticleEditContent: React.FC = () => {
                   分类
                 </label>
                 <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
+                  value={formData.category}
+                  onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
                   className="w-full px-4 py-3 rounded-lg text-white focus:outline-none"
                   style={{ 
                     backgroundColor: currentTheme.colors.background,
@@ -459,8 +502,8 @@ const ArticleEditContent: React.FC = () => {
                   状态
                 </label>
                 <select
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value as 'draft' | 'published')}
+                  value={formData.status}
+                  onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as 'draft' | 'published' }))}
                   className="w-full px-4 py-3 rounded-lg focus:outline-none"
                   style={{ 
                     backgroundColor: currentTheme.colors.background,
@@ -483,7 +526,7 @@ const ArticleEditContent: React.FC = () => {
                   标签
                 </label>
                 <div className="flex flex-wrap gap-2 mb-3">
-                  {tags.map((tag) => (
+                  {formData.tags.map((tag) => (
                     <span
                       key={tag}
                       className="inline-flex items-center gap-1 px-3 py-1 text-sm rounded-full"
@@ -566,15 +609,15 @@ const ArticleEditContent: React.FC = () => {
                     className="text-xl font-semibold mb-4"
                     style={{ color: currentTheme.colors.text }}
                   >
-                    {title || '无标题'}
+                    {formData.title || '无标题'}
                   </h2>
-                  <MarkdownRenderer content={content || '暂无内容'} />
+                  <MarkdownRenderer content={formData.content || '暂无内容'} />
                 </div>
               </div>
             ) : (
               <RichTextEditor
-                value={content}
-                onChange={setContent}
+                value={formData.content}
+                onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
                 placeholder="开始撰写您的文章内容..."
                 className="rounded-lg"
               />
@@ -658,7 +701,7 @@ const ArticleEditContent: React.FC = () => {
 
 const ArticleEdit: React.FC = () => {
   return (
-    <ProtectedRoute requiredRole="admin">
+    <ProtectedRoute requiredRole="user">
       <ArticleEditContent />
     </ProtectedRoute>
   );

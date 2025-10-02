@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllBoards, addBoard, updateBoard, deleteBoard } from '../data/communityManager';
+import { getAllBoards, addBoard, updateBoard, deleteBoard } from '../data/databaseBoardManager';
 import { ArrowLeft, Plus, Calendar } from 'lucide-react';
-import PermissionWrapper from '../components/PermissionWrapper';
 import { useTheme } from '../themes/ThemeContext';
 import {
   StyledManagementContainer,
@@ -54,10 +53,10 @@ const BoardManagement: React.FC = () => {
     loadBoards();
   }, []);
 
-  const loadBoards = () => {
+  const loadBoards = async () => {
     try {
       console.log('加载板块数据...');
-      const boardsList = getAllBoards();
+      const boardsList = await getAllBoards();
       console.log('加载的板块:', boardsList);
       setBoards(boardsList);
       setLoading(false);
@@ -67,10 +66,10 @@ const BoardManagement: React.FC = () => {
     }
   };
 
-  const handleAddBoard = () => {
+  const handleAddBoard = async () => {
     try {
       console.log('创建板块:', formData);
-      const newBoard = addBoard({
+      const newBoard = await addBoard({
         ...formData,
         order: 0,
         isActive: true
@@ -84,40 +83,44 @@ const BoardManagement: React.FC = () => {
     }
   };
 
-  const handleEditBoard = () => {
+  const handleEditBoard = async () => {
     if (!editingBoard) return;
     
     try {
       console.log('更新板块:', editingBoard.id, formData);
-      const updatedBoard = updateBoard(editingBoard.id, {
+      const updatedBoard = await updateBoard(editingBoard.id, {
         ...formData,
         order: editingBoard.order,
         isActive: editingBoard.isActive
       });
-      setBoards(boards.map(b => b.id === editingBoard.id ? updatedBoard : b));
-      setShowEditModal(false);
-      setEditingBoard(null);
-      setFormData({ name: '', description: '', icon: '🎮', color: 'from-blue-600 to-purple-600' });
-      
-      // 显示成功提示
-      showToast('板块更新成功！', 'success');
-      console.log('板块更新成功');
+      if (updatedBoard) {
+        setBoards(boards.map(b => b.id === editingBoard.id ? updatedBoard : b));
+        setShowEditModal(false);
+        setEditingBoard(null);
+        setFormData({ name: '', description: '', icon: '🎮', color: 'from-blue-600 to-purple-600' });
+        
+        // 显示成功提示
+        showToast('板块更新成功！', 'success');
+        console.log('板块更新成功');
+      }
     } catch (error) {
       console.error('更新板块失败:', error);
       showToast('板块更新失败，请重试', 'error');
     }
   };
 
-  const handleDeleteBoard = (boardId: string) => {
+  const handleDeleteBoard = async (boardId: string) => {
     try {
       console.log('删除板块:', boardId);
-      deleteBoard(boardId);
-      setBoards(boards.filter(b => b.id !== boardId));
-      setShowDeleteConfirm(null);
-      
-      // 显示成功提示
-      showToast('板块删除成功！', 'success');
-      console.log('板块删除成功');
+      const success = await deleteBoard(boardId);
+      if (success) {
+        setBoards(boards.filter(b => b.id !== boardId));
+        setShowDeleteConfirm(null);
+        
+        // 显示成功提示
+        showToast('板块删除成功！', 'success');
+        console.log('板块删除成功');
+      }
     } catch (error) {
       console.error('删除板块失败:', error);
       showToast('板块删除失败，请重试', 'error');
@@ -213,12 +216,10 @@ const BoardManagement: React.FC = () => {
             </StyledBackButton>
             <StyledPageTitle>板块管理</StyledPageTitle>
           </div>
-          <PermissionWrapper permission="manage_boards">
-            <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
-              <Plus size={16} />
-              创建板块
-            </StyledPrimaryButton>
-          </PermissionWrapper>
+          <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
+            <Plus size={16} />
+            创建板块
+          </StyledPrimaryButton>
         </StyledPageHeader>
 
         {/* 统计信息 */}
@@ -248,11 +249,9 @@ const BoardManagement: React.FC = () => {
           {boards.length === 0 ? (
             <StyledEmptyState>
               <StyledEmptyText>暂无板块数据</StyledEmptyText>
-              <PermissionWrapper permission="manage_boards">
-                <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
-                  创建第一个板块
-                </StyledPrimaryButton>
-              </PermissionWrapper>
+              <StyledPrimaryButton onClick={() => setShowAddModal(true)}>
+                创建第一个板块
+              </StyledPrimaryButton>
             </StyledEmptyState>
           ) : (
             <div className="space-y-4">

@@ -136,14 +136,17 @@ export class DatabaseArticleManager {
     try {
       const updatedData = {
         ...updates,
-        updatedAt: new Date().toISOString(),
+        // 移除 updatedAt，让后端处理 updated_at 字段
       };
       
       if (this.config.useDatabase) {
+        console.log('调用API更新文章:', id, updatedData);
         const result = await apiClient.articles.updateArticle(id, updatedData);
+        console.log('API更新结果:', result);
         if (result.success && result.data) {
           return result.data;
         } else {
+          console.error('API更新失败:', result.error);
           throw new Error(result.error || '更新文章失败');
         }
       }
@@ -180,7 +183,7 @@ export class DatabaseArticleManager {
     try {
       if (this.config.useDatabase) {
         const result = await apiClient.articles.deleteArticle(id);
-        return result.success && result.data;
+        return result.success;
       }
       
       if (this.config.fallbackToLocalStorage) {

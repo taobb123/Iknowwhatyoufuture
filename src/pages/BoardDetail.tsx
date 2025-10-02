@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getAllBoards, getAllTopics } from '../data/communityManager';
+import { getAllBoards } from '../data/databaseBoardManager';
+import { getAllTopics } from '../data/communityManager';
 import { getAllArticlesSortedByTime } from '../data/articleManager';
 import { ArrowLeft, Plus, MessageSquare, Calendar, User } from 'lucide-react';
 import { useTheme } from '../themes/ThemeContext';
@@ -20,12 +21,12 @@ const BoardDetail: React.FC = () => {
     }
   }, [id]);
 
-  const loadBoardData = (boardId: string) => {
+  const loadBoardData = async (boardId: string) => {
     try {
       console.log('加载板块数据:', boardId);
       
       // 加载板块信息
-      const boards = getAllBoards();
+      const boards = await getAllBoards();
       const currentBoard = boards.find(b => b.id === boardId);
       
       if (!currentBoard) {

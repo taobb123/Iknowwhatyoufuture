@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Send, Eye, Save, FileText, Tag, Calendar, User } from 'lucide-react';
-import { addArticle, Article } from '../data/articleManager';
+import { createArticle, type Article } from '../data/databaseArticleManager';
 import { useAuth } from '../contexts/AuthContext';
 import { getSimpleCurrentUser } from '../data/simpleRegistration';
 import { isGuestAnonymousPostAllowed } from '../data/systemConfig';
@@ -36,7 +36,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
   };
 
   // 处理发表
-  const handlePublish = () => {
+  const handlePublish = async () => {
     if (!title.trim() || !content.trim()) {
       // 显示验证错误提示
       const validationMessage = document.createElement('div');
@@ -105,7 +105,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       // 创建新文章
       const authorDisplayName = getUserDisplayName();
       const simpleUser = getSimpleCurrentUser();
-      const newArticle = addArticle({
+      const newArticle = await createArticle({
         title: title.trim(),
         content: content.trim(),
         author: authorDisplayName,
@@ -113,7 +113,10 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
         authorType: simpleUser ? 'regular' : (authState.user?.userType || 'guest'),
         category,
         tags,
-        status: 'published'
+        status: 'published',
+        likes: 0,
+        views: 0,
+        comments: 0
       });
       
       

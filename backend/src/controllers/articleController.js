@@ -215,8 +215,11 @@ class ArticleController {
       const updateFields = [];
       const updateValues = [];
       
+      // 定义允许更新的字段
+      const allowedFields = ['title', 'content', 'category', 'tags', 'status', 'author', 'authorId', 'authorType', 'boardId', 'topicId', 'likes', 'views', 'comments'];
+      
       Object.keys(updateData).forEach(key => {
-        if (updateData[key] !== undefined) {
+        if (updateData[key] !== undefined && allowedFields.includes(key)) {
           if (key === 'tags') {
             updateFields.push(`${key} = ?`);
             updateValues.push(JSON.stringify(updateData[key]));

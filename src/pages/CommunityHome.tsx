@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllBoards, getAllTopics, addBoard, addTopic } from '../data/communityManager';
+import { getAllBoards, addBoard } from '../data/databaseBoardManager';
+import { getAllTopics, addTopic } from '../data/communityManager';
 import { getAllArticlesSortedByTime } from '../data/articleManager';
 import { useTheme } from '../themes/ThemeContext';
 
@@ -15,12 +16,12 @@ const CommunityHome: React.FC = () => {
     loadData();
   }, []);
 
-  const loadData = () => {
+  const loadData = async () => {
     try {
       console.log('开始加载社区数据...');
       
-      // 使用 communityManager 的函数加载数据
-      const boardsList = getAllBoards();
+      // 使用 databaseBoardManager 的函数加载数据
+      const boardsList = await getAllBoards();
       const topicsList = getAllTopics();
       const articlesList = getAllArticlesSortedByTime().slice(0, 5);
       
@@ -48,23 +49,27 @@ const CommunityHome: React.FC = () => {
     }
   };
 
-  const createTestData = () => {
+  const createTestData = async () => {
     try {
       console.log('创建测试数据...');
       
-      // 使用 communityManager 的函数创建数据
-      const board1 = addBoard({
+      // 使用 databaseBoardManager 的函数创建数据
+      const board1 = await addBoard({
         name: '游戏攻略',
         description: '分享各种游戏的攻略和技巧',
         icon: '🎮',
-        color: 'from-blue-600 to-purple-600'
+        color: 'from-blue-600 to-purple-600',
+        order: 0,
+        isActive: true
       });
       
-      const board2 = addBoard({
+      const board2 = await addBoard({
         name: '技术讨论',
         description: '前端开发和技术交流',
         icon: '💻',
-        color: 'from-green-600 to-teal-600'
+        color: 'from-green-600 to-teal-600',
+        order: 0,
+        isActive: true
       });
       
       const topic1 = addTopic({
@@ -94,7 +99,7 @@ const CommunityHome: React.FC = () => {
       console.log('测试数据创建完成');
       
       // 重新加载数据
-      const boardsList = getAllBoards();
+      const boardsList = await getAllBoards();
       const topicsList = getAllTopics();
       const articlesList = getAllArticlesSortedByTime().slice(0, 5);
       

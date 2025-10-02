@@ -10,7 +10,7 @@ import {
 } from '../data/databaseArticleManager';
 import ProtectedRoute from '../components/ProtectedRoute';
 import MarkdownRenderer from '../components/MarkdownRenderer';
-import { Trash2, Eye, Calendar, User, Tag, Plus } from 'lucide-react';
+import { Trash2, Eye, Calendar, User, Tag, Plus, Edit } from 'lucide-react';
 import { useTheme } from '../themes/ThemeContext';
 
 const ArticleManagementContent: React.FC = () => {
@@ -62,6 +62,11 @@ const ArticleManagementContent: React.FC = () => {
   };
 
   const handleArticleClick = (articleId: string) => {
+    navigate(`/article-edit/${articleId}`);
+  };
+
+  const handleEditClick = (articleId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     navigate(`/article-edit/${articleId}`);
   };
 
@@ -282,6 +287,20 @@ const ArticleManagementContent: React.FC = () => {
                           {article.title}
                         </h3>
                         <div className="flex gap-2 self-end sm:self-auto">
+                          <button
+                            onClick={(e) => handleEditClick(article.id, e)}
+                            className="p-2 rounded-lg transition-colors"
+                            style={{ color: currentTheme.colors.primary }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = 'transparent';
+                            }}
+                            title="编辑文章"
+                          >
+                            <Edit size={16} />
+                          </button>
                           <button
                             onClick={(e) => handleDeleteClick(article.id, e)}
                             className="p-2 rounded-lg transition-colors"

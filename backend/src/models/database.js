@@ -36,7 +36,17 @@ async function query(sql, params = []) {
   try {
     console.log('执行SQL查询:', sql);
     console.log('查询参数:', params);
-    const [rows] = await pool.execute(sql, params);
+    
+    // 确保使用UTF8MB4字符集
+    const connection = await pool.getConnection();
+    await connection.execute('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
+    await connection.execute('SET character_set_client = utf8mb4');
+    await connection.execute('SET character_set_connection = utf8mb4');
+    await connection.execute('SET character_set_results = utf8mb4');
+    
+    const [rows] = await connection.execute(sql, params);
+    connection.release();
+    
     console.log('查询结果行数:', rows.length);
     return rows;
   } catch (error) {
