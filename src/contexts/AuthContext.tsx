@@ -9,9 +9,9 @@ import {
   isGuest,
   isRegularUser,
   getUserDisplayName,
-  migrateExistingUsers,
+  initializeDefaultAdmin,
   type User 
-} from '../data/userManager';
+} from '../data/databaseUserManager';
 import { getSimpleCurrentUser } from '../data/simpleRegistration';
 
 // 认证状态接口
@@ -36,9 +36,9 @@ type AuthAction =
 interface AuthContextType {
   state: AuthState;
   login: (username: string, password: string) => Promise<boolean>;
-  logout: () => void;
-  updateUser: (user: User) => void;
-  createGuest: () => User;
+  logout: () => Promise<void>;
+  updateUser: (user: User) => Promise<void>;
+  createGuest: () => Promise<User>;
   registerGuest: (username: string, password: string) => Promise<boolean>;
   isAdmin: () => boolean;
   isSuperAdmin: () => boolean;
@@ -127,17 +127,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // 初始化时检查是否有已登录的用户
   useEffect(() => {
-    const initAuth = () => {
+    const initAuth = async () => {
       try {
-        // 先进行数据迁移
-        migrateExistingUsers();
+        // 初始化默认管理员
+        await initializeDefaultAdmin();
         
-        const currentUser = getCurrentUser();
+        const currentUser = await getCurrentUser();
         if (currentUser) {
           dispatch({ type: 'LOGIN_SUCCESS', payload: currentUser });
         } else {
           // 如果没有用户，创建游客用户
-          const guestUser = createGuestUser();
+          const guestUser = await createGuestUser();
           dispatch({ type: 'CREATE_GUEST', payload: guestUser });
         }
       } catch (error) {
@@ -154,9 +154,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       dispatch({ type: 'LOGIN_START' });
       
-      const user = validateUser(username, password);
+      const user = await validateUser(username, password);
       if (user) {
-        setCurrentUser(user);
+        await setCurrentUser(user);
         dispatch({ type: 'LOGIN_SUCCESS', payload: user });
         return true;
       } else {
@@ -170,14 +170,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   // 登出函数
-  const logout = () => {
+  const logout = async () => {
     try {
-      logoutUser();
+      await logoutUser();
       dispatch({ type: 'LOGOUT' });
       
       // 退出登录后自动创建游客用户
-      setTimeout(() => {
-        const guestUser = createGuestUser();
+      setTimeout(async () => {
+        const guestUser = await createGuestUser();
         dispatch({ type: 'CREATE_GUEST', payload: guestUser });
       }, 100);
     } catch (error) {
@@ -186,9 +186,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   // 更新用户信息
-  const updateUser = (user: User) => {
+  const updateUser = async (user: User) => {
     try {
-      setCurrentUser(user);
+      await setCurrentUser(user);
       dispatch({ type: 'UPDATE_USER', payload: user });
     } catch (error) {
       // 更新用户失败
@@ -196,8 +196,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   // 创建游客用户
-  const createGuest = (): User => {
-    const guestUser = createGuestUser();
+  const createGuest = async (): Promise<User> => {
+    const guestUser = await createGuestUser();
     dispatch({ type: 'CREATE_GUEST', payload: guestUser });
     return guestUser;
   };
@@ -206,7 +206,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const registerGuest = async (username: string, password: string): Promise<boolean> => {
     try {
       console.log('AuthContext registerGuest 开始:', { username, password });
-      const regularUser = registerGuestAsRegular(username, password);
+      const regularUser = await registerGuestAsRegular(username, password);
       console.log('registerGuestAsRegular 成功:', regularUser);
       dispatch({ type: 'REGISTER_GUEST', payload: regularUser });
       console.log('dispatch 完成');

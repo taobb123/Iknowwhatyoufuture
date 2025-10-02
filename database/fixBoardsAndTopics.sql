@@ -128,3 +128,4 @@ SELECT t.id, t.name, t.description, t.board_id, b.name as board_name
 FROM topics t
 LEFT JOIN boards b ON t.board_id = b.id
 ORDER BY t.board_id, t.sort_order;
+

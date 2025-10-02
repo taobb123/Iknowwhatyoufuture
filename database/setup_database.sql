@@ -12,3 +12,4 @@ SELECT DATABASE() as current_database;
 
 -- 显示表列表（导入schema.sql后）
 SHOW TABLES;
+

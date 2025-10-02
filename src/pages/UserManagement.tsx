@@ -8,7 +8,7 @@ import {
   deleteUser, 
   getUserStats,
   type User 
-} from '../data/userManager';
+} from '../data/databaseUserManager';
 import { 
   getSystemConfig, 
   updateGuestAnonymousPostSetting,
@@ -62,10 +62,11 @@ const UserManagement: React.FC = () => {
     setSystemConfig(getSystemConfig());
   }, []);
 
-  const loadUsers = () => {
-    const allUsers = getAllUsersIncludingSimple();
+  const loadUsers = async () => {
+    const allUsers = await getAllUsersIncludingSimple();
     setUsers(allUsers);
-    setStats(getUserStats());
+    const stats = await getUserStats();
+    setStats(stats);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -94,10 +95,11 @@ const UserManagement: React.FC = () => {
         email: formData.email.trim(),
         password: formData.password,
         role: formData.role,
+        userType: formData.role === 'superAdmin' ? 'superAdmin' : formData.role === 'admin' ? 'admin' : 'regular',
         isActive: formData.isActive
       });
       
-      loadUsers();
+      await loadUsers();
       setShowAddModal(false);
       resetForm();
       showToast('用户添加成功！', 'success');
@@ -126,6 +128,7 @@ const UserManagement: React.FC = () => {
         username: formData.username.trim(),
         email: formData.email.trim(),
         role: formData.role,
+        userType: formData.role === 'superAdmin' ? 'superAdmin' : formData.role === 'admin' ? 'admin' : 'regular',
         isActive: formData.isActive
       };
 
@@ -136,7 +139,7 @@ const UserManagement: React.FC = () => {
 
       await updateUser(editingUser.id, updateData);
       
-      loadUsers();
+      await loadUsers();
       setShowEditModal(false);
       setEditingUser(null);
       resetForm();
@@ -153,7 +156,7 @@ const UserManagement: React.FC = () => {
 
     try {
       await deleteUser(showDeleteConfirm);
-      loadUsers();
+      await loadUsers();
       setShowDeleteConfirm(null);
       showToast('用户删除成功！', 'success');
     } catch (error: any) {
@@ -233,13 +236,26 @@ const UserManagement: React.FC = () => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('zh-CN', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    try {
+      if (!dateString) return '无日期';
+      
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        console.warn('Invalid date string:', dateString);
+        return '无效日期';
+      }
+      
+      return date.toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      console.error('Date formatting error:', error, 'for date:', dateString);
+      return '日期错误';
+    }
   };
 
   // 处理游客匿名发表设置变更

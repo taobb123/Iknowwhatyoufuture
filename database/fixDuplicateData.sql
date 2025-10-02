@@ -42,3 +42,4 @@ SELECT
   COUNT(DISTINCT username) as unique_usernames,
   COUNT(DISTINCT email) as unique_emails
 FROM users;
+

@@ -152,3 +152,4 @@ CREATE TABLE migration_logs (
 -- 显示创建结果
 SELECT 'Database and tables created successfully!' as message;
 SHOW TABLES;
+

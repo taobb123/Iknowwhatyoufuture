@@ -13,5 +13,15 @@ export default defineConfig({
   // 确保能正确解析 markdown 文件
   resolve: {
     extensions: ['.md', '.ts', '.tsx', '.js']
+  },
+  // 添加代理配置，将 /api 请求代理到后端服务器
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 });

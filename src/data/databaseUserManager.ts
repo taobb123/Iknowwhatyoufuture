@@ -66,21 +66,33 @@ export class DatabaseUserManager {
   }
   
   /**
-   * 获取所有用户（包括简单注册系统的用户）
+   * 获取所有用户（数据库优先策略）
+   * 新策略：完全以数据库为唯一数据源，不再混合localStorage数据
    */
   async getAllUsersIncludingSimple(): Promise<User[]> {
     try {
-      const users = await this.getAllUsers();
+      // 策略1：优先使用数据库数据
+      if (this.config.useDatabase) {
+        const result = await apiClient.users.getAllUsers();
+        if (result.success && result.data) {
+          console.log('✅ 使用数据库数据源，用户数量:', result.data.length);
+          return result.data;
+        }
+      }
       
+      // 策略2：数据库不可用时，回退到localStorage（仅用于紧急情况）
       if (this.config.fallbackToLocalStorage) {
-        // 获取简单注册系统的用户
+        console.warn('⚠️ 数据库不可用，回退到localStorage');
+        
+        // 获取所有localStorage中的用户数据
+        const gamehubUsers = JSON.parse(localStorage.getItem('gamehub_users') || '[]');
         const simpleUsers = JSON.parse(localStorage.getItem('simple_users') || '[]');
         
-        // 将SimpleUser转换为User格式
+        // 转换simple_users格式
         const convertedSimpleUsers: User[] = simpleUsers.map((simpleUser: any) => ({
           id: simpleUser.id,
           username: simpleUser.username,
-          email: '', // SimpleUser没有email字段
+          email: '',
           password: simpleUser.password,
           role: simpleUser.userType === 'admin' ? 'admin' : 'user',
           userType: simpleUser.userType,
@@ -92,16 +104,22 @@ export class DatabaseUserManager {
           guestId: undefined
         }));
         
-        // 合并两个系统的用户，排除超级管理员
-        const allUsers = [...users, ...convertedSimpleUsers].filter(user => 
-          user.role !== 'superAdmin'
-        );
+        // 合并并去重（按用户名）
+        const allUsers = [...gamehubUsers, ...convertedSimpleUsers];
+        const uniqueUsers = allUsers.reduce((acc, current) => {
+          const existingUser = acc.find(user => user.username === current.username);
+          if (!existingUser) {
+            acc.push(current);
+          }
+          return acc;
+        }, [] as User[]);
         
-        // 按创建时间排序
-        return allUsers.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        console.log('⚠️ 使用localStorage数据源，用户数量:', uniqueUsers.length);
+        return uniqueUsers.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       }
       
-      return users;
+      console.log('❌ 无可用数据源');
+      return [];
     } catch (error) {
       console.error('获取所有用户失败:', error);
       return [];
@@ -688,5 +706,6 @@ export const isGuest = (user: User | null) => databaseUserManager.isGuest(user);
 export const isRegularUser = (user: User | null) => databaseUserManager.isRegularUser(user);
 export const getUserDisplayName = (user: User | null) => databaseUserManager.getUserDisplayName(user);
 export const getUserStats = () => databaseUserManager.getUserStats();
+
 
 

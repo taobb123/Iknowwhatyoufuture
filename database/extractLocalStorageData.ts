@@ -131,3 +131,4 @@ if (typeof window !== 'undefined') {
   console.log('2. 运行: generateTestDataCode(extractedData)');
   console.log('3. 复制生成的代码到 testData.ts 文件中');
 }
+

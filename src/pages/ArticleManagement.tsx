@@ -7,7 +7,7 @@ import {
   deleteArticle,
   initializeSampleArticles,
   type Article 
-} from '../data/articleManager';
+} from '../data/databaseArticleManager';
 import ProtectedRoute from '../components/ProtectedRoute';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import { Trash2, Eye, Calendar, User, Tag, Plus } from 'lucide-react';
@@ -23,26 +23,30 @@ const ArticleManagementContent: React.FC = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   // 加载数据
   useEffect(() => {
-    // 确保示例数据已初始化
-    initializeSampleArticles();
-    // 延迟一点时间确保数据已经保存
-    setTimeout(() => {
-      loadCategories();
-      loadArticles();
-    }, 100);
+    const loadData = async () => {
+      // 确保示例数据已初始化
+      await initializeSampleArticles();
+      // 延迟一点时间确保数据已经保存
+      setTimeout(async () => {
+        await loadCategories();
+        await loadArticles();
+      }, 100);
+    };
+    
+    loadData();
   }, [selectedTopic, selectedFilter]);
 
-  const loadCategories = () => {
-    const cats = getAllCategories();
+  const loadCategories = async () => {
+    const cats = await getAllCategories();
     setCategories(['全部', ...cats]);
   };
 
-  const loadArticles = () => {
+  const loadArticles = async () => {
     let articlesData: Article[];
     if (selectedFilter === 'topic') {
-      articlesData = getArticlesByTopic(selectedTopic);
+      articlesData = await getArticlesByTopic(selectedTopic);
     } else {
-      articlesData = getAllArticlesSortedByTime();
+      articlesData = await getAllArticlesSortedByTime();
     }
     setArticles(articlesData);
   };
@@ -66,11 +70,11 @@ const ArticleManagementContent: React.FC = () => {
     setShowDeleteConfirm(articleId);
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (showDeleteConfirm) {
-      const success = deleteArticle(showDeleteConfirm);
+      const success = await deleteArticle(showDeleteConfirm);
       if (success) {
-        loadArticles();
+        await loadArticles();
         showToast('文章删除成功！', 'success');
       } else {
         showToast('删除失败，请重试！', 'error');

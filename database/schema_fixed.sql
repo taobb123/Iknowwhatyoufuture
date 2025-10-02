@@ -170,3 +170,4 @@ INSERT INTO system_config (config_key, config_value, config_type, description, u
 -- 显示创建结果
 SELECT 'Database and tables created successfully!' as message;
 SHOW TABLES;
+

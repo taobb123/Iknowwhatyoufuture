@@ -19,3 +19,4 @@ VALUES ('test3', 'very_long_username_that_might_cause_problems_if_not_properly_h
 
 -- 查看插入结果
 SELECT id, username, CHAR_LENGTH(username) as char_length, LENGTH(username) as byte_length FROM users;
+
