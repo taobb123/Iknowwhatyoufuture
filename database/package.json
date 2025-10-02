@@ -1,0 +1,54 @@
+{
+  "name": "gamehub-database-migration",
+  "version": "1.0.0",
+  "description": "游戏中心数据库迁移工具 - 从localStorage迁移到MySQL",
+  "main": "migrate.ts",
+  "scripts": {
+    "migrate": "ts-node simpleMigrate.ts",
+    "migrate:all": "ts-node simpleMigrate.ts migrate",
+    "migrate:users": "ts-node simpleMigrate.ts migrate users",
+    "migrate:boards": "ts-node simpleMigrate.ts migrate boards",
+    "migrate:topics": "ts-node simpleMigrate.ts migrate topics",
+    "migrate:articles": "ts-node simpleMigrate.ts migrate articles",
+    "migrate:config": "ts-node simpleMigrate.ts migrate system_config",
+    "rollback": "ts-node simpleMigrate.ts rollback",
+    "rollback:users": "ts-node simpleMigrate.ts rollback users",
+    "rollback:boards": "ts-node simpleMigrate.ts rollback boards",
+    "rollback:topics": "ts-node simpleMigrate.ts rollback topics",
+    "rollback:articles": "ts-node simpleMigrate.ts rollback articles",
+    "rollback:config": "ts-node simpleMigrate.ts rollback system_config",
+    "status": "ts-node simpleMigrate.ts status",
+    "health": "ts-node simpleMigrate.ts health",
+    "help": "ts-node simpleMigrate.ts help",
+    "test": "ts-node runTest.ts",
+    "test:migration": "ts-node testMigration.ts",
+    "test:safety": "ts-node safetyTest.ts",
+    "migrate:real:users": "ts-node realMigrate.ts users",
+    "migrate:real:boards": "ts-node realMigrate.ts boards",
+    "migrate:real:topics": "ts-node realMigrate.ts topics",
+    "migrate:real:articles": "ts-node realMigrate.ts articles",
+    "migrate:real:system_config": "ts-node realMigrate.ts system_config",
+    "build": "tsc",
+    "dev": "ts-node --watch simpleMigrate.ts"
+  },
+  "keywords": [
+    "database",
+    "migration",
+    "mysql",
+    "localStorage",
+    "gamehub"
+  ],
+  "author": "GameHub Team",
+  "license": "MIT",
+  "dependencies": {
+    "mysql2": "^3.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

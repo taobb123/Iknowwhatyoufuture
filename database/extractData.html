@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>localStorage数据提取工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .data-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 localStorage数据提取工具</h1>
+            <p>用于提取游戏中心的localStorage数据，生成迁移用的测试数据</p>
+        </div>
+
+        <div class="section">
+            <h3>📊 数据概览</h3>
+            <div id="dataOverview">
+                <div class="data-info">
+                    <strong>用户数据:</strong> <span id="usersCount">检查中...</span>
+                </div>
+                <div class="data-info">
+                    <strong>简单用户数据:</strong> <span id="simpleUsersCount">检查中...</span>
+                </div>
+                <div class="data-info">
+                    <strong>板块数据:</strong> <span id="boardsCount">检查中...</span>
+                </div>
+                <div class="data-info">
+                    <strong>主题数据:</strong> <span id="topicsCount">检查中...</span>
+                </div>
+                <div class="data-info">
+                    <strong>文章数据:</strong> <span id="articlesCount">检查中...</span>
+                </div>
+                <div class="data-info">
+                    <strong>系统配置:</strong> <span id="configCount">检查中...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🚀 操作</h3>
+            <button class="btn" onclick="refreshDataOverview()">🔄 刷新数据概览</button>
+            <button class="btn btn-success" onclick="extractAllData()">📤 提取所有数据</button>
+            <button class="btn" onclick="generateCode()">📝 生成代码</button>
+            <button class="btn" onclick="copyToClipboard()">📋 复制代码</button>
+        </div>
+
+        <div class="section">
+            <h3>📝 生成的testData.ts代码</h3>
+            <div id="status"></div>
+            <div id="generatedCode" class="code-block" style="display: none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>📋 使用说明</h3>
+            <ol>
+                <li>确保您的浏览器中有游戏中心的localStorage数据</li>
+                <li>点击"刷新数据概览"查看数据统计</li>
+                <li>点击"提取所有数据"获取完整数据</li>
+                <li>点击"生成代码"生成testData.ts文件内容</li>
+                <li>点击"复制代码"复制到剪贴板</li>
+                <li>将复制的代码替换database/testData.ts文件中的内容</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        let extractedData = null;
+
+        // 检查localStorage中的数据
+        function checkLocalStorageData() {
+            const keys = [
+                'gamehub_users',
+                'simple_users', 
+                'gamehub_boards',
+                'gamehub_topics',
+                'gamehub_articles',
+                'system_config'
+            ];
+
+            const counts = {};
+            keys.forEach(key => {
+                try {
+                    const data = localStorage.getItem(key);
+                    if (data) {
+                        const parsed = JSON.parse(data);
+                        counts[key] = Array.isArray(parsed) ? parsed.length : 1;
+                    } else {
+                        counts[key] = 0;
+                    }
+                } catch (error) {
+                    counts[key] = 0;
+                }
+            });
+
+            return counts;
+        }
+
+        // 刷新数据概览
+        function refreshDataOverview() {
+            const counts = checkLocalStorageData();
+            
+            document.getElementById('usersCount').textContent = `${counts.gamehub_users} 个`;
+            document.getElementById('simpleUsersCount').textContent = `${counts.simple_users} 个`;
+            document.getElementById('boardsCount').textContent = `${counts.gamehub_boards} 个`;
+            document.getElementById('topicsCount').textContent = `${counts.gamehub_topics} 个`;
+            document.getElementById('articlesCount').textContent = `${counts.gamehub_articles} 个`;
+            document.getElementById('configCount').textContent = counts.system_config > 0 ? '已配置' : '未配置';
+
+            showStatus('数据概览已刷新', 'success');
+        }
+
+        // 提取所有数据
+        function extractAllData() {
+            try {
+                extractedData = {
+                    gamehub_users: JSON.parse(localStorage.getItem('gamehub_users') || '[]'),
+                    simple_users: JSON.parse(localStorage.getItem('simple_users') || '[]'),
+                    gamehub_boards: JSON.parse(localStorage.getItem('gamehub_boards') || '[]'),
+                    gamehub_topics: JSON.parse(localStorage.getItem('gamehub_topics') || '[]'),
+                    gamehub_articles: JSON.parse(localStorage.getItem('gamehub_articles') || '[]'),
+                    system_config: localStorage.getItem('system_config') ? [JSON.parse(localStorage.getItem('system_config'))] : []
+                };
+
+                const totalItems = Object.values(extractedData).reduce((sum, arr) => sum + arr.length, 0);
+                showStatus(`✅ 成功提取 ${totalItems} 条数据记录`, 'success');
+                
+                // 自动刷新概览
+                refreshDataOverview();
+            } catch (error) {
+                showStatus(`❌ 提取数据失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 生成代码
+        function generateCode() {
+            if (!extractedData) {
+                showStatus('⚠️ 请先提取数据', 'warning');
+                return;
+            }
+
+            const code = `// 实际localStorage数据 - 自动生成
+// 生成时间: ${new Date().toISOString()}
+
+export const testData = {
+  // 用户数据 (${extractedData.gamehub_users.length} 个)
+  gamehub_users: ${JSON.stringify(extractedData.gamehub_users, null, 2)},
+  
+  // 简单用户数据 (${extractedData.simple_users.length} 个)
+  simple_users: ${JSON.stringify(extractedData.simple_users, null, 2)},
+  
+  // 板块数据 (${extractedData.gamehub_boards.length} 个)
+  gamehub_boards: ${JSON.stringify(extractedData.gamehub_boards, null, 2)},
+  
+  // 主题数据 (${extractedData.gamehub_topics.length} 个)
+  gamehub_topics: ${JSON.stringify(extractedData.gamehub_topics, null, 2)},
+  
+  // 文章数据 (${extractedData.gamehub_articles.length} 个)
+  gamehub_articles: ${JSON.stringify(extractedData.gamehub_articles, null, 2)},
+  
+  // 系统配置数据 (${extractedData.system_config.length} 个)
+  system_config: ${JSON.stringify(extractedData.system_config, null, 2)}
+};`;
+
+            document.getElementById('generatedCode').textContent = code;
+            document.getElementById('generatedCode').style.display = 'block';
+            showStatus('✅ 代码已生成', 'success');
+        }
+
+        // 复制到剪贴板
+        function copyToClipboard() {
+            const codeElement = document.getElementById('generatedCode');
+            if (!codeElement.textContent) {
+                showStatus('⚠️ 请先生成代码', 'warning');
+                return;
+            }
+
+            navigator.clipboard.writeText(codeElement.textContent).then(() => {
+                showStatus('✅ 代码已复制到剪贴板', 'success');
+            }).catch(err => {
+                showStatus(`❌ 复制失败: ${err.message}`, 'error');
+            });
+        }
+
+        // 显示状态信息
+        function showStatus(message, type) {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = message;
+            statusElement.className = `status ${type}`;
+            
+            // 3秒后清除状态
+            setTimeout(() => {
+                statusElement.textContent = '';
+                statusElement.className = 'status';
+            }, 3000);
+        }
+
+        // 页面加载时自动刷新数据概览
+        window.onload = function() {
+            refreshDataOverview();
+        };
+    </script>
+</body>
+</html>
