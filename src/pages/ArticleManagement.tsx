@@ -17,9 +17,12 @@ const ArticleManagementContent: React.FC = () => {
   const navigate = useNavigate();
   const { currentTheme } = useTheme();
   const [articles, setArticles] = useState<Article[]>([]);
+  const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<string>('全部');
   const [selectedFilter, setSelectedFilter] = useState<'topic' | 'all'>('topic');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [sortBy, setSortBy] = useState<string>('最新');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   // 加载数据
   useEffect(() => {
@@ -36,6 +39,43 @@ const ArticleManagementContent: React.FC = () => {
     loadData();
   }, [selectedTopic, selectedFilter]);
 
+  // 筛选和搜索逻辑
+  useEffect(() => {
+    let filtered = articles;
+
+    // 按分类筛选
+    if (selectedFilter === 'topic' && selectedTopic !== '全部') {
+      filtered = filtered.filter(article => article.category === selectedTopic);
+    }
+
+    // 按搜索关键词筛选
+    if (searchQuery.trim()) {
+      filtered = filtered.filter(article => 
+        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        article.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+
+    // 排序
+    switch (sortBy) {
+      case '最新':
+        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        break;
+      case '热门':
+        filtered.sort((a, b) => b.likes - a.likes);
+        break;
+      case '最多浏览':
+        filtered.sort((a, b) => b.views - a.views);
+        break;
+      case '最多评论':
+        filtered.sort((a, b) => b.comments - a.comments);
+        break;
+    }
+
+    setFilteredArticles(filtered);
+  }, [articles, selectedTopic, selectedFilter, searchQuery, sortBy]);
+
   const loadCategories = async () => {
     const cats = await getAllCategories();
     setCategories(['全部', ...cats]);
@@ -43,10 +83,12 @@ const ArticleManagementContent: React.FC = () => {
 
   const loadArticles = async () => {
     let articlesData: Article[];
-    if (selectedFilter === 'topic') {
+    if (selectedFilter === 'topic' && selectedTopic !== '全部') {
       articlesData = await getArticlesByTopic(selectedTopic);
     } else {
+      // 获取所有文章，然后在前端过滤已发布的文章
       articlesData = await getAllArticlesSortedByTime();
+      articlesData = articlesData.filter(article => article.status === 'published');
     }
     setArticles(articlesData);
   };
@@ -58,7 +100,7 @@ const ArticleManagementContent: React.FC = () => {
 
   const handleAllArticlesClick = () => {
     setSelectedFilter('all');
-    setSelectedTopic('全部');
+    setSelectedTopic(''); // 清空选中的主题，确保互斥
   };
 
   const handleArticleClick = (articleId: string) => {
@@ -160,6 +202,53 @@ const ArticleManagementContent: React.FC = () => {
           </button>
         </div>
 
+        {/* 搜索和排序区域 */}
+        <div className="mb-6">
+          <div 
+            className="rounded-lg p-6"
+            style={{ backgroundColor: currentTheme.colors.surface }}
+          >
+            <div className="flex flex-col lg:flex-row gap-4">
+              {/* 搜索框 */}
+              <div className="flex-1">
+                <input
+                  type="text"
+                  placeholder="搜索文章标题、内容或标签..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg focus:outline-none"
+                  style={{
+                    backgroundColor: currentTheme.colors.background,
+                    borderColor: currentTheme.colors.border,
+                    border: '1px solid',
+                    color: currentTheme.colors.text
+                  }}
+                />
+              </div>
+              
+              {/* 排序选择 */}
+              <div className="lg:w-48">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg focus:outline-none"
+                  style={{
+                    backgroundColor: currentTheme.colors.background,
+                    borderColor: currentTheme.colors.border,
+                    border: '1px solid',
+                    color: currentTheme.colors.text
+                  }}
+                >
+                  <option value="最新">最新</option>
+                  <option value="热门">热门</option>
+                  <option value="最多浏览">最多浏览</option>
+                  <option value="最多评论">最多评论</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-8">
           {/* 左侧分类区域 */}
           <div className="w-full lg:w-80 flex-shrink-0">
@@ -182,18 +271,18 @@ const ArticleManagementContent: React.FC = () => {
                       onClick={() => handleTopicChange(category)}
                       className="w-full text-left px-4 py-2 rounded-lg transition-colors"
                       style={{
-                        backgroundColor: selectedFilter === 'topic' && selectedTopic === category
+                        backgroundColor: selectedTopic === category
                           ? currentTheme.colors.primary
                           : currentTheme.colors.surface,
                         color: currentTheme.colors.text
                       }}
                       onMouseEnter={(e) => {
-                        if (!(selectedFilter === 'topic' && selectedTopic === category)) {
+                        if (!(selectedTopic === category)) {
                           e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
                         }
                       }}
                       onMouseLeave={(e) => {
-                        if (!(selectedFilter === 'topic' && selectedTopic === category)) {
+                        if (!(selectedTopic === category)) {
                           e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
                         }
                       }}
@@ -251,19 +340,19 @@ const ArticleManagementContent: React.FC = () => {
                 className="text-xl font-semibold mb-6"
                 style={{ color: currentTheme.colors.text }}
               >
-                {selectedFilter === 'topic' ? `主题分类：${selectedTopic}` : '所有文章（按时间排列）'}
+                {selectedTopic === '全部' ? '全部文章' : `分类：${selectedTopic}`}
               </h2>
               
-              {articles.length === 0 ? (
+              {filteredArticles.length === 0 ? (
                 <div 
                   className="text-center py-12"
                   style={{ color: currentTheme.colors.textSecondary }}
                 >
-                  <p>暂无文章</p>
+                  <p>{searchQuery.trim() ? '没有找到匹配的文章' : '暂无文章'}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {articles.map((article) => (
+                  {filteredArticles.map((article) => (
                     <div
                       key={article.id}
                       onClick={() => handleArticleClick(article.id)}

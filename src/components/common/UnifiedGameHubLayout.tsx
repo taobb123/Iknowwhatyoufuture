@@ -55,7 +55,7 @@ interface UnifiedGameHubLayoutProps {
 
 // 分类配置
 const categoryConfig = [
-  { id: '全部', name: '全部攻略', icon: Grid, color: 'from-blue-600 to-purple-600', hoverColor: 'hover:from-blue-600/50' },
+  { id: '全部', name: '全部', icon: Grid, color: 'from-blue-600 to-purple-600', hoverColor: 'hover:from-blue-600/50' },
   { id: '前端开发', name: '前端开发', icon: Code, color: 'from-green-600 to-teal-600', hoverColor: 'hover:from-green-600/50' },
   { id: '后端开发', name: '后端开发', icon: Server, color: 'from-orange-600 to-red-600', hoverColor: 'hover:from-orange-600/50' },
   { id: '游戏设计', name: '游戏设计', icon: Palette, color: 'from-purple-600 to-pink-600', hoverColor: 'hover:from-purple-600/50' },

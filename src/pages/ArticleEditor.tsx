@@ -43,8 +43,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       validationMessage.innerHTML = `
         <div style="
           position: fixed;
-          top: 20px;
-          right: 20px;
+          top: 100px;
+          right: 200px;
           background: #F59E0B;
           color: white;
           padding: 16px 24px;
@@ -77,8 +77,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       permissionMessage.innerHTML = `
         <div style="
           position: fixed;
-          top: 20px;
-          right: 20px;
+          top: 100px;
+          right: 200px;
           background: #EF4444;
           color: white;
           padding: 16px 24px;
@@ -125,8 +125,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       successMessage.innerHTML = `
         <div style="
           position: fixed;
-          top: 20px;
-          right: 20px;
+          top: 100px;
+          right: 200px;
           background: #10B981;
           color: white;
           padding: 16px 24px;
@@ -163,8 +163,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       errorMessage.innerHTML = `
         <div style="
           position: fixed;
-          top: 20px;
-          right: 20px;
+          top: 100px;
+          right: 200px;
           background: #EF4444;
           color: white;
           padding: 16px 24px;
@@ -195,8 +195,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       validationMessage.innerHTML = `
         <div style="
           position: fixed;
-          top: 20px;
-          right: 20px;
+          top: 100px;
+          right: 200px;
           background: #F59E0B;
           color: white;
           padding: 16px 24px;
@@ -238,8 +238,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       draftMessage.innerHTML = `
         <div style="
           position: fixed;
-          top: 20px;
-          right: 20px;
+          top: 100px;
+          right: 200px;
           background: #3B82F6;
           color: white;
           padding: 16px 24px;
@@ -266,8 +266,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
       errorMessage.innerHTML = `
         <div style="
           position: fixed;
-          top: 20px;
-          right: 20px;
+          top: 100px;
+          right: 200px;
           background: #EF4444;
           color: white;
           padding: 16px 24px;
