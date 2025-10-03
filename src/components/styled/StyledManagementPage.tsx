@@ -577,9 +577,10 @@ export const StyledModal: React.FC<StyledModalProps> = ({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 1000,
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
-    padding: '1rem',
+    padding: '2rem 1rem',
+    overflowY: 'auto',
   };
 
   const modalStyles: React.CSSProperties = {
@@ -588,10 +589,13 @@ export const StyledModal: React.FC<StyledModalProps> = ({
     border: '1px solid',
     boxShadow: currentTheme.shadows.xl,
     maxWidth: '90vw',
-    maxHeight: '90vh',
     width: '100%',
+    minHeight: 'auto',
+    maxHeight: 'calc(100vh - 4rem)',
     display: hasFixedFooter ? 'flex' : 'block',
     flexDirection: hasFixedFooter ? 'column' : 'row',
+    marginTop: 'auto',
+    marginBottom: 'auto',
   };
 
   return (
@@ -764,6 +768,26 @@ export const StyledFormSelect: React.FC<StyledFormSelectProps> = ({
     >
       {children}
     </select>
+  );
+};
+
+// 模态框内容区域样式
+interface StyledModalContentProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const StyledModalContent: React.FC<StyledModalContentProps> = ({ 
+  children, 
+  className = '' 
+}) => {
+  return (
+    <div 
+      className={`flex-1 overflow-y-auto p-6 ${className}`}
+      style={{ maxHeight: 'calc(100vh - 12rem)' }}
+    >
+      {children}
+    </div>
   );
 };
 

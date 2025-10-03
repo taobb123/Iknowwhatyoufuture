@@ -25,11 +25,13 @@ import {
   StyledStatusTag,
   StyledModal,
   StyledModalTitle,
+  StyledModalContent,
   StyledFormLabel,
   StyledFormInput,
   StyledFormTextarea,
   StyledFormSelect,
   StyledModalButtonGroup,
+  StyledModalFixedFooter,
   StyledEmptyState,
   StyledEmptyText
 } from '../components/styled/StyledManagementPage';
@@ -357,371 +359,165 @@ const TopicManagement: React.FC = () => {
 
         {/* 添加主题模态框 */}
         {showAddModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <StyledModal>
+          <StyledModal hasFixedFooter={true}>
+            <StyledModalContent>
               <StyledModalTitle>创建主题</StyledModalTitle>
               <div className="space-y-4">
                 <div>
-                  <label 
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: currentTheme.colors.textSecondary }}
-                  >
-                    所属板块
-                  </label>
-                  <select
+                  <StyledFormLabel>所属板块</StyledFormLabel>
+                  <StyledFormSelect
                     value={selectedBoard}
                     onChange={(e) => setSelectedBoard(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
-                    style={{ 
-                      backgroundColor: currentTheme.colors.background,
-                      borderColor: currentTheme.colors.border,
-                      border: '1px solid',
-                      color: currentTheme.colors.text
-                    }}
                   >
                     <option value="">选择板块</option>
                     {boards.map(board => (
                       <option key={board.id} value={board.id}>{board.name}</option>
                     ))}
-                  </select>
+                  </StyledFormSelect>
                 </div>
                 <div>
-                  <label 
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: currentTheme.colors.textSecondary }}
-                  >
-                    主题名称
-                  </label>
-                  <input
+                  <StyledFormLabel>主题名称</StyledFormLabel>
+                  <StyledFormInput
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
-                    style={{ 
-                      backgroundColor: currentTheme.colors.background,
-                      borderColor: currentTheme.colors.border,
-                      border: '1px solid',
-                      color: currentTheme.colors.text
-                    }}
                     placeholder="输入主题名称"
                   />
                 </div>
                 <div>
-                  <label 
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: currentTheme.colors.textSecondary }}
-                  >
-                    主题描述
-                  </label>
-                  <textarea
+                  <StyledFormLabel>主题描述</StyledFormLabel>
+                  <StyledFormTextarea
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
-                    style={{ 
-                      backgroundColor: currentTheme.colors.background,
-                      borderColor: currentTheme.colors.border,
-                      border: '1px solid',
-                      color: currentTheme.colors.text
-                    }}
                     rows={3}
                     placeholder="输入主题描述"
                   />
                 </div>
                 <div>
-                  <label 
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: currentTheme.colors.textSecondary }}
-                  >
-                    图标
-                  </label>
-                  <input
+                  <StyledFormLabel>图标</StyledFormLabel>
+                  <StyledFormInput
                     type="text"
                     value={formData.icon}
                     onChange={(e) => setFormData({...formData, icon: e.target.value})}
-                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
-                    style={{ 
-                      backgroundColor: currentTheme.colors.background,
-                      borderColor: currentTheme.colors.border,
-                      border: '1px solid',
-                      color: currentTheme.colors.text
-                    }}
                     placeholder="选择图标"
                   />
                 </div>
                 <div>
-                  <label 
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: currentTheme.colors.textSecondary }}
-                  >
-                    颜色
-                  </label>
-                  <select
+                  <StyledFormLabel>颜色</StyledFormLabel>
+                  <StyledFormSelect
                     value={formData.color}
                     onChange={(e) => setFormData({...formData, color: e.target.value})}
-                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
-                    style={{ 
-                      backgroundColor: currentTheme.colors.background,
-                      borderColor: currentTheme.colors.border,
-                      border: '1px solid',
-                      color: currentTheme.colors.text
-                    }}
                   >
                     <option value="from-yellow-500 to-orange-500">黄色到橙色</option>
                     <option value="from-purple-500 to-pink-500">紫色到粉色</option>
                     <option value="from-indigo-500 to-blue-500">靛蓝到蓝色</option>
                     <option value="from-green-500 to-teal-500">绿色到青色</option>
-                  </select>
+                  </StyledFormSelect>
                 </div>
               </div>
-              <div className="flex justify-end gap-2 mt-6">
-                <button
-                  onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-lg transition-colors"
-                  style={{ 
-                    backgroundColor: currentTheme.colors.secondary,
-                    color: currentTheme.colors.text
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.secondary;
-                  }}
-                >
-                  取消
-                </button>
-                <button
-                  onClick={handleAddTopic}
-                  className="px-4 py-2 rounded-lg transition-colors"
-                  style={{ 
-                    backgroundColor: currentTheme.colors.primary,
-                    color: currentTheme.colors.text
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
-                  }}
-                >
-                  创建
-                </button>
-              </div>
-            </StyledModal>
-          </div>
+            </StyledModalContent>
+            <StyledModalFixedFooter>
+              <StyledSecondaryButton onClick={() => setShowAddModal(false)}>
+                取消
+              </StyledSecondaryButton>
+              <StyledPrimaryButton onClick={handleAddTopic}>
+                创建
+              </StyledPrimaryButton>
+            </StyledModalFixedFooter>
+          </StyledModal>
         )}
 
         {/* 编辑主题模态框 */}
         {showEditModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <StyledModal>
+          <StyledModal hasFixedFooter={true}>
+            <StyledModalContent>
               <StyledModalTitle>编辑主题</StyledModalTitle>
               <div className="space-y-4">
                 <div>
-                  <label 
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: currentTheme.colors.textSecondary }}
-                  >
-                    所属板块
-                  </label>
-                  <select
+                  <StyledFormLabel>所属板块</StyledFormLabel>
+                  <StyledFormSelect
                     value={selectedBoard}
                     onChange={(e) => setSelectedBoard(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
-                    style={{ 
-                      backgroundColor: currentTheme.colors.background,
-                      borderColor: currentTheme.colors.border,
-                      border: '1px solid',
-                      color: currentTheme.colors.text
-                    }}
                   >
                     <option value="">选择板块</option>
                     {boards.map(board => (
                       <option key={board.id} value={board.id}>{board.name}</option>
                     ))}
-                  </select>
+                  </StyledFormSelect>
                 </div>
                 <div>
-                  <label 
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: currentTheme.colors.textSecondary }}
-                  >
-                    主题名称
-                  </label>
-                  <input
+                  <StyledFormLabel>主题名称</StyledFormLabel>
+                  <StyledFormInput
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
-                    style={{ 
-                      backgroundColor: currentTheme.colors.background,
-                      borderColor: currentTheme.colors.border,
-                      border: '1px solid',
-                      color: currentTheme.colors.text
-                    }}
                     placeholder="输入主题名称"
                   />
                 </div>
                 <div>
-                  <label 
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: currentTheme.colors.textSecondary }}
-                  >
-                    主题描述
-                  </label>
-                  <textarea
+                  <StyledFormLabel>主题描述</StyledFormLabel>
+                  <StyledFormTextarea
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
-                    style={{ 
-                      backgroundColor: currentTheme.colors.background,
-                      borderColor: currentTheme.colors.border,
-                      border: '1px solid',
-                      color: currentTheme.colors.text
-                    }}
                     rows={3}
                     placeholder="输入主题描述"
                   />
                 </div>
                 <div>
-                  <label 
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: currentTheme.colors.textSecondary }}
-                  >
-                    图标
-                  </label>
-                  <input
+                  <StyledFormLabel>图标</StyledFormLabel>
+                  <StyledFormInput
                     type="text"
                     value={formData.icon}
                     onChange={(e) => setFormData({...formData, icon: e.target.value})}
-                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
-                    style={{ 
-                      backgroundColor: currentTheme.colors.background,
-                      borderColor: currentTheme.colors.border,
-                      border: '1px solid',
-                      color: currentTheme.colors.text
-                    }}
                     placeholder="选择图标"
                   />
                 </div>
                 <div>
-                  <label 
-                    className="block text-sm font-medium mb-2"
-                    style={{ color: currentTheme.colors.textSecondary }}
-                  >
-                    颜色
-                  </label>
-                  <select
+                  <StyledFormLabel>颜色</StyledFormLabel>
+                  <StyledFormSelect
                     value={formData.color}
                     onChange={(e) => setFormData({...formData, color: e.target.value})}
-                    className="w-full px-3 py-2 rounded-lg focus:outline-none"
-                    style={{ 
-                      backgroundColor: currentTheme.colors.background,
-                      borderColor: currentTheme.colors.border,
-                      border: '1px solid',
-                      color: currentTheme.colors.text
-                    }}
                   >
                     <option value="from-yellow-500 to-orange-500">黄色到橙色</option>
                     <option value="from-purple-500 to-pink-500">紫色到粉色</option>
                     <option value="from-indigo-500 to-blue-500">靛蓝到蓝色</option>
                     <option value="from-green-500 to-teal-500">绿色到青色</option>
-                  </select>
+                  </StyledFormSelect>
                 </div>
               </div>
-              <div className="flex justify-end gap-2 mt-6">
-                <button
-                  onClick={() => setShowEditModal(false)}
-                  className="px-4 py-2 rounded-lg transition-colors"
-                  style={{ 
-                    backgroundColor: currentTheme.colors.secondary,
-                    color: currentTheme.colors.text
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.secondary;
-                  }}
-                >
-                  取消
-                </button>
-                <button
-                  onClick={handleEditTopic}
-                  className="px-4 py-2 rounded-lg transition-colors"
-                  style={{ 
-                    backgroundColor: currentTheme.colors.primary,
-                    color: currentTheme.colors.text
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
-                  }}
-                >
-                  保存
-                </button>
-              </div>
-            </StyledModal>
-          </div>
+            </StyledModalContent>
+            <StyledModalFixedFooter>
+              <StyledSecondaryButton onClick={() => setShowEditModal(false)}>
+                取消
+              </StyledSecondaryButton>
+              <StyledPrimaryButton onClick={handleEditTopic}>
+                保存
+              </StyledPrimaryButton>
+            </StyledModalFixedFooter>
+          </StyledModal>
         )}
 
         {/* 删除确认模态框 */}
         {showDeleteConfirm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div 
-              className="rounded-lg p-6 w-full max-w-md"
-              style={{ backgroundColor: currentTheme.colors.surface }}
-            >
-              <h3 
-                className="text-lg font-semibold mb-4"
-                style={{ color: currentTheme.colors.text }}
-              >
-                确认删除
-              </h3>
+          <StyledModal>
+            <StyledModalContent>
+              <StyledModalTitle>确认删除</StyledModalTitle>
               <p 
                 className="mb-6"
                 style={{ color: currentTheme.colors.textSecondary }}
               >
                 确定要删除这个主题吗？此操作不可撤销。
               </p>
-              <div className="flex justify-end gap-2">
-                <button
-                  onClick={() => setShowDeleteConfirm(null)}
-                  className="px-4 py-2 rounded-lg transition-colors"
-                  style={{ 
-                    backgroundColor: currentTheme.colors.secondary,
-                    color: currentTheme.colors.text
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.secondary;
-                  }}
-                >
-                  取消
-                </button>
-                <button
-                  onClick={() => handleDeleteTopic(showDeleteConfirm)}
-                  className="px-4 py-2 rounded-lg transition-colors"
-                  style={{ 
-                    backgroundColor: currentTheme.colors.error,
-                    color: currentTheme.colors.text
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = currentTheme.colors.error;
-                  }}
-                >
-                  删除
-                </button>
-              </div>
-            </div>
-          </div>
+            </StyledModalContent>
+            <StyledModalFixedFooter>
+              <StyledSecondaryButton onClick={() => setShowDeleteConfirm(null)}>
+                取消
+              </StyledSecondaryButton>
+              <StyledDangerButton onClick={() => handleDeleteTopic(showDeleteConfirm)}>
+                删除
+              </StyledDangerButton>
+            </StyledModalFixedFooter>
+          </StyledModal>
         )}
       </StyledPageContent>
     </StyledManagementContainer>
