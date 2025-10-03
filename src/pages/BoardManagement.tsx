@@ -156,8 +156,8 @@ const BoardManagement: React.FC = () => {
     toast.innerHTML = `
       <div style="
         position: fixed;
-        top: 20px;
-        right: 20px;
+        top: 150px;
+        right: 200px;
         background: ${bgColor};
         color: white;
         padding: 16px 24px;

@@ -192,8 +192,8 @@ const UserManagement: React.FC = () => {
     toast.innerHTML = `
       <div style="
         position: fixed;
-        top: 20px;
-        right: 20px;
+        top: 140px;
+        right: 200px;
         background: ${type === 'success' ? '#10B981' : '#EF4444'};
         color: white;
         padding: 16px 24px;

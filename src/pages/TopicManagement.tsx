@@ -85,8 +85,8 @@ const TopicManagement: React.FC = () => {
       toast.innerHTML = `
         <div style="
           position: fixed;
-          top: 20px;
-          right: 20px;
+          top: 150px;
+          right: 200px;
           background: #F59E0B;
           color: white;
           padding: 16px 24px;
@@ -213,8 +213,8 @@ const TopicManagement: React.FC = () => {
     toast.innerHTML = `
       <div style="
         position: fixed;
-        top: 20px;
-        right: 20px;
+        top: 150px;
+        right: 200px;
         background: ${bgColor};
         color: white;
         padding: 16px 24px;
