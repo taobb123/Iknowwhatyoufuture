@@ -244,7 +244,7 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
                       className="text-xs"
                       style={{ color: currentTheme.colors.textSecondary }}
                     >
-                      {category.count} 个游戏
+                      {category.count} {t('games.gamesCount')}
                     </div>
                   </div>
                 </div>

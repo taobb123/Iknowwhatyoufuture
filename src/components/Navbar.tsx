@@ -8,10 +8,12 @@ import { useAuth } from '../contexts/AuthContext';
 import PermissionWrapper from './PermissionWrapper';
 import { getUserDisplayName, getUserTypeDisplayName } from '../utils/permissions';
 import { simpleLogin, getSimpleCurrentUser } from '../data/simpleRegistration';
+import { useI18n } from '../contexts/I18nContext';
 
 interface NavbarProps {}
 
 function Navbar({}: NavbarProps) {
+  const { t } = useI18n();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
@@ -211,25 +213,25 @@ function Navbar({}: NavbarProps) {
               to="/"
               className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
-              首页
+{t('navigation.home')}
             </Link>
             <Link
               to="/games"
               className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
-              所有游戏
+{t('navigation.games')}
             </Link>
             <Link
               to="/game-hub"
               className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
-              游戏中心
+{t('navigation.gameHub')}
             </Link>
                 <Link
                   to="/community"
                   className="text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
-                  社区
+{t('navigation.community')}
                 </Link>
             
             {/* 管理入口 - 只有管理员可见 */}
@@ -239,7 +241,7 @@ function Navbar({}: NavbarProps) {
                 className="flex items-center gap-1 text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 <Settings size={16} />
-                管理
+                {t('navigation.management')}
               </Link>
             )}
 

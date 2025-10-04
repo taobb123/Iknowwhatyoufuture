@@ -450,7 +450,7 @@ export const createGuestUser = (): User => {
   const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   const guestUser: User = {
     id: guestId,
-    username: '游客',
+    username: 'guest', // 游客的实际用户名设为 'guest'，显示名称通过 getUserDisplayName 翻译
     email: '',
     password: '',
     role: 'user',
@@ -522,11 +522,11 @@ export const isRegularUser = (user: User | null): boolean => {
 };
 
 // 获取用户显示名称
-export const getUserDisplayName = (user: User | null): string => {
-  if (!user) return '未知用户';
+export const getUserDisplayName = (user: User | null, t?: (key: string) => string): string => {
+  if (!user) return t ? t('user.unknown') : '未知用户';
   
   if (user.isGuest) {
-    return '游客';
+    return t ? t('user.guest') : '游客';
   }
   
   return user.username;

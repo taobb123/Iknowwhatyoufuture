@@ -1,8 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../../themes/ThemeContext';
+import { useI18n } from '../../contexts/I18nContext';
 
 function StyledFooter() {
   const { currentTheme } = useTheme();
+  const { t } = useI18n();
   const location = useLocation();
   
   // 在文章编辑页面隐藏Footer
@@ -49,7 +51,7 @@ function StyledFooter() {
               Iknowwhatyoufuture
             </h3>
             <p className="mb-4" style={textSecondaryStyles}>
-              游戏攻略社区，分享最优质的游戏开发经验和技巧，帮助开发者提升技能。
+{t('footer.description')}
             </p>
             <div className="flex space-x-4">
               <button 
@@ -88,7 +90,7 @@ function StyledFooter() {
           {/* 快速链接 */}
           <div>
             <h4 className="text-lg font-semibold mb-4" style={brandStyles}>
-              快速链接
+{t('footer.quickLinks')}
             </h4>
             <ul className="space-y-2">
               <li>
@@ -97,7 +99,7 @@ function StyledFooter() {
                   className="transition-colors hover:text-[var(--hover-color)]"
                   style={linkStyles}
                 >
-                  首页
+{t('footer.home')}
                 </Link>
               </li>
               <li>
@@ -106,7 +108,7 @@ function StyledFooter() {
                   className="transition-colors hover:text-[var(--hover-color)]"
                   style={linkStyles}
                 >
-                  常见问题
+{t('footer.faq')}
                 </Link>
               </li>
               <li>
@@ -115,7 +117,7 @@ function StyledFooter() {
                   className="transition-colors hover:text-[var(--hover-color)]"
                   style={linkStyles}
                 >
-                  排行榜
+{t('footer.leaderboard')}
                 </Link>
               </li>
             </ul>
@@ -124,7 +126,7 @@ function StyledFooter() {
           {/* 法律信息 */}
           <div>
             <h4 className="text-lg font-semibold mb-4" style={brandStyles}>
-              法律信息
+{t('footer.legalInfo')}
             </h4>
             <ul className="space-y-2">
               <li>
@@ -133,7 +135,7 @@ function StyledFooter() {
                   className="transition-colors hover:text-[var(--hover-color)]"
                   style={linkStyles}
                 >
-                  隐私政策
+{t('footer.privacy')}
                 </Link>
               </li>
               <li>
@@ -142,7 +144,7 @@ function StyledFooter() {
                   className="transition-colors hover:text-[var(--hover-color)]"
                   style={linkStyles}
                 >
-                  服务条款
+{t('footer.terms')}
                 </Link>
               </li>
               <li>
@@ -151,7 +153,7 @@ function StyledFooter() {
                   className="transition-colors hover:text-[var(--hover-color)]"
                   style={linkStyles}
                 >
-                  联系我们
+{t('footer.contact')}
                 </Link>
               </li>
               <li>
@@ -160,7 +162,7 @@ function StyledFooter() {
                   className="transition-colors hover:text-[var(--hover-color)]"
                   style={linkStyles}
                 >
-                  关于我们
+{t('footer.about')}
                 </Link>
               </li>
             </ul>

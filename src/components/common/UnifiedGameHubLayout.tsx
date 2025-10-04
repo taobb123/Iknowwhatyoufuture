@@ -3,6 +3,7 @@ import { Search, Heart, MessageCircle, Share2, Eye, Clock, User, Gamepad2, Star,
 import { Article, getArticleById } from '../../data/articleManager';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { useTheme } from '../../themes/ThemeContext';
+import { useI18n } from '../../contexts/I18nContext';
 
 // 使用 Article 接口替代 Guide
 type Guide = Article;
@@ -87,6 +88,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
   className = ''
 }) => {
   const { currentTheme } = useTheme();
+  const { t } = useI18n();
   // 文章查看状态
   const [currentArticleId, setCurrentArticleId] = useState<string | null>(null);
   const [isViewingArticle, setIsViewingArticle] = useState(false);
@@ -558,10 +560,10 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                     color: currentTheme.colors.text
                   }}
                 >
-                  <option value="最新">最新</option>
-                  <option value="热门">热门</option>
-                  <option value="最多点赞">最多点赞</option>
-                  <option value="最多评论">最多评论</option>
+                  <option value="最新">{t('gameHub.sortLatest')}</option>
+                  <option value="热门">{t('gameHub.sortPopular')}</option>
+                  <option value="最多点赞">{t('gameHub.sortMostLiked')}</option>
+                  <option value="最多评论">{t('gameHub.sortMostCommented')}</option>
                 </select>
                 {onPublishClick && (
                   <button
@@ -576,7 +578,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                     }}
                   >
                     <Plus size={16} />
-                    发表
+{t('gameHub.publish')}
                   </button>
                 )}
               </div>
@@ -584,7 +586,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                 className="text-xs"
                 style={{ color: currentTheme.colors.textSecondary }}
               >
-                找到 {filteredGuides.length} 篇攻略，当前显示第 {currentPage} 页，共 {totalPages} 页
+{t('gameHub.foundGuidesInfo', { count: filteredGuides.length, currentPage, totalPages })}
               </div>
             </div>
 
@@ -989,7 +991,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
         <div className="bg-gray-800 rounded-lg p-3">
           <div className="flex items-center gap-2 mb-3">
             <Clock size={16} className="text-green-500" />
-            <h3 className="font-semibold text-white text-sm">最新游戏</h3>
+            <h3 className="font-semibold text-white text-sm">{t('gameHub.latestGames')}</h3>
           </div>
           <div className="space-y-2">
             {newGames.map((game, index) => (

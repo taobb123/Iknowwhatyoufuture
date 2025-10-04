@@ -145,9 +145,9 @@ const GamesList: React.FC = () => {
             className="flex items-center justify-between text-sm mt-4"
             style={{ color: currentTheme.colors.textSecondary }}
           >
-            <span>找到 {filteredGames.length} 个游戏，当前显示第 {currentPage} 页，共 {totalPages} 页</span>
+            <span>{t('games.foundGamesInfo', { count: filteredGames.length, currentPage, totalPages })}</span>
             <div className="flex items-center gap-4">
-              <span>排序方式：</span>
+              <span>{t('games.sortBy')}:</span>
               <select
                 value={currentSort}
                 onChange={(e) => setSortBy(e.target.value as any)}
@@ -471,7 +471,7 @@ const GamesList: React.FC = () => {
                 className="text-sm"
                 style={{ color: currentTheme.colors.textSecondary }}
               >
-                快速跳转：
+{t('games.quickJump')}:
               </span>
               <select
                 value={currentPage}
@@ -485,7 +485,7 @@ const GamesList: React.FC = () => {
               >
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                   <option key={page} value={page}>
-                    第 {page} 页
+{t('games.pageNumber', { page })}
                   </option>
                 ))}
               </select>

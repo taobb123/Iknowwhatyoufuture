@@ -306,7 +306,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                   style={linkStyles}
                 >
                   <User size={16} />
-                  {simpleCurrentUser ? simpleCurrentUser.username : (state.user?.userType ? getUserDisplayName(state.user.userType, state.user.username) : t('navigation.user'))}
+                  {simpleCurrentUser ? simpleCurrentUser.username : (state.user?.userType ? getUserDisplayName(state.user.userType, state.user.username, t) : t('user.guest'))}
                 </button>
                 
                 {showUserMenu && (
@@ -318,7 +318,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                       {simpleCurrentUser ? simpleCurrentUser.username : (state.user?.email || t('user.guestMode'))}
                     </div>
                     <div className="px-4 py-2 text-xs border-b" style={{ color: currentTheme.colors.textSecondary, borderColor: currentTheme.colors.border }}>
-{t('user.type')}: {simpleCurrentUser ? t('navigation.user') : (state.user?.userType ? getUserTypeDisplayName(state.user.userType) : t('user.unknown'))}
+{t('user.type')}: {simpleCurrentUser ? t('user.regularUser') : (state.user?.userType ? getUserTypeDisplayName(state.user.userType, t) : t('user.unknown'))}
                     </div>
                     
                     {/* 注册按钮 - 只有游客可见 */}
@@ -521,7 +521,7 @@ function StyledNavbar({}: StyledNavbarProps) {
               {(state.isAuthenticated || simpleCurrentUser) ? (
                 <div className="px-3 py-2 border-t" style={{ borderColor: currentTheme.colors.border }}>
                   <div className="text-sm" style={{ color: currentTheme.colors.textSecondary }}>
-                    {simpleCurrentUser ? simpleCurrentUser.username : state.user?.username} ({simpleCurrentUser ? '普通用户' : (state.user?.role === 'superAdmin' ? '超级管理员' : state.user?.role === 'admin' ? '管理员' : '普通用户')})
+                    {simpleCurrentUser ? simpleCurrentUser.username : (state.user?.userType ? getUserDisplayName(state.user.userType, state.user.username, t) : t('user.guest'))} ({simpleCurrentUser ? t('user.regularUser') : (state.user?.userType ? getUserTypeDisplayName(state.user.userType, t) : t('user.unknown'))})
                   </div>
                   <button
                     onClick={() => {

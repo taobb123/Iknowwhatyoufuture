@@ -39,6 +39,15 @@
     "topicManagement": "主题管理",
     "themeManagement": "主题系统管理"
   },
+  "community": {
+    "title": "游戏社区",
+    "subtitle": "分享游戏攻略，交流技术心得，发现更多精彩内容",
+    "boards": "板块",
+    "topics": "主题",
+    "articles": "文章",
+    "hotBoards": "热门板块",
+    "hotTopics": "热门主题"
+  },
   "user": {
     "guestMode": "游客模式",
     "type": "类型",
@@ -47,6 +56,19 @@
     "regularUser": "普通用户",
     "admin": "管理员",
     "superAdmin": "超级管理员"
+  },
+  "footer": {
+    "description": "热门游戏中心，精选最优质的免费在线游戏，让您享受轻松愉快的游戏体验！",
+    "quickLinks": "快速链接",
+    "legalInfo": "法律信息",
+    "home": "首页",
+    "faq": "常见问题",
+    "leaderboard": "排行榜",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "contact": "联系我们",
+    "about": "关于我们",
+    "allRightsReserved": "版权所有"
   },
   "home": {
     "title": "热门游戏中心",
@@ -90,15 +112,28 @@
     "newGame": "新游戏",
     "addFavorite": "添加收藏",
     "removeFavorite": "取消收藏",
+    "foundGamesInfo": "找到 {{count}} 个游戏，当前显示第 {{currentPage}} 页，共 {{totalPages}} 页",
+    "sortBy": "排序方式",
+    "quickJump": "快速跳转",
+    "pageNumber": "第 {{page}} 页",
     "gameDetails": "游戏详情",
     "playGame": "开始游戏",
     "gameDescription": "游戏描述",
     "gameFeatures": "游戏特色",
     "gameControls": "游戏操作",
-    "gameTips": "游戏提示"
+    "gameTips": "游戏提示",
+    "onlineGame": "在线游戏",
+    "freeGame": "免费游戏"
   },
   "gameHub": {
     "title": "游戏中心",
+    "publish": "发表",
+    "sortLatest": "最新",
+    "sortPopular": "热门",
+    "sortMostLiked": "最多点赞",
+    "sortMostCommented": "最多评论",
+    "foundGuidesInfo": "找到 {{count}} 篇攻略，当前显示第 {{currentPage}} 页，共 {{totalPages}} 页",
+    "latestGames": "最新游戏",
     "myGames": "我的游戏",
     "favorites": "收藏夹",
     "recentlyPlayed": "最近游戏",
@@ -178,13 +213,5 @@
     "searchResults": "搜索结果",
     "searchFor": "搜索",
     "clearSearch": "清除搜索"
-  },
-  "footer": {
-    "about": "关于我们",
-    "contact": "联系我们",
-    "privacy": "隐私政策",
-    "terms": "服务条款",
-    "copyright": "版权所有",
-    "allRightsReserved": "保留所有权利"
   }
 }

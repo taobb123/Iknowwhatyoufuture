@@ -23,13 +23,14 @@ interface I18nProviderProps {
 }
 
 export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
-  const { i18n, t } = useTranslation();
+  const { i18n, t, ready } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState('zh-CN');
 
   // 支持的语言列表
   const availableLanguages = [
     { code: 'zh-CN', name: 'Chinese', nativeName: '中文' },
-    { code: 'en', name: 'English', nativeName: 'English' }
+    { code: 'en', name: 'English', nativeName: 'English' },
+    { code: 'id', name: 'Indonesian', nativeName: 'Bahasa Indonesia' }
   ];
 
   // 语言切换函数
@@ -57,6 +58,15 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
     availableLanguages,
     t
   };
+
+  // Wait for i18n to be ready
+  if (!ready) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div>Loading translations...</div>
+      </div>
+    );
+  }
 
   return (
     <I18nContext.Provider value={value}>

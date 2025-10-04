@@ -198,7 +198,7 @@ const GameDetail: React.FC = () => {
                       key={index}
                       className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm"
                     >
-                      {feature}
+{t(`games.${feature}`)}
                     </span>
                   ))}
                 </div>

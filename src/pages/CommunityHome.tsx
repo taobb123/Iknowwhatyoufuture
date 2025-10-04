@@ -4,9 +4,11 @@ import { getAllBoards, addBoard } from '../data/databaseBoardManager';
 import { getAllTopics, addTopic } from '../data/communityManager';
 import { getAllArticlesSortedByTime } from '../data/articleManager';
 import { useTheme } from '../themes/ThemeContext';
+import { useI18n } from '../contexts/I18nContext';
 
 const CommunityHome: React.FC = () => {
   const { currentTheme } = useTheme();
+  const { t } = useI18n();
   const [boards, setBoards] = useState<any[]>([]);
   const [topics, setTopics] = useState<any[]>([]);
   const [articles, setArticles] = useState<any[]>([]);
@@ -150,13 +152,13 @@ const CommunityHome: React.FC = () => {
               className="text-4xl font-bold mb-4"
               style={{ color: currentTheme.colors.text }}
             >
-              游戏社区
+{t('community.title')}
             </h1>
             <p 
               className="text-xl mb-6"
               style={{ color: currentTheme.colors.textSecondary }}
             >
-              分享游戏攻略，交流技术心得，发现更多精彩内容
+{t('community.subtitle')}
             </p>
             <div className="flex justify-center space-x-4">
               <div className="text-center">
@@ -166,7 +168,7 @@ const CommunityHome: React.FC = () => {
                 >
                   {boards.length}
                 </div>
-                <div style={{ color: currentTheme.colors.textSecondary }}>板块</div>
+                <div style={{ color: currentTheme.colors.textSecondary }}>{t('community.boards')}</div>
               </div>
               <div className="text-center">
                 <div 
@@ -175,7 +177,7 @@ const CommunityHome: React.FC = () => {
                 >
                   {topics.length}
                 </div>
-                <div style={{ color: currentTheme.colors.textSecondary }}>主题</div>
+                <div style={{ color: currentTheme.colors.textSecondary }}>{t('community.topics')}</div>
               </div>
               <div className="text-center">
                 <div 
@@ -184,7 +186,7 @@ const CommunityHome: React.FC = () => {
                 >
                   {articles.length}
                 </div>
-                <div style={{ color: currentTheme.colors.textSecondary }}>文章</div>
+                <div style={{ color: currentTheme.colors.textSecondary }}>{t('community.articles')}</div>
               </div>
             </div>
           </div>
@@ -196,7 +198,7 @@ const CommunityHome: React.FC = () => {
             className="text-2xl font-bold mb-6"
             style={{ color: currentTheme.colors.text }}
           >
-            热门板块
+{t('community.hotBoards')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {boards.map((board) => (
@@ -261,7 +263,7 @@ const CommunityHome: React.FC = () => {
             className="text-2xl font-bold mb-6"
             style={{ color: currentTheme.colors.text }}
           >
-            热门主题
+{t('community.hotTopics')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {topics.map((topic) => (

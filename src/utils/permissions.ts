@@ -28,33 +28,33 @@ export const canManageUsers = (userType: UserType): boolean => {
 };
 
 // 获取用户显示名称
-export const getUserDisplayName = (userType: UserType, username?: string): string => {
+export const getUserDisplayName = (userType: UserType, username?: string, t?: (key: string) => string): string => {
   switch (userType) {
     case 'guest':
-      return '游客'; // 这个会在使用时通过 i18n 处理
+      return t ? t('user.guest') : '游客';
     case 'regular':
-      return username || '普通用户'; // 这个会在使用时通过 i18n 处理
+      return username || (t ? t('user.regularUser') : '普通用户');
     case 'admin':
-      return username || '管理员'; // 这个会在使用时通过 i18n 处理
+      return username || (t ? t('user.admin') : '管理员');
     case 'superAdmin':
-      return username || '超级管理员'; // 这个会在使用时通过 i18n 处理
+      return username || (t ? t('user.superAdmin') : '超级管理员');
     default:
-      return '未知用户'; // 这个会在使用时通过 i18n 处理
+      return t ? t('user.unknown') : '未知用户';
   }
 };
 
 // 获取用户类型的中文名称
-export const getUserTypeDisplayName = (userType: UserType): string => {
+export const getUserTypeDisplayName = (userType: UserType, t?: (key: string) => string): string => {
   switch (userType) {
     case 'guest':
-      return '游客'; // 这个会在使用时通过 i18n 处理
+      return t ? t('user.guest') : '游客';
     case 'regular':
-      return '普通用户'; // 这个会在使用时通过 i18n 处理
+      return t ? t('user.regularUser') : '普通用户';
     case 'admin':
-      return '管理员'; // 这个会在使用时通过 i18n 处理
+      return t ? t('user.admin') : '管理员';
     case 'superAdmin':
-      return '超级管理员'; // 这个会在使用时通过 i18n 处理
+      return t ? t('user.superAdmin') : '超级管理员';
     default:
-      return '未知'; // 这个会在使用时通过 i18n 处理
+      return t ? t('user.unknown') : '未知用户';
   }
 };
