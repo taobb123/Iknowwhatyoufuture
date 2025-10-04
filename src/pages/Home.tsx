@@ -5,6 +5,7 @@ import GameModal from '../components/common/GameModal';
 import { useGameData, useGameActions } from '../hooks/useGameData';
 import { useGameModal } from '../hooks/useGameModal';
 import { useTheme } from '../themes/ThemeContext';
+import { useI18n } from '../contexts/I18nContext';
 
 
 
@@ -14,6 +15,7 @@ function Home() {
   const { toggleFavorite, setCategory } = useGameActions();
   const { selectedGame, isModalOpen, isGameLoading, openGame, closeGame, handleLoadComplete } = useGameModal();
   const { currentTheme } = useTheme();
+  const { t } = useI18n();
   
   
   
@@ -52,8 +54,8 @@ function Home() {
       {/* 添加顶部间距避免被导航栏遮挡 */}
       <div className="pt-16"></div>
       <SEOHead 
-        title="热门游戏中心 - 免费在线游戏 | Iknowwhatyoufuture"
-        description="体验无忧无虑的游戏时光！精选最热门的免费在线游戏，包含动作、冒险、益智、休闲等多种类型，无需下载即可畅玩，让您享受轻松愉快的游戏体验！"
+        title={`${t('home.title')} - ${t('home.subtitle')} | Iknowwhatyoufuture`}
+        description={t('home.welcomeMessage')}
         keywords="热门游戏,在线游戏,免费游戏,游戏中心,动作游戏,冒险游戏,益智游戏,休闲游戏,无忧无虑"
         canonical="https://streetracer.online/"
       />
@@ -64,13 +66,13 @@ function Home() {
             className="text-2xl font-bold mb-2"
             style={{ color: currentTheme.colors.secondary }}
           >
-            热门游戏中心
+            {t('home.title')}
           </h1>
           <p 
             className="text-sm"
             style={{ color: currentTheme.colors.textSecondary }}
           >
-            体验无忧无虑的游戏时光！精选最热门的免费在线游戏，让您享受轻松愉快的游戏体验！
+            {t('home.welcomeMessage')}
           </p>
         </div>
 

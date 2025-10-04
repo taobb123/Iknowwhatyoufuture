@@ -31,15 +31,15 @@ export const canManageUsers = (userType: UserType): boolean => {
 export const getUserDisplayName = (userType: UserType, username?: string): string => {
   switch (userType) {
     case 'guest':
-      return '游客';
+      return '游客'; // 这个会在使用时通过 i18n 处理
     case 'regular':
-      return username || '普通用户';
+      return username || '普通用户'; // 这个会在使用时通过 i18n 处理
     case 'admin':
-      return username || '管理员';
+      return username || '管理员'; // 这个会在使用时通过 i18n 处理
     case 'superAdmin':
-      return username || '超级管理员';
+      return username || '超级管理员'; // 这个会在使用时通过 i18n 处理
     default:
-      return '未知用户';
+      return '未知用户'; // 这个会在使用时通过 i18n 处理
   }
 };
 
@@ -47,14 +47,14 @@ export const getUserDisplayName = (userType: UserType, username?: string): strin
 export const getUserTypeDisplayName = (userType: UserType): string => {
   switch (userType) {
     case 'guest':
-      return '游客';
+      return '游客'; // 这个会在使用时通过 i18n 处理
     case 'regular':
-      return '普通用户';
+      return '普通用户'; // 这个会在使用时通过 i18n 处理
     case 'admin':
-      return '管理员';
+      return '管理员'; // 这个会在使用时通过 i18n 处理
     case 'superAdmin':
-      return '超级管理员';
+      return '超级管理员'; // 这个会在使用时通过 i18n 处理
     default:
-      return '未知';
+      return '未知'; // 这个会在使用时通过 i18n 处理
   }
 };

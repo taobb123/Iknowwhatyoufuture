@@ -4,16 +4,19 @@ import { Search, Menu, X, Settings, LogOut, User, UserPlus, Shield, Grid3X3, Tag
 import SearchBox from '../SearchBox';
 import GameNavigation from '../GameNavigation';
 import UserRegistration from '../UserRegistration';
+import LanguageSwitcher from '../LanguageSwitcher';
 import { useAuth } from '../../contexts/AuthContext';
 import PermissionWrapper from '../PermissionWrapper';
 import { getUserDisplayName, getUserTypeDisplayName } from '../../utils/permissions';
 import { simpleLogin, getSimpleCurrentUser } from '../../data/simpleRegistration';
 import { useTheme } from '../../themes/ThemeContext';
+import { useI18n } from '../../contexts/I18nContext';
 
 interface StyledNavbarProps {}
 
 function StyledNavbar({}: StyledNavbarProps) {
   const { currentTheme } = useTheme();
+  const { t } = useI18n();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
@@ -165,14 +168,14 @@ function StyledNavbar({}: StyledNavbarProps) {
   // 处理登录
   const handleLogin = async () => {
     if (!loginUsername.trim() || !loginPassword.trim()) {
-      showToast('请填写用户名和密码', 'warning');
+      showToast(t('auth.fillUsernamePassword'), 'warning');
       return;
     }
 
     try {
       const loginResult = simpleLogin(loginUsername, loginPassword);
       if (loginResult.success) {
-        showToast('登录成功！欢迎回来', 'success');
+        showToast(t('auth.loginSuccess'), 'success');
         setShowLogin(false);
         setShowUserMenu(false);
         setLoginUsername('');
@@ -183,7 +186,7 @@ function StyledNavbar({}: StyledNavbarProps) {
         showToast(loginResult.message, 'error');
       }
     } catch (error: any) {
-      showToast(`登录失败: ${error.message}`, 'error');
+      showToast(`${t('auth.loginFailed')}: ${error.message}`, 'error');
     }
   };
 
@@ -233,13 +236,13 @@ function StyledNavbar({}: StyledNavbarProps) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="text-xl font-bold" style={logoStyles}>
+            <Link to="/" className="text-lg md:text-xl font-bold" style={logoStyles}>
               Iknowwhatyoufuture
             </Link>
           </div>
 
           {/* 中间区域 - 搜索框 */}
-          <div className="flex-1 flex items-center justify-center max-w-md mx-4">
+          <div className="flex-1 flex items-center justify-center max-w-sm md:max-w-md mx-2 md:mx-4">
             <SearchBox 
               onQueryChange={(query) => {
                 // 可以在这里处理搜索查询变化
@@ -248,36 +251,39 @@ function StyledNavbar({}: StyledNavbarProps) {
           </div>
 
           {/* 右侧导航链接 */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-1 xl:space-x-2">
             <GameNavigation />
             <Link
               to="/"
-              className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
+              className="px-2 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
               style={linkStyles}
             >
-              首页
+              {t('navigation.home')}
             </Link>
             <Link
               to="/games"
-              className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
+              className="px-2 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
               style={linkStyles}
             >
-              所有游戏
+              {t('navigation.games')}
             </Link>
             <Link
               to="/game-hub"
-              className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
+              className="px-2 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
               style={linkStyles}
             >
-              游戏中心
+              {t('navigation.gameHub')}
             </Link>
             <Link
               to="/community"
-              className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
+              className="px-2 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
               style={linkStyles}
             >
-              社区
+              {t('navigation.community')}
             </Link>
+            
+            {/* 语言切换器 */}
+            <LanguageSwitcher />
             
             {/* 管理入口 - 只有管理员可见 */}
             {state.isAuthenticated && isAdmin() && (
@@ -287,7 +293,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                 style={linkStyles}
               >
                 <Settings size={16} />
-                管理
+                {t('navigation.management')}
               </Link>
             )}
 
@@ -300,7 +306,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                   style={linkStyles}
                 >
                   <User size={16} />
-                  {simpleCurrentUser ? simpleCurrentUser.username : (state.user?.userType ? getUserDisplayName(state.user.userType, state.user.username) : '用户')}
+                  {simpleCurrentUser ? simpleCurrentUser.username : (state.user?.userType ? getUserDisplayName(state.user.userType, state.user.username) : t('navigation.user'))}
                 </button>
                 
                 {showUserMenu && (
@@ -309,10 +315,10 @@ function StyledNavbar({}: StyledNavbarProps) {
                     style={menuStyles}
                   >
                     <div className="px-4 py-2 text-sm border-b" style={{ color: currentTheme.colors.textSecondary, borderColor: currentTheme.colors.border }}>
-                      {simpleCurrentUser ? simpleCurrentUser.username : (state.user?.email || '游客模式')}
+                      {simpleCurrentUser ? simpleCurrentUser.username : (state.user?.email || t('user.guestMode'))}
                     </div>
                     <div className="px-4 py-2 text-xs border-b" style={{ color: currentTheme.colors.textSecondary, borderColor: currentTheme.colors.border }}>
-                      类型: {simpleCurrentUser ? '普通用户' : (state.user?.userType ? getUserTypeDisplayName(state.user.userType) : '未知')}
+{t('user.type')}: {simpleCurrentUser ? t('navigation.user') : (state.user?.userType ? getUserTypeDisplayName(state.user.userType) : t('user.unknown'))}
                     </div>
                     
                     {/* 注册按钮 - 只有游客可见 */}
@@ -326,7 +332,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                         style={menuItemStyles}
                       >
                         <UserPlus size={14} />
-                        注册账户
+                        {t('auth.register')}
                       </button>
                     )}
 
@@ -341,7 +347,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                         style={menuItemStyles}
                       >
                         <LogIn size={14} />
-                        登录
+                        {t('auth.login')}
                       </button>
                     )}
 
@@ -349,7 +355,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                     {state.isAuthenticated && (isAdmin() || isSuperAdmin()) && (
                       <>
                         <div className="px-4 py-2 text-xs border-b" style={{ color: currentTheme.colors.textSecondary, borderColor: currentTheme.colors.border }}>
-                          管理功能
+                          {t('navigation.management')}
                         </div>
                         <Link
                           to="/user-management"
@@ -358,7 +364,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                           style={menuItemStyles}
                         >
                           <Shield size={14} />
-                          用户管理
+                          {t('navigation.userManagement')}
                         </Link>
                         <Link
                           to="/article-management"
@@ -367,7 +373,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                           style={menuItemStyles}
                         >
                           <Settings size={14} />
-                          文章管理
+                          {t('navigation.articleManagement')}
                         </Link>
                         <Link
                           to="/board-management"
@@ -376,7 +382,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                           style={menuItemStyles}
                         >
                           <Grid3X3 size={14} />
-                          板块管理
+                          {t('navigation.boardManagement')}
                         </Link>
                         <Link
                           to="/topic-management"
@@ -385,7 +391,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                           style={menuItemStyles}
                         >
                           <Tag size={14} />
-                          主题管理
+                          {t('navigation.topicManagement')}
                         </Link>
                         {/* 主题系统管理 - 只有超级管理员可见 */}
                         {isSuperAdmin() && (
@@ -396,7 +402,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                             style={menuItemStyles}
                           >
                             <Settings size={14} />
-                            主题系统管理
+                            {t('navigation.themeManagement')}
                           </Link>
                         )}
                       </>
@@ -410,7 +416,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                         style={menuItemStyles}
                       >
                         <LogOut size={14} />
-                        退出
+                        {t('navigation.logout')}
                       </button>
                     )}
                   </div>
@@ -422,13 +428,19 @@ function StyledNavbar({}: StyledNavbarProps) {
                 className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
                 style={linkStyles}
               >
-                登录
+                {t('navigation.login')}
               </Link>
             )}
           </div>
 
-          {/* 移动端菜单按钮 */}
-          <div className="md:hidden">
+          {/* 中等屏幕和移动端 - 紧凑导航 */}
+          <div className="flex items-center space-x-2 lg:hidden">
+            {/* 语言切换器 - 在中等屏幕上显示 */}
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
+            
+            {/* 移动端菜单按钮 */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 transition-colors hover:text-[var(--hover-color)]"
@@ -446,6 +458,11 @@ function StyledNavbar({}: StyledNavbarProps) {
             style={{ backgroundColor: currentTheme.colors.surface, borderColor: currentTheme.colors.border }}
           >
             <div className="px-2 pt-2 pb-3 space-y-1">
+              {/* 移动端语言切换器 */}
+              <div className="px-3 py-2 border-b" style={{ borderColor: currentTheme.colors.border }}>
+                <LanguageSwitcher />
+              </div>
+              
               <div className="px-3 py-2">
                 <GameNavigation onClose={() => setIsMobileMenuOpen(false)} />
               </div>
@@ -455,7 +472,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                 onClick={() => setIsMobileMenuOpen(false)}
                 style={linkStyles}
               >
-                首页
+                {t('navigation.home')}
               </Link>
               <Link
                 to="/games"
@@ -463,7 +480,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                 onClick={() => setIsMobileMenuOpen(false)}
                 style={linkStyles}
               >
-                所有游戏
+                {t('navigation.games')}
               </Link>
               <Link
                 to="/game-hub"
@@ -471,7 +488,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                 onClick={() => setIsMobileMenuOpen(false)}
                 style={linkStyles}
               >
-                游戏中心
+                {t('navigation.gameHub')}
               </Link>
               
               {/* 管理入口 - 只有管理员可见 */}
@@ -483,7 +500,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                   style={linkStyles}
                 >
                   <Settings size={16} />
-                  管理
+                  {t('navigation.management')}
                 </Link>
               )}
 
@@ -496,7 +513,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                   style={linkStyles}
                 >
                   <User size={16} />
-                  用户管理
+                  {t('navigation.userManagement')}
                 </Link>
               )}
 
@@ -518,7 +535,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                     className="flex items-center gap-2 text-red-400 hover:text-red-300 text-sm mt-2"
                   >
                     <LogOut size={14} />
-                    退出
+                    {t('navigation.logout')}
                   </button>
                 </div>
               ) : (
@@ -528,7 +545,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                   onClick={() => setIsMobileMenuOpen(false)}
                   style={linkStyles}
                 >
-                  登录
+                  {t('navigation.login')}
                 </Link>
               )}
             </div>
@@ -561,13 +578,13 @@ function StyledNavbar({}: StyledNavbarProps) {
           </button>
           
           <h2 className="text-xl font-bold mb-6 text-center" style={{ color: currentTheme.colors.text }}>
-            登录
+            {t('auth.login')}
           </h2>
           
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2" style={{ color: currentTheme.colors.textSecondary }}>
-                用户名
+                {t('auth.username')}
               </label>
               <input
                 type="text"
@@ -580,13 +597,13 @@ function StyledNavbar({}: StyledNavbarProps) {
                   color: currentTheme.colors.text,
                   '--focus-ring': currentTheme.colors.primary,
                 } as React.CSSProperties}
-                placeholder="请输入用户名"
+                placeholder={t('auth.username')}
               />
             </div>
             
             <div>
               <label className="block text-sm font-medium mb-2" style={{ color: currentTheme.colors.textSecondary }}>
-                密码
+                {t('auth.password')}
               </label>
               <input
                 type="password"
@@ -599,7 +616,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                   color: currentTheme.colors.text,
                   '--focus-ring': currentTheme.colors.primary,
                 } as React.CSSProperties}
-                placeholder="请输入密码"
+                placeholder={t('auth.password')}
               />
             </div>
             
@@ -615,7 +632,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                   e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
                 }}
               >
-                登录
+                {t('auth.login')}
               </button>
               <button
                 onClick={() => setShowLogin(false)}
@@ -628,7 +645,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                   e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
                 }}
               >
-                取消
+                {t('common.cancel')}
               </button>
             </div>
           </div>

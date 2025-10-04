@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { User, Lock, Eye, EyeOff, Check, X } from 'lucide-react';
 import { simpleRegister } from '../data/simpleRegistration';
+import { useI18n } from '../contexts/I18nContext';
 
 interface UserRegistrationProps {
   onSuccess?: () => void;
@@ -10,6 +11,7 @@ interface UserRegistrationProps {
 
 const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel }) => {
   const { registerGuest } = useAuth();
+  const { t } = useI18n();
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -161,7 +163,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
           <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-8 h-8 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">注册账户</h2>
+          <h2 className="text-2xl font-bold text-white mb-2">{t('auth.register')}</h2>
           <p className="text-gray-400">将游客账户升级为正式用户</p>
         </div>
 
@@ -169,7 +171,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
           {/* 用户名 */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              用户名
+              {t('auth.username')}
             </label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -181,7 +183,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
                 className={`w-full pl-10 pr-4 py-3 bg-gray-700 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors.username ? 'border-red-500' : 'border-gray-600'
                 }`}
-                placeholder="请输入用户名"
+                placeholder={t('auth.username')}
                 disabled={isLoading}
               />
             </div>
@@ -197,7 +199,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
           {/* 密码 */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              密码
+              {t('auth.password')}
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -209,7 +211,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
                 className={`w-full pl-10 pr-12 py-3 bg-gray-700 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors.password ? 'border-red-500' : 'border-gray-600'
                 }`}
-                placeholder="请输入密码"
+                placeholder={t('auth.password')}
                 disabled={isLoading}
               />
               <button
@@ -232,7 +234,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
           {/* 确认密码 */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
-              确认密码
+              {t('auth.confirmPassword')}
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -244,7 +246,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
                 className={`w-full pl-10 pr-12 py-3 bg-gray-700 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors.confirmPassword ? 'border-red-500' : 'border-gray-600'
                 }`}
-                placeholder="请再次输入密码"
+                placeholder={t('auth.confirmPassword')}
                 disabled={isLoading}
               />
               <button
@@ -282,7 +284,7 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
               className="flex-1 py-3 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50"
               disabled={isLoading}
             >
-              取消
+              {t('common.cancel')}
             </button>
             <button
               type="submit"
@@ -292,12 +294,12 @@ const UserRegistration: React.FC<UserRegistrationProps> = ({ onSuccess, onCancel
               {isLoading ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  注册中...
+                  {t('common.loading')}
                 </>
               ) : (
                 <>
                   <Check className="w-4 h-4" />
-                  立即注册
+                  {t('auth.register')}
                 </>
               )}
             </button>

@@ -8,6 +8,7 @@ import { isGuestAnonymousPostAllowed } from '../data/systemConfig';
 import RichTextEditor from '../components/RichTextEditor';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import { useTheme } from '../themes/ThemeContext';
+import { useI18n } from '../contexts/I18nContext';
 
 interface ArticleEditorProps {}
 
@@ -15,6 +16,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
   const navigate = useNavigate();
   const { state: authState, getUserDisplayName } = useAuth();
   const { currentTheme } = useTheme();
+  const { t } = useI18n();
   
   // 文章状态
   const [title, setTitle] = useState('');
@@ -353,7 +355,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
               }}
             >
               <ArrowLeft size={18} />
-              <span className="hidden sm:inline">返回攻略社区</span>
+              <span className="hidden sm:inline">{t('common.back')}</span>
             </button>
             <div 
               className="h-6 w-px hidden sm:block"
@@ -363,7 +365,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
               className="text-lg sm:text-xl font-semibold"
               style={{ color: currentTheme.colors.text }}
             >
-              📝 撰写攻略
+              📝 {t('articleEditor.title')}
             </h1>
           </div>
           
@@ -383,7 +385,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
               }}
             >
               <Eye size={16} />
-              <span className="hidden sm:inline">{isPreview ? '编辑' : '预览'}</span>
+              <span className="hidden sm:inline">{isPreview ? t('articleEditor.editArticle') : t('articleEditor.preview')}</span>
             </button>
             
             <button
@@ -401,7 +403,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
               }}
             >
               <Save size={16} />
-              <span className="hidden sm:inline">保存草稿</span>
+              <span className="hidden sm:inline">{t('articleEditor.saveDraft')}</span>
             </button>
           </div>
         </div>
@@ -425,7 +427,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
               <div className="mb-6">
                 <input
                   type="text"
-                  placeholder="输入攻略标题..."
+                  placeholder={t('articleEditor.articleTitle')}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full text-2xl font-bold bg-transparent border-none outline-none"
@@ -458,7 +460,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                   <RichTextEditor
                     value={content}
                     onChange={setContent}
-                    placeholder="开始撰写您的攻略内容..."
+                    placeholder={t('articleEditor.articleContent')}
                     className="rounded-lg"
                   />
                 )}
@@ -492,7 +494,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                   style={{ color: currentTheme.colors.text }}
                 >
                   <FileText size={20} />
-                  文章信息
+                  {t('articleEditor.articleTitle')}
                 </h3>
                 
                 <div className="space-y-4">
@@ -502,7 +504,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                       className="block text-sm font-medium mb-2"
                       style={{ color: currentTheme.colors.textSecondary }}
                     >
-                      分类
+                      {t('articleEditor.articleCategory')}
                     </label>
                     <select
                       value={category}
@@ -527,7 +529,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                       className="block text-sm font-medium mb-2"
                       style={{ color: currentTheme.colors.textSecondary }}
                     >
-                      标签
+                      {t('articleEditor.articleTags')}
                     </label>
                     <div className="flex gap-2 mb-2">
                       <input
@@ -558,7 +560,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = () => {
                           e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
                         }}
                       >
-                        添加
+                        {t('common.submit')}
                       </button>
                     </div>
                     <div className="flex flex-wrap gap-2">

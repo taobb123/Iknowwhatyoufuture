@@ -3,11 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { initializeDefaultAdmin } from '../data/userManager';
 import { Eye, EyeOff, LogIn, User, Lock } from 'lucide-react';
+import { useI18n } from '../contexts/I18nContext';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, state } = useAuth();
+  const { t } = useI18n();
   
   const [formData, setFormData] = useState({
     username: '',
@@ -81,7 +83,7 @@ const Login: React.FC = () => {
       <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p>加载中...</p>
+          <p>{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -95,7 +97,7 @@ const Login: React.FC = () => {
             <LogIn className="h-6 w-6" />
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            登录到管理后台
+            {t('auth.login')}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-400">
             请输入您的管理员凭据
@@ -107,7 +109,7 @@ const Login: React.FC = () => {
             {/* 用户名输入 */}
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
-                用户名
+                {t('auth.username')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -121,7 +123,7 @@ const Login: React.FC = () => {
                   value={formData.username}
                   onChange={handleInputChange}
                   className="appearance-none rounded-lg relative block w-full pl-10 pr-3 py-3 border border-gray-600 placeholder-gray-400 text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="请输入用户名"
+                  placeholder={t('auth.username')}
                 />
               </div>
             </div>
@@ -129,7 +131,7 @@ const Login: React.FC = () => {
             {/* 密码输入 */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                密码
+                {t('auth.password')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -143,7 +145,7 @@ const Login: React.FC = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   className="appearance-none rounded-lg relative block w-full pl-10 pr-10 py-3 border border-gray-600 placeholder-gray-400 text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="请输入密码"
+                  placeholder={t('auth.password')}
                 />
                 <button
                   type="button"
@@ -177,10 +179,10 @@ const Login: React.FC = () => {
               {isLoading ? (
                 <div className="flex items-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  登录中...
+                  {t('common.loading')}
                 </div>
               ) : (
-                '登录'
+                t('auth.login')
               )}
             </button>
           </div>

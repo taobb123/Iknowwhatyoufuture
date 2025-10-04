@@ -7,10 +7,12 @@ import ErrorBoundary, { GameErrorBoundary } from '../components/ErrorBoundary';
 import SEOHead from '../components/SEOHead';
 import { useGameData, useGameFilter, useGameSort, useGameActions } from '../hooks/useGameData';
 import { useTheme } from '../themes/ThemeContext';
+import { useI18n } from '../contexts/I18nContext';
 
 const GamesList: React.FC = () => {
   const navigate = useNavigate();
   const { currentTheme } = useTheme();
+  const { t } = useI18n();
   const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid');
   
   // 分页状态
@@ -99,8 +101,8 @@ const GamesList: React.FC = () => {
       {/* 添加顶部间距避免被导航栏遮挡 */}
       <div className="pt-16"></div>
       <SEOHead 
-        title="所有热门游戏 - 免费在线游戏 | Iknowwhatyoufuture"
-        description="浏览所有热门免费在线游戏，包含动作、冒险、益智、休闲等多种类型，让您享受无忧无虑的游戏时光！"
+        title={`${t('games.title')} - 免费在线游戏 | Iknowwhatyoufuture`}
+        description={`浏览所有热门免费在线游戏，包含动作、冒险、益智、休闲等多种类型，让您享受无忧无虑的游戏时光！`}
         keywords="热门游戏,在线游戏,免费游戏,浏览器游戏,动作游戏,冒险游戏,益智游戏,休闲游戏,无忧无虑"
         canonical="https://streetracer.online/games"
       />
@@ -116,8 +118,8 @@ const GamesList: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 py-3">
           <Breadcrumb 
             items={[
-              { label: '首页', href: '/', icon: <span>🏠</span> },
-              { label: '所有游戏' }
+              { label: t('navigation.home'), href: '/', icon: <span>🏠</span> },
+              { label: t('games.title') }
             ]}
           />
         </div>
@@ -130,13 +132,13 @@ const GamesList: React.FC = () => {
             className="text-3xl font-bold mb-4"
             style={{ color: currentTheme.colors.text }}
           >
-            所有游戏
+            {t('games.title')}
           </h1>
           <p 
             className="text-lg"
             style={{ color: currentTheme.colors.textSecondary }}
           >
-            发现最热门的免费在线游戏
+            {t('games.noGamesFound')}
           </p>
           
           <div 
@@ -173,7 +175,7 @@ const GamesList: React.FC = () => {
             <div className="flex-1 relative">
               <input
                 type="text"
-                placeholder="搜索游戏..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:ring-1"
@@ -268,7 +270,7 @@ const GamesList: React.FC = () => {
                   e.currentTarget.style.backgroundColor = currentTheme.colors.surface;
                 }}
               >
-                清除所有
+                {t('search.clearSearch')}
               </button>
             </div>
           )}
@@ -303,7 +305,7 @@ const GamesList: React.FC = () => {
                 className="text-sm"
                 style={{ color: currentTheme.colors.textSecondary }}
               >
-                正在加载游戏...
+                {t('common.loading')}
               </p>
             </div>
           </div>
@@ -319,7 +321,7 @@ const GamesList: React.FC = () => {
               className="text-xl font-semibold mb-2"
               style={{ color: currentTheme.colors.text }}
             >
-              暂无游戏
+              {t('games.noGamesFound')}
             </h3>
             <p 
               className="mb-6"
@@ -339,7 +341,7 @@ const GamesList: React.FC = () => {
                   e.currentTarget.style.backgroundColor = currentTheme.colors.primary;
                 }}
               >
-                清除搜索
+                {t('search.clearSearch')}
               </button>
             )}
           </div>
@@ -402,7 +404,7 @@ const GamesList: React.FC = () => {
                   }}
                 >
                   <ChevronLeft size={16} />
-                  上一页
+                  {t('common.previous')}
                 </button>
 
                 {/* 页码按钮 */}
@@ -454,7 +456,7 @@ const GamesList: React.FC = () => {
                     }
                   }}
                 >
-                  下一页
+                  {t('common.next')}
                   <ChevronRight size={16} />
                 </button>
               </div>

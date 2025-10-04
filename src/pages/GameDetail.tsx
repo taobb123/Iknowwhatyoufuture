@@ -6,12 +6,14 @@ import Breadcrumb, { GameCategoryBreadcrumb } from '../components/Breadcrumb';
 import ErrorBoundary, { GameErrorBoundary } from '../components/ErrorBoundary';
 import SEOHead from '../components/SEOHead';
 import { useGameData, useGameActions, useGameFavorites } from '../hooks/useGameData';
+import { useI18n } from '../contexts/I18nContext';
 
 const GameDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isGameLoading, setIsGameLoading] = useState(false);
+  const { t } = useI18n();
 
   const { filteredGames } = useGameData();
   const { updateGameLikes } = useGameActions();
@@ -89,13 +91,13 @@ const GameDetail: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">游戏未找到</h1>
+          <h1 className="text-2xl font-bold mb-4">{t('games.noGamesFound')}</h1>
           <p className="text-gray-400 mb-6">抱歉，找不到您要查看的游戏</p>
           <button
             onClick={() => navigate('/')}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
           >
-            返回首页
+            {t('navigation.home')}
           </button>
         </div>
       </div>
@@ -135,7 +137,7 @@ const GameDetail: React.FC = () => {
           className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-6"
         >
           <ArrowLeft size={20} />
-          返回
+          {t('common.back')}
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -189,7 +191,7 @@ const GameDetail: React.FC = () => {
 
               {/* 游戏特性 */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-white mb-3">游戏特性</h3>
+                <h3 className="text-lg font-semibold text-white mb-3">{t('games.gameFeatures')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {game.features.map((feature, index) => (
                     <span
@@ -204,7 +206,7 @@ const GameDetail: React.FC = () => {
 
               {/* 游戏控制 */}
               <div className="mb-8">
-                <h3 className="text-lg font-semibold text-white mb-3">游戏控制</h3>
+                <h3 className="text-lg font-semibold text-white mb-3">{t('games.gameControls')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {game.controls.map((control, index) => (
                     <div key={index} className="flex items-center justify-between bg-gray-800 p-3 rounded-lg">
@@ -222,7 +224,7 @@ const GameDetail: React.FC = () => {
             <div className="bg-gray-800 rounded-lg overflow-hidden">
               <div className="p-4 border-b border-gray-700">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-white">游戏预览</h3>
+                  <h3 className="text-lg font-semibold text-white">{t('games.gameDetails')}</h3>
                   <button
                     onClick={toggleFullscreen}
                     className="p-2 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors"
@@ -238,7 +240,7 @@ const GameDetail: React.FC = () => {
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-20">
                     <div className="flex flex-col items-center space-y-4">
                       <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
-                      <p className="text-white/80 text-sm">正在加载游戏...</p>
+                      <p className="text-white/80 text-sm">{t('common.loading')}</p>
                     </div>
                   </div>
                 )}
@@ -255,7 +257,7 @@ const GameDetail: React.FC = () => {
 
           {/* 右侧：相关游戏 */}
           <div className="lg:col-span-1">
-            <h3 className="text-lg font-semibold text-white mb-4">相关游戏</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">{t('games.gameDetails')}</h3>
             <div className="space-y-4">
               {relatedGames.map((relatedGame) => (
                 <GameErrorBoundary key={relatedGame.id}>

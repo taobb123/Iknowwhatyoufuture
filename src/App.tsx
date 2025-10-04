@@ -8,12 +8,16 @@ import SimpleThemeSwitcher from './components/theme/SimpleThemeSwitcher';
 import { GameProvider, useGameContext } from './contexts/GameContext.simple';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './themes/ThemeContext';
+import { I18nProvider } from './contexts/I18nContext';
 import { initGA, trackPageView } from './utils/analytics';
 import { games } from './data/gamesData';
 import { initializeDefaultAdmin } from './data/userManager';
 import { initializeDefaultCommunity } from './data/communityManager';
 import { addWangzheArticle } from './data/articleManager';
 import { initializeSystemConfig } from './data/systemConfig';
+
+// 导入 i18n 配置
+import './i18n';
 
 // 懒加载页面组件
 const Home = lazy(() => import('./pages/Home'));
@@ -133,16 +137,18 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <GameProvider>
-          <Router>
-            <PageTracker />
-            <AppContent />
-          </Router>
-        </GameProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <I18nProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <GameProvider>
+            <Router>
+              <PageTracker />
+              <AppContent />
+            </Router>
+          </GameProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </I18nProvider>
   );
 }
 

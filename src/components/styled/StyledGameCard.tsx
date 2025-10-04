@@ -2,6 +2,7 @@ import React from 'react';
 import { Heart, Clock, Star, Play } from 'lucide-react';
 import GameRating from '../GameRating';
 import { useTheme } from '../../themes/ThemeContext';
+import { useI18n } from '../../contexts/I18nContext';
 
 // 游戏接口
 interface Game {
@@ -36,7 +37,7 @@ interface StyledGameCardProps {
 }
 
 // 获取分类颜色 - 使用主题系统
-const getCategoryColor = (category?: string, theme: any) => {
+const getCategoryColor = (category?: string, theme?: any) => {
   const colors: { [key: string]: string } = {
     racing: theme.colors.error,
     action: theme.colors.warning,
@@ -140,6 +141,7 @@ const StyledGameCard: React.FC<StyledGameCardProps> = ({
   className = ''
 }) => {
   const { currentTheme } = useTheme();
+  const { t } = useI18n();
 
   const handlePlay = () => {
     if (onPlay) {
@@ -161,7 +163,6 @@ const StyledGameCard: React.FC<StyledGameCardProps> = ({
     }
   };
 
-  const variantStyles = getVariantStyles(variant, currentTheme);
   const imageHeight = getImageHeight(variant);
   const categoryColor = getCategoryColor(game.category, currentTheme);
 
@@ -233,7 +234,9 @@ const StyledGameCard: React.FC<StyledGameCardProps> = ({
               borderRadius: currentTheme.borderRadius.sm
             }}
           >
-            新游戏
+
+
+{t('games.newGame')}
           </div>
         )}
 
@@ -252,7 +255,7 @@ const StyledGameCard: React.FC<StyledGameCardProps> = ({
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
             }}
-            aria-label={isFavorite ? "取消收藏" : "添加收藏"}
+            aria-label={isFavorite ? t('games.removeFavorite') : t('games.addFavorite')}
           >
             <Heart 
               size={16} 

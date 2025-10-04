@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown, Gamepad2, Star, Clock, Heart, Trophy } from 'lucide-react';
 import { games } from '../data/gamesData';
+import { useI18n } from '../contexts/I18nContext';
 
 interface GameNavigationProps {
   onClose?: () => void;
@@ -15,6 +16,7 @@ interface GameCategory {
 
 function GameNavigation({ onClose }: GameNavigationProps) {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -127,7 +129,7 @@ function GameNavigation({ onClose }: GameNavigationProps) {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-1 text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
       >
-        <span>游戏导航</span>
+        <span>{t('gameNavigation.title')}</span>
         <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
@@ -142,7 +144,7 @@ function GameNavigation({ onClose }: GameNavigationProps) {
             <div className="mb-4">
               <h3 className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
                 <Star className="w-4 h-4 mr-1 text-yellow-500" />
-                热门游戏
+                {t('gameNavigation.popularGames')}
               </h3>
               <div className="grid grid-cols-2 gap-2">
                 {popularGames.map(game => (
@@ -166,7 +168,7 @@ function GameNavigation({ onClose }: GameNavigationProps) {
             <div className="mb-4">
               <h3 className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
                 <Gamepad2 className="w-4 h-4 mr-1 text-blue-500" />
-                游戏分类
+                {t('gameNavigation.gameCategories')}
               </h3>
               <div className="space-y-1">
                 {categories.map(category => (
@@ -220,7 +222,7 @@ function GameNavigation({ onClose }: GameNavigationProps) {
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
                 <Clock className="w-4 h-4 mr-1 text-green-500" />
-                最近游戏
+                {t('gameNavigation.recentGames')}
               </h3>
               <div className="space-y-1">
                 {recentGames.map(game => (
@@ -254,14 +256,14 @@ function GameNavigation({ onClose }: GameNavigationProps) {
                 className="flex-1 flex items-center justify-center px-3 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors"
               >
                 <Heart className="w-4 h-4 mr-1" />
-                收藏夹
+                {t('gameNavigation.favorites')}
               </button>
               <button 
                 onClick={handleLeaderboardClick}
                 className="flex-1 flex items-center justify-center px-3 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors"
               >
                 <Trophy className="w-4 h-4 mr-1" />
-                排行榜
+                {t('gameNavigation.leaderboard')}
               </button>
             </div>
           </div>

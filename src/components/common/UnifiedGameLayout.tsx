@@ -6,6 +6,7 @@ import LoadingSpinner from './LoadingSpinner';
 import ErrorDisplay from './ErrorDisplay';
 import { Game } from '../../data/gamesData';
 import { useTheme } from '../../themes/ThemeContext';
+import { useI18n } from '../../contexts/I18nContext';
 
 interface UnifiedGameLayoutProps {
   games: Game[];
@@ -20,11 +21,11 @@ interface UnifiedGameLayoutProps {
   emptyMessage?: string;
 }
 
-// 游戏分类配置
-const gameCategories = [
+// 游戏分类配置（现在在组件内部动态生成）
+const getGameCategories = (t: (key: string) => string) => [
   { 
     id: 'all', 
-    name: '全部游戏', 
+    name: t('games.allCategories'), 
     icon: Gamepad2, 
     color: 'from-blue-500 to-purple-600',
     hoverColor: 'hover:from-blue-600 hover:to-purple-700',
@@ -32,7 +33,7 @@ const gameCategories = [
   },
   { 
     id: 'casual', 
-    name: '休闲游戏', 
+    name: t('games.casual'), 
     icon: Star, 
     color: 'from-blue-500 to-cyan-600',
     hoverColor: 'hover:from-blue-600 hover:to-cyan-700',
@@ -40,7 +41,7 @@ const gameCategories = [
   },
   { 
     id: 'action', 
-    name: '动作游戏', 
+    name: t('games.action'), 
     icon: Target, 
     color: 'from-green-500 to-teal-600',
     hoverColor: 'hover:from-green-600 hover:to-teal-700',
@@ -48,7 +49,7 @@ const gameCategories = [
   },
   { 
     id: 'puzzle', 
-    name: '益智游戏', 
+    name: t('games.puzzle'), 
     icon: Star, 
     color: 'from-yellow-500 to-amber-600',
     hoverColor: 'hover:from-yellow-600 hover:to-amber-700',
@@ -56,7 +57,7 @@ const gameCategories = [
   },
   { 
     id: 'adventure', 
-    name: '冒险游戏', 
+    name: t('games.adventure'), 
     icon: TrendingUp, 
     color: 'from-purple-500 to-pink-600',
     hoverColor: 'hover:from-purple-600 hover:to-pink-700',
@@ -64,7 +65,7 @@ const gameCategories = [
   },
   { 
     id: 'io', 
-    name: 'IO游戏', 
+    name: t('games.io'), 
     icon: Users, 
     color: 'from-purple-500 to-indigo-600',
     hoverColor: 'hover:from-purple-600 hover:to-indigo-700',
@@ -72,7 +73,7 @@ const gameCategories = [
   },
   { 
     id: 'shooting', 
-    name: '射击游戏', 
+    name: t('games.shooting'), 
     icon: Target, 
     color: 'from-red-600 to-orange-600',
     hoverColor: 'hover:from-red-700 hover:to-orange-700',
@@ -80,7 +81,7 @@ const gameCategories = [
   },
   { 
     id: 'other', 
-    name: '其他游戏', 
+    name: t('games.other'), 
     icon: Gamepad2, 
     color: 'from-gray-500 to-slate-600',
     hoverColor: 'hover:from-gray-600 hover:to-slate-700',
@@ -101,6 +102,7 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
   emptyMessage = '暂无游戏'
 }) => {
   const { currentTheme } = useTheme();
+  const { t } = useI18n();
   // 直接使用外部传入的selectedCategory，避免重复状态管理
   const currentSelectedCategory = selectedCategory;
 
@@ -110,6 +112,7 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
   
   // 使用useMemo确保分类统计只在游戏数据变化时重新计算
   const categoriesWithCount = useMemo(() => {
+    const gameCategories = getGameCategories(t);
     const result = gameCategories.map(category => {
       const count = category.id === 'all' 
         ? completeGamesData.length 
@@ -122,7 +125,7 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
     });
     
     return result;
-  }, [completeGamesData]);
+  }, [completeGamesData, t]);
 
   // 处理分类点击 - 简化逻辑，避免状态冲突
   const handleCategoryClick = useCallback((categoryId: string) => {
@@ -176,7 +179,7 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
             className="w-6 h-6 mr-2" 
             style={{ color: currentTheme.colors.secondary }}
           />
-          游戏分类
+{t('games.categories')}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {categoriesWithCount.map((category) => {
@@ -270,12 +273,12 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
             className="text-xl font-semibold"
             style={{ color: currentTheme.colors.text }}
           >
-            {currentSelectedCategory === 'all' ? '所有游戏' : gameCategories.find(c => c.id === currentSelectedCategory)?.name}
+            {currentSelectedCategory === 'all' ? t('games.allGames') : getGameCategories(t).find(c => c.id === currentSelectedCategory)?.name}
             <span 
               className="ml-2 text-sm"
               style={{ color: currentTheme.colors.textSecondary }}
             >
-              ({filteredGames.length} 个游戏)
+              ({filteredGames.length} {t('games.gamesCount')})
             </span>
           </h3>
           <div 
@@ -283,7 +286,7 @@ const UnifiedGameLayout: React.FC<UnifiedGameLayoutProps> = ({
             style={{ color: currentTheme.colors.textSecondary }}
           >
             <Heart className="w-4 h-4" />
-            <span>点击收藏喜欢的游戏</span>
+            <span>{t('games.clickToFavorite')}</span>
           </div>
         </div>
 

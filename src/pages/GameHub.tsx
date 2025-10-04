@@ -5,6 +5,7 @@ import { games, Game } from '../data/gamesData';
 import { Article, getAllArticlesSortedByTime, initializeSampleArticles } from '../data/databaseArticleManager';
 import UnifiedGameHubLayout from '../components/common/UnifiedGameHubLayout';
 import { useTheme } from '../themes/ThemeContext';
+import { useI18n } from '../contexts/I18nContext';
 
 interface GameHubProps {}
 
@@ -12,6 +13,7 @@ const GameHub: React.FC<GameHubProps> = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentTheme } = useTheme();
+  const { t } = useI18n();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('全部');
   const [sortBy, setSortBy] = useState<string>('最新');
@@ -204,7 +206,7 @@ const GameHub: React.FC<GameHubProps> = () => {
             className="text-lg sm:text-xl font-bold"
             style={{ color: currentTheme.colors.text }}
           >
-            🎮 游戏攻略社区
+            🎮 {t('gameHub.title')}
           </h1>
           <div className="flex items-center gap-3">
             <button 
@@ -219,7 +221,7 @@ const GameHub: React.FC<GameHubProps> = () => {
               }}
             >
               <Plus size={16} />
-              <span className="hidden sm:inline">发布攻略</span>
+              <span className="hidden sm:inline">{t('articleEditor.createArticle')}</span>
             </button>
             <div 
               className="w-7 h-7 rounded-full flex items-center justify-center"
