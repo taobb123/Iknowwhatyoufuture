@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import StyledNavbar from './components/styled/StyledNavbar';
 import StyledFooter from './components/styled/StyledFooter';
 import SimpleThemeSwitcher from './components/theme/SimpleThemeSwitcher';
-// import ThemeDebug from './components/theme/ThemeDebug';
 // import ErrorBoundary from './components/ErrorBoundary';
 import { GameProvider, useGameContext } from './contexts/GameContext.simple';
 import { AuthProvider } from './contexts/AuthContext';
@@ -31,6 +30,7 @@ const GameHub = lazy(() => import('./pages/GameHub'));
 const ArticleEditor = lazy(() => import('./pages/ArticleEditor'));
 const ArticleManagement = lazy(() => import('./pages/ArticleManagement'));
 const ArticleEdit = lazy(() => import('./pages/ArticleEdit'));
+const ArticleDetail = lazy(() => import('./pages/ArticleDetail'));
 const Login = lazy(() => import('./pages/Login'));
 const UserManagement = lazy(() => import('./pages/UserManagement'));
 const BoardManagement = lazy(() => import('./pages/BoardManagement'));
@@ -100,6 +100,9 @@ const AppContent: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/article-management" element={<ArticleManagement />} />
             <Route path="/article-edit/:id" element={<ArticleEdit />} />
+            {/* 文章详情页：支持两种路径，保持兼容 */}
+            <Route path="/article/:id" element={<ArticleDetail />} />
+            <Route path="/article/article_:id" element={<ArticleDetail />} />
               <Route path="/user-management" element={<UserManagement />} />
             <Route path="/board-management" element={<BoardManagement />} />
             <Route path="/topic-management" element={<TopicManagement />} />
@@ -123,9 +126,6 @@ const AppContent: React.FC = () => {
       <div className="fixed bottom-4 right-4 z-40">
         <SimpleThemeSwitcher />
       </div>
-      
-      {/* 调试信息 - 仅在开发环境显示 */}
-      {/* {process.env.NODE_ENV === 'development' && <ThemeDebug />} */}
     </div>
   );
 };

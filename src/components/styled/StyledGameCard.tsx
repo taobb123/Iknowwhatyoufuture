@@ -321,8 +321,8 @@ const StyledGameCard: React.FC<StyledGameCardProps> = ({
           </div>
         )}
 
-        {/* 游戏特性标签 */}
-        {variant !== 'compact' && (
+        {/* 游戏特性标签 - 已隐藏 */}
+        {/* {variant !== 'compact' && (
           <div className="flex flex-wrap gap-1 mb-3">
             {game.features.slice(0, variant === 'detailed' ? 6 : 3).map((feature, index) => (
               <span
@@ -338,7 +338,7 @@ const StyledGameCard: React.FC<StyledGameCardProps> = ({
               </span>
             ))}
           </div>
-        )}
+        )} */}
 
         {/* 统计信息 */}
         <div className="flex justify-between items-center text-sm mb-3" style={{ color: currentTheme.colors.textSecondary }}>
@@ -358,8 +358,8 @@ const StyledGameCard: React.FC<StyledGameCardProps> = ({
           )}
         </div>
 
-        {/* 控制说明 */}
-        {showControls && variant !== 'compact' && (
+        {/* 控制说明 - 已隐藏 */}
+        {/* {showControls && variant !== 'compact' && (
           <div className="text-xs" style={{ color: currentTheme.colors.textSecondary }}>
             <div className="flex flex-wrap gap-2">
               {game.controls.slice(0, variant === 'detailed' ? 4 : 2).map((control, index) => (
@@ -371,7 +371,7 @@ const StyledGameCard: React.FC<StyledGameCardProps> = ({
               ))}
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

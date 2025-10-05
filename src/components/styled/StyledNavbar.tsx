@@ -285,17 +285,7 @@ function StyledNavbar({}: StyledNavbarProps) {
             {/* 语言切换器 */}
             <LanguageSwitcher />
             
-            {/* 管理入口 - 只有管理员可见 */}
-            {state.isAuthenticated && isAdmin() && (
-              <Link
-                to="/article-management"
-                className="flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-[var(--hover-color)]"
-                style={linkStyles}
-              >
-                <Settings size={16} />
-                {t('navigation.management')}
-              </Link>
-            )}
+            {/* 顶部“管理”入口已移除，管理功能保留在用户下拉菜单中 */}
 
             {/* 用户菜单 */}
             {(state.isAuthenticated || simpleCurrentUser) ? (
@@ -491,18 +481,7 @@ function StyledNavbar({}: StyledNavbarProps) {
                 {t('navigation.gameHub')}
               </Link>
               
-              {/* 管理入口 - 只有管理员可见 */}
-              {state.isAuthenticated && isAdmin() && (
-                <Link
-                  to="/article-management"
-                  className="flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium transition-colors hover:text-[var(--hover-color)]"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  style={linkStyles}
-                >
-                  <Settings size={16} />
-                  {t('navigation.management')}
-                </Link>
-              )}
+              {/* 移动端“管理”入口已移除，管理功能保留在用户下拉菜单中 */}
 
               {/* 用户管理 - 只有超级管理员可见 */}
               {state.isAuthenticated && isSuperAdmin() && (

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getAllBoards } from '../data/databaseBoardManager';
-import { getAllTopics } from '../data/communityManager';
-import { getAllArticlesSortedByTime } from '../data/articleManager';
-import { ArrowLeft, Plus, MessageSquare, Calendar, User } from 'lucide-react';
+import { getAllTopics } from '../data/databaseTopicManager';
+import { getAllArticlesSortedByTime } from '../data/databaseArticleManager';
+import { getUserDisplayName } from '../data/databaseUserManager';
+import { ArrowLeft, Plus, MessageSquare, Calendar, User, Eye, ThumbsUp } from 'lucide-react';
 import { useTheme } from '../themes/ThemeContext';
 
 const BoardDetail: React.FC = () => {
@@ -38,13 +39,23 @@ const BoardDetail: React.FC = () => {
       setBoard(currentBoard);
       
       // 加载该板块的主题
-      const allTopics = getAllTopics();
+      const allTopics = await getAllTopics();
       const boardTopics = allTopics.filter(t => t.boardId === boardId);
       setTopics(boardTopics);
       
-      // 加载相关文章（这里简化处理，实际应该根据主题筛选）
-      const articles = getAllArticlesSortedByTime().slice(0, 5);
-      setRecentArticles(articles);
+      // 加载相关文章 - 使用数据库文章管理器
+      try {
+        const articles = await getAllArticlesSortedByTime();
+        // 只显示已发布的文章，并且限制数量
+        const publishedArticles = articles
+          .filter(article => article.status === 'published')
+          .slice(0, 5);
+        setRecentArticles(publishedArticles);
+      } catch (articleError) {
+        console.error('加载文章数据失败:', articleError);
+        // 如果文章加载失败，设置为空数组
+        setRecentArticles([]);
+      }
       
       setLoading(false);
     } catch (error) {
@@ -319,42 +330,87 @@ const BoardDetail: React.FC = () => {
                   最新文章
                 </h3>
                 <div className="space-y-3">
-                  {recentArticles.map((article) => (
-                    <div 
-                      key={article.id} 
-                      className="pb-3 last:border-b-0"
-                      style={{ borderBottom: `1px solid ${currentTheme.colors.border}` }}
-                    >
-                      <h4 
-                        className="text-sm font-medium mb-1 line-clamp-2"
-                        style={{ color: currentTheme.colors.text }}
-                      >
-                        <Link
-                          to={`/article/${article.id}`}
-                          className="transition-colors"
-                          style={{ color: currentTheme.colors.text }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.color = currentTheme.colors.primary;
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.color = currentTheme.colors.text;
-                          }}
-                        >
-                          {article.title}
-                        </Link>
-                      </h4>
+                  {recentArticles.map((article) => {
+                    // 验证文章数据完整性
+                    if (!article || !article.id || !article.title) {
+                      return null;
+                    }
+                    
+                    return (
                       <div 
-                        className="flex items-center gap-2 text-xs"
-                        style={{ color: currentTheme.colors.textSecondary }}
+                        key={article.id} 
+                        className="pb-3 last:border-b-0"
+                        style={{ borderBottom: `1px solid ${currentTheme.colors.border}` }}
                       >
-                        <User size={12} />
-                        <span>{article.author}</span>
-                        <span>•</span>
-                        <span>{new Date(article.createdAt).toLocaleDateString()}</span>
+                        <h4 
+                          className="text-sm font-medium mb-1 line-clamp-2"
+                          style={{ color: currentTheme.colors.text }}
+                        >
+                          <Link
+                            to={`/article/${article.id}`}
+                            className="transition-colors"
+                            style={{ color: currentTheme.colors.text }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.color = currentTheme.colors.primary;
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.color = currentTheme.colors.text;
+                            }}
+                          >
+                            {article.title}
+                          </Link>
+                        </h4>
+                        <div 
+                          className="flex items-center gap-2 text-xs"
+                          style={{ color: currentTheme.colors.textSecondary }}
+                        >
+                          <User size={12} />
+                          <span>{article.author || '未知作者'}</span>
+                          <span>•</span>
+                          <span>{article.createdAt ? new Date(article.createdAt).toLocaleDateString('zh-CN') : '未知日期'}</span>
+                        </div>
+                        <div 
+                          className="flex items-center gap-3 text-xs mt-1"
+                          style={{ color: currentTheme.colors.textSecondary }}
+                        >
+                          <div className="flex items-center gap-1">
+                            <Eye size={10} />
+                            <span>{article.views || 0}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <ThumbsUp size={10} />
+                            <span>{article.likes || 0}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <MessageSquare size={10} />
+                            <span>{article.comments || 0}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
+              </div>
+            )}
+            
+            {/* 当没有文章时显示提示 */}
+            {recentArticles.length === 0 && !loading && (
+              <div 
+                className="rounded-lg p-6 text-center"
+                style={{ backgroundColor: currentTheme.colors.surface }}
+              >
+                <h3 
+                  className="text-lg font-semibold mb-2"
+                  style={{ color: currentTheme.colors.text }}
+                >
+                  最新文章
+                </h3>
+                <p 
+                  className="text-sm"
+                  style={{ color: currentTheme.colors.textSecondary }}
+                >
+                  暂无文章
+                </p>
               </div>
             )}
 

@@ -6,6 +6,7 @@ import { Article, getAllArticlesSortedByTime, initializeSampleArticles } from '.
 import UnifiedGameHubLayout from '../components/common/UnifiedGameHubLayout';
 import { useTheme } from '../themes/ThemeContext';
 import { useI18n } from '../contexts/I18nContext';
+import { useAuth } from '../contexts/AuthContext';
 
 interface GameHubProps {}
 
@@ -14,6 +15,7 @@ const GameHub: React.FC<GameHubProps> = () => {
   const navigate = useNavigate();
   const { currentTheme } = useTheme();
   const { t } = useI18n();
+  const { state: authState, getUserDisplayName } = useAuth();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('全部');
   const [sortBy, setSortBy] = useState<string>('最新');
@@ -132,13 +134,17 @@ const GameHub: React.FC<GameHubProps> = () => {
 
 
 
-  // 用户信息
+  // 用户信息 - 使用真实用户数据
   const userInfo = {
-    name: '游戏玩家',
-    level: 'Lv.5 攻略达人',
-    guides: 12,
-    likes: 156,
-    collections: 23
+    name: getUserDisplayName() || '游客用户',
+    level: authState.user?.role === 'admin' || authState.user?.role === 'superAdmin' 
+      ? `Lv.${authState.user?.level || 10} 管理员` 
+      : `Lv.${authState.user?.level || 1} 游戏玩家`,
+    guides: articles.filter(article => article.authorId === authState.user?.id).length,
+    likes: articles
+      .filter(article => article.authorId === authState.user?.id)
+      .reduce((total, article) => total + (article.likes || 0), 0),
+    collections: 0 // 暂时设为0，需要实现收藏功能
   };
 
   // 文章分页控制函数

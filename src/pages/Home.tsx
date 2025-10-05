@@ -1,11 +1,13 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SEOHead from '../components/SEOHead';
 import UnifiedGameLayout from '../components/common/UnifiedGameLayout';
 import GameModal from '../components/common/GameModal';
+import GameRankingSidebar from '../components/common/GameRankingSidebar';
 import { useGameData, useGameActions } from '../hooks/useGameData';
 import { useGameModal } from '../hooks/useGameModal';
 import { useTheme } from '../themes/ThemeContext';
 import { useI18n } from '../contexts/I18nContext';
+import { games } from '../data/gamesData';
 
 
 
@@ -17,12 +19,26 @@ function Home() {
   const { currentTheme } = useTheme();
   const { t } = useI18n();
   
+  // 排行榜数据状态
+  const [hotGames, setHotGames] = useState<any[]>([]);
+  const [newGames, setNewGames] = useState<any[]>([]);
   
-  
-  
-  
-  // 直接使用context中的selectedCategory，避免重复状态管理
-  const selectedCategory = contextSelectedCategory;
+  // 初始化排行榜数据
+  useEffect(() => {
+    const gameData = games.map(game => ({
+      ...game,
+      category: game.category || '未分类',
+      thumbnail: game.image || '/car-racing.webp'
+    }));
+
+    // 热门游戏（按点赞数排序）- 只显示前10个
+    const sortedHotGames = [...gameData].sort((a, b) => b.likes - a.likes).slice(0, 10);
+    setHotGames(sortedHotGames);
+    
+    // 最新游戏（模拟发布时间）- 只显示前10个
+    const sortedNewGames = [...gameData].sort(() => Math.random() - 0.5).slice(0, 10);
+    setNewGames(sortedNewGames);
+  }, [games]);
 
   // 处理游戏播放
   const handlePlayGame = (gameId: number) => {
@@ -36,6 +52,9 @@ function Home() {
   const handleToggleFavorite = (gameId: number) => {
     toggleFavorite(gameId);
   };
+
+  // 直接使用context中的selectedCategory，避免重复状态管理
+  const selectedCategory = contextSelectedCategory;
 
   // 处理分类切换 - 使用useCallback优化性能
   const handleCategoryChange = useCallback((category: string) => {
@@ -76,17 +95,30 @@ function Home() {
           </p>
         </div>
 
-        {/* 统一的游戏布局 */}
-        <UnifiedGameLayout
-          games={filteredGames}
-          allGames={games}
-          isLoading={isLoading}
-          error={error}
-          onPlay={handlePlayGame}
-          onToggleFavorite={handleToggleFavorite}
-          onCategoryChange={handleCategoryChange}
-          selectedCategory={selectedCategory}
-        />
+        {/* 主内容区域 - 使用网格布局 */}
+        <div className="grid grid-cols-12 gap-6 items-start">
+          {/* 左侧游戏内容区域 */}
+          <div className="col-span-12 lg:col-span-9">
+            <UnifiedGameLayout
+              games={filteredGames}
+              allGames={games}
+              isLoading={isLoading}
+              error={error}
+              onPlay={handlePlayGame}
+              onToggleFavorite={handleToggleFavorite}
+              onCategoryChange={handleCategoryChange}
+              selectedCategory={selectedCategory}
+            />
+          </div>
+          
+          {/* 右侧排行榜侧边栏 */}
+          <div className="col-span-12 lg:col-span-3">
+            <GameRankingSidebar
+              hotGames={hotGames}
+              newGames={newGames}
+            />
+          </div>
+        </div>
       </div>
 
       {/* 游戏弹窗 */}

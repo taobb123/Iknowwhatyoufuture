@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Search, Heart, MessageCircle, Share2, Eye, Clock, User, Gamepad2, Star, TrendingUp, Grid, Code, Server, Brain, Palette, Wrench, ArrowLeft, ArrowRight, Tag, Plus } from 'lucide-react';
 import { Article, getArticleById } from '../../data/articleManager';
+import { Topic, getAllTopics } from '../../data/databaseTopicManager';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { useTheme } from '../../themes/ThemeContext';
 import { useI18n } from '../../contexts/I18nContext';
@@ -97,9 +98,46 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
   const [viewsCount, setViewsCount] = useState(0);
   const [isNavigating, setIsNavigating] = useState(false);
   const [articleErrors, setArticleErrors] = useState<Record<string, string>>({});
+  
+  // 主题状态管理
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [hotTopics, setHotTopics] = useState<Topic[]>([]);
+  const [newTopics, setNewTopics] = useState<Topic[]>([]);
 
   // 文章内容区域的ref
   const articleContentRef = useRef<HTMLDivElement>(null);
+
+  // 加载主题数据
+  useEffect(() => {
+    const loadTopics = async () => {
+      try {
+        const allTopics = await getAllTopics();
+        const activeTopics = allTopics.filter(topic => topic.isActive);
+        
+        setTopics(activeTopics);
+        
+        // 热门主题：按文章数量排序，取前10个
+        const hotTopicsSorted = [...activeTopics]
+          .sort((a, b) => b.articleCount - a.articleCount)
+          .slice(0, 10);
+        setHotTopics(hotTopicsSorted);
+        
+        // 最新主题：按创建时间排序，取前10个
+        const newTopicsSorted = [...activeTopics]
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .slice(0, 10);
+        setNewTopics(newTopicsSorted);
+      } catch (error) {
+        console.error('加载主题数据失败:', error);
+        // 如果数据库不可用，使用默认分类
+        setTopics([]);
+        setHotTopics([]);
+        setNewTopics([]);
+      }
+    };
+
+    loadTopics();
+  }, []);
 
   // 获取当前文章 - 从 guides 中查找
   const currentArticle = currentArticleId ? guides.find(guide => guide.id === currentArticleId) : null;
@@ -360,9 +398,9 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
 
   return (
     <div className={`max-w-7xl mx-auto grid grid-cols-12 gap-4 p-4 w-full ${className}`}>
-      {/* 合并的左侧和中间内容区域 - 使用统一背景 */}
+      {/* 主内容区域 - 使用两列网格布局 */}
       <div 
-        className="col-span-9 rounded-xl p-4 shadow-2xl"
+        className="col-span-12 rounded-xl p-4 shadow-2xl"
         style={{ 
           background: `linear-gradient(to bottom right, ${currentTheme.colors.surface}, ${currentTheme.colors.background})`,
           boxShadow: currentTheme.shadows.xl
@@ -429,7 +467,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
               </div>
             </div>
 
-            {/* 攻略分类导航 */}
+            {/* 攻略分类导航 - 使用数据库主题 */}
             <div className="space-y-1">
               <h4 
                 className="text-xs font-semibold mb-2 flex items-center"
@@ -438,14 +476,55 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                 <Grid className="w-3 h-3 mr-1" />
                 攻略分类
               </h4>
-              {categoriesWithCount.map((category) => {
-                const IconComponent = category.icon;
-                const isSelected = selectedCategory === category.id;
+              {/* 全部分类 */}
+              <button
+                onClick={() => onCategoryChange('全部')}
+                className="w-full text-left px-2 py-2 rounded-lg transition-all duration-200 transform hover:scale-102 hover:shadow-md"
+                style={{
+                  backgroundColor: selectedCategory === '全部' ? currentTheme.colors.primary : `${currentTheme.colors.surface}80`,
+                  color: selectedCategory === '全部' ? currentTheme.colors.text : currentTheme.colors.textSecondary,
+                  boxShadow: selectedCategory === '全部' ? currentTheme.shadows.md : 'none',
+                  borderColor: selectedCategory === '全部' ? currentTheme.colors.border : 'transparent',
+                  border: '1px solid'
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedCategory !== '全部') {
+                    e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
+                    e.currentTarget.style.color = currentTheme.colors.text;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedCategory !== '全部') {
+                    e.currentTarget.style.backgroundColor = `${currentTheme.colors.surface}80`;
+                    e.currentTarget.style.color = currentTheme.colors.textSecondary;
+                  }
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Grid size={14} />
+                    <span className="font-medium text-sm">全部</span>
+                  </div>
+                  <span 
+                    className="text-xs rounded-full px-1.5 py-0.5"
+                    style={{ 
+                      backgroundColor: `${currentTheme.colors.textSecondary}20`,
+                      color: currentTheme.colors.textSecondary
+                    }}
+                  >
+                    {guides.length}
+                  </span>
+                </div>
+              </button>
+              
+              {/* 数据库主题列表 */}
+              {topics.slice(0, 10).map((topic) => {
+                const isSelected = selectedCategory === topic.name;
                 
                 return (
                   <button
-                    key={category.id}
-                    onClick={() => onCategoryChange(category.id)}
+                    key={topic.id}
+                    onClick={() => onCategoryChange(topic.name)}
                     className="w-full text-left px-2 py-2 rounded-lg transition-all duration-200 transform hover:scale-102 hover:shadow-md"
                     style={{
                       backgroundColor: isSelected ? currentTheme.colors.primary : `${currentTheme.colors.surface}80`,
@@ -469,8 +548,8 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <IconComponent size={14} />
-                        <span className="font-medium text-sm">{category.name}</span>
+                        <span className="text-sm">{topic.icon}</span>
+                        <span className="font-medium text-sm">{topic.name}</span>
                       </div>
                       <span 
                         className="text-xs rounded-full px-1.5 py-0.5"
@@ -479,7 +558,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                           color: currentTheme.colors.textSecondary
                         }}
                       >
-                        {category.count}
+                        {topic.articleCount}
                       </span>
                     </div>
                   </button>
@@ -487,7 +566,7 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
               })}
             </div>
 
-            {/* 热门话题 */}
+            {/* 热门话题 - 使用数据库热门主题 */}
             <div className="space-y-1">
               <h4 
                 className="text-xs font-semibold mb-2 flex items-center"
@@ -497,14 +576,15 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                 热门话题
               </h4>
               <div className="space-y-1">
-                {['React游戏开发', 'TypeScript技巧', 'Vue组件设计', 'Node.js服务器'].map(topic => (
+                {hotTopics.map(topic => (
                   <div 
-                    key={topic} 
+                    key={topic.id} 
                     className="text-xs cursor-pointer rounded px-2 py-1 transition-colors"
                     style={{ 
                       color: currentTheme.colors.textSecondary,
                       backgroundColor: 'transparent'
                     }}
+                    onClick={() => onCategoryChange(topic.name)}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.color = currentTheme.colors.text;
                       e.currentTarget.style.backgroundColor = currentTheme.colors.hover;
@@ -514,9 +594,17 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                       e.currentTarget.style.backgroundColor = 'transparent';
                     }}
                   >
-                    #{topic}
+                    #{topic.name} ({topic.articleCount})
                   </div>
                 ))}
+                {hotTopics.length === 0 && (
+                  <div 
+                    className="text-xs text-center py-2"
+                    style={{ color: currentTheme.colors.textSecondary }}
+                  >
+                    暂无热门话题
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -948,74 +1036,6 @@ const UnifiedGameHubLayout: React.FC<UnifiedGameHubLayoutProps> = ({
                 </div>
               )}
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 右侧排行榜 - 保持独立背景 */}
-      <div className="col-span-3 space-y-4">
-        {/* 热门游戏排行榜 */}
-        <div className="bg-gray-800 rounded-lg p-3">
-          <div className="flex items-center gap-2 mb-3">
-            <TrendingUp size={16} className="text-red-500" />
-            <h3 className="font-semibold text-white text-sm">热门游戏</h3>
-          </div>
-          <div className="space-y-2">
-            {hotGames.map((game, index) => (
-              <div key={game.id} className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-700 cursor-pointer">
-                <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                  {index + 1}
-                </div>
-                <img
-                  src={game.image}
-                  alt={game.title}
-                  className="w-8 h-8 rounded object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/car-racing.webp';
-                  }}
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium text-xs truncate text-white">{game.title}</div>
-                  <div className="text-xs text-gray-400">{game.category}</div>
-                </div>
-                <div className="flex items-center gap-1 text-xs text-yellow-400">
-                  <Star size={10} />
-                  {((game.likes || 0) / 1000).toFixed(1)}k
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 最新游戏排行榜 */}
-        <div className="bg-gray-800 rounded-lg p-3">
-          <div className="flex items-center gap-2 mb-3">
-            <Clock size={16} className="text-green-500" />
-            <h3 className="font-semibold text-white text-sm">{t('gameHub.latestGames')}</h3>
-          </div>
-          <div className="space-y-2">
-            {newGames.map((game, index) => (
-              <div key={game.id} className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-700 cursor-pointer">
-                <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
-                  {index + 1}
-                </div>
-                <img
-                  src={game.image}
-                  alt={game.title}
-                  className="w-8 h-8 rounded object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/car-racing.webp';
-                  }}
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium text-xs truncate text-white">{game.title}</div>
-                  <div className="text-xs text-gray-400">{game.category}</div>
-                </div>
-                <div className="text-xs text-gray-500">
-                  {game.addedAt ? formatDate(game.addedAt) : '最近'}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>

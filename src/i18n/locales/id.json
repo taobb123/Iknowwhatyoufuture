@@ -234,7 +234,7 @@
   "navigation": {
     "home": "Beranda",
     "games": "Permainan",
-    "gameHub": "Pusat Permainan",
+    "gameHub": "Jelajah Artikel",
     "community": "Komunitas",
     "management": "Manajemen"
   },
@@ -291,7 +291,7 @@
     "hotTopics": "Topik Populer"
   },
   "gameHub": {
-    "title": "Pusat Permainan",
+    "title": "Jelajah Artikel",
     "publish": "Terbitkan",
     "sortLatest": "Terbaru",
     "sortPopular": "Populer",

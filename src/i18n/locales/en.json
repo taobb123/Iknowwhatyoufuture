@@ -23,7 +23,7 @@
   "navigation": {
     "home": "Home",
     "games": "All Games",
-    "gameHub": "Game Hub",
+    "gameHub": "Article Browse",
     "community": "Community",
     "management": "Management",
     "login": "Login",
@@ -126,7 +126,7 @@
     "freeGame": "Free Game"
   },
   "gameHub": {
-    "title": "Game Hub",
+    "title": "Article Browse",
     "publish": "Publish",
     "sortLatest": "Latest",
     "sortPopular": "Popular",

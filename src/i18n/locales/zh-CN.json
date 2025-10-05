@@ -23,7 +23,7 @@
   "navigation": {
     "home": "首页",
     "games": "所有游戏",
-    "gameHub": "游戏中心",
+    "gameHub": "文章浏览",
     "community": "社区",
     "management": "管理",
     "login": "登录",
@@ -126,7 +126,7 @@
     "freeGame": "免费游戏"
   },
   "gameHub": {
-    "title": "游戏中心",
+    "title": "文章浏览",
     "publish": "发表",
     "sortLatest": "最新",
     "sortPopular": "热门",
